@@ -16,7 +16,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v11.0</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
@@ -88,7 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MapNotePad\MapNotePad.csproj">
-      <Project>{3D96ADBC-CC40-48EC-BDBE-771997DBE9DE}</Project>
+      <Project>{002EC7E5-3676-40A2-95A9-DFC53944B75E}</Project>
       <Name>MapNotePad</Name>
     </ProjectReference>
   </ItemGroup>
