@@ -1,8 +1,80 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms"
+<prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
              x:Class="MapNotePad.App">
-    <Application.Resources>
+    <prism:PrismApplication.Resources>
 
-    </Application.Resources>
-</Application>
+        <Color x:Key="PrimaryColor">#00A5F2</Color>
+        <Color x:Key="AccentColor">#E65B30</Color>
+        <Color x:Key="TextColor">White</Color>
+        <Color x:Key="ButtonTextColor">Black</Color>
+        <Color x:Key="ContentPrimaryColor">White</Color>
+        <Color x:Key="ContentTextColor">Black</Color>
+        <Color x:Key="ContentPlaceholderColor">LightGray</Color>
+
+        <Color x:Key="TransparentColor">Transparent</Color>
+
+        <!-- Light colors -->
+        <Color x:Key="LightPageBackgroundColor">White</Color>
+        <Color x:Key="LightNavigationBarColor">WhiteSmoke</Color>
+        <Color x:Key="LightPrimaryColor">WhiteSmoke</Color>
+        <Color x:Key="LightSecondaryColor">Black</Color>
+        <Color x:Key="LightPrimaryTextColor">Black</Color>
+        <Color x:Key="LightSecondaryTextColor">White</Color>
+        <Color x:Key="LightTertiaryTextColor">Gray</Color>
+
+        <!-- Dark colors -->
+        <Color x:Key="DarkPageBackgroundColor">Black</Color>
+        <Color x:Key="DarkNavigationBarColor">Teal</Color>
+        <Color x:Key="DarkPrimaryColor">Teal</Color>
+        <Color x:Key="DarkSecondaryColor">White</Color>
+        <Color x:Key="DarkPrimaryTextColor">White</Color>
+        <Color x:Key="DarkSecondaryTextColor">White</Color>
+        <Color x:Key="DarkTertiaryTextColor">Gray</Color>
+
+        <Style TargetType="NavigationPage">
+            <Setter Property="BarBackgroundColor" 
+                    Value="{AppThemeBinding Light={StaticResource PrimaryColor}, Dark={StaticResource DarkNavigationBarColor}}" />
+            <Setter Property="BarTextColor"
+                    Value="{AppThemeBinding Light={StaticResource TextColor}, Dark={StaticResource DarkSecondaryColor}}" />
+        </Style>
+
+        <Style x:Key="LabelStyle"
+               TargetType="Label">
+            <Setter Property="TextColor"
+                    Value="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}" />
+        </Style>
+
+        <Style x:Key="PickerStyle"
+               TargetType="Picker">
+            <Setter Property="TextColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTertiaryTextColor}, Dark={StaticResource DarkTertiaryTextColor}}" />
+            <Setter Property="TitleColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTertiaryTextColor}, Dark={StaticResource DarkTertiaryTextColor}}" />
+        </Style>
+
+        <Style x:Key="EntryStyle"
+               TargetType="Entry">
+            <Setter Property="TextColor"
+                    Value="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}" />
+            <Setter Property="PlaceholderColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTertiaryTextColor}, Dark={StaticResource DarkTertiaryTextColor}}" />
+        </Style>
+
+        <Style x:Key="RadioStyle"
+               TargetType="RadioButton">
+            <Setter Property="TextColor"
+                    Value="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}" />
+            <Setter Property="BackgroundColor"
+                    Value="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPrimaryColor}}" />
+
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{StaticResource AccentColor}" />
+            <Setter Property="TextColor" Value="{StaticResource ButtonTextColor}" />
+            <Setter Property="CornerRadius" Value="15" />
+        </Style>
+    </prism:PrismApplication.Resources>
+</prism:PrismApplication>
