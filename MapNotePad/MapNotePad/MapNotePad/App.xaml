@@ -72,8 +72,8 @@
         </Style>
 
         <Style TargetType="Button">
-            <Setter Property="BackgroundColor" Value="{StaticResource AccentColor}" />
-            <Setter Property="TextColor" Value="{StaticResource ButtonTextColor}" />
+            <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
+            <Setter Property="TextColor" Value="{StaticResource TextColor}" />
             <Setter Property="CornerRadius" Value="15" />
         </Style>
     </prism:PrismApplication.Resources>
