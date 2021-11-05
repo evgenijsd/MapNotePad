@@ -1,7 +1,9 @@
-﻿using Prism.Navigation;
+﻿using MapNotePad.Helpers;
+using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -14,9 +16,10 @@ namespace MapNotePad.ViewModels
         }
 
         #region -- Public properties --
-
-        public ICommand MainPageCommand => new Command(OnMainPageCommandAsync);
-        public ICommand GoogleMainCommand => new Command(OnGoogleMainCommandAsync);
+        private ICommand _MainPageCommand;
+        public ICommand MainPageCommand => _MainPageCommand ??= SingleExecutionCommand.FromFunc(OnMainPageCommandAsync);
+        private ICommand _GoogleMainCommand;
+        public ICommand GoogleMainCommand => _GoogleMainCommand ??= SingleExecutionCommand.FromFunc(OnGoogleMainCommandAsync);
         #endregion
         #region -- InterfaceName implementation --
         #endregion
@@ -26,13 +29,15 @@ namespace MapNotePad.ViewModels
 
         #endregion
         #region -- Private helpers --
-        private async void OnMainPageCommandAsync()
+        private Task OnMainPageCommandAsync()
         {
-            await _navigationService.NavigateAsync("MainPage");
+            _navigationService.NavigateAsync("MainPage");
+            return Task.CompletedTask;
         }
-        private async void OnGoogleMainCommandAsync()
+        private Task OnGoogleMainCommandAsync()
         {
-            await _navigationService.NavigateAsync("MainPage");
+            _navigationService.NavigateAsync("MainPage");
+            return Task.CompletedTask;
         }
         #endregion
     }

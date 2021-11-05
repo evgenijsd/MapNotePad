@@ -1,8 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+
+	
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+	  <AnalysisLevel>latest</AnalysisLevel>
+	  <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

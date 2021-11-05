@@ -1,4 +1,6 @@
-﻿using Prism.Navigation;
+﻿using MapNotePad.Helpers;
+using Prism.Navigation;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -13,8 +15,10 @@ namespace MapNotePad.ViewModels
 
         #region -- Public properties --
 
-        public ICommand LogInCommand => new Command(OnLogInCommandAsync);
-        public ICommand RegisterCommand => new Command(OnRegisterCommandAsync);
+        private ICommand _LogInCommand;
+        public ICommand LogInCommand => _LogInCommand ??= SingleExecutionCommand.FromFunc(OnLogInCommandAsync);
+        private ICommand _RegisterCommand;
+        public ICommand RegisterCommand => _RegisterCommand ??= SingleExecutionCommand.FromFunc(OnRegisterCommandAsync);
         #endregion
         #region -- InterfaceName implementation --
         #endregion
@@ -24,13 +28,15 @@ namespace MapNotePad.ViewModels
 
         #endregion
         #region -- Private helpers --
-        private async void OnLogInCommandAsync()
+        private Task OnLogInCommandAsync()
         {
-            await _navigationService.NavigateAsync("LogIn");
+            _navigationService.NavigateAsync("LogIn");
+            return Task.CompletedTask;
         }
-        private async void OnRegisterCommandAsync()
+        private Task OnRegisterCommandAsync()
         {
-            await _navigationService.NavigateAsync("Register");
+            _navigationService.NavigateAsync("Register");
+            return Task.CompletedTask;
         }
         #endregion
     }
