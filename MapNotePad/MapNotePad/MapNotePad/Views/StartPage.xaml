@@ -11,8 +11,8 @@
             <Image Source="Pic.png" HorizontalOptions="Center" VerticalOptions="Center"/>
         </StackLayout>
         <StackLayout Grid.Row="1" Padding="20,0">
-            <Button Text="Log in" Margin="0,0,0,20" FontSize="Medium" />
-            <Button Text="Create account" Style="{StaticResource buttonStyle}" FontSize="Medium" />
+            <Button Text="Log in" Margin="0,0,0,20" FontSize="Medium" Command="{Binding LogInCommand}" />
+            <Button Text="Create account" Style="{StaticResource buttonStyle}" FontSize="Medium" Command="{Binding RegisterCommand}" />
         </StackLayout>
     </Grid>
 </ContentPage>

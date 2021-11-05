@@ -25,6 +25,7 @@ namespace MapNotePad.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+            Xamarin.FormsGoogleMaps.Init(AppConstants.GOOGLE_API_ACCESS_KEY);
             LoadApplication(new App(new iOSInitializer()));
 
             return base.FinishedLaunching(app, options);

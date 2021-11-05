@@ -8,11 +8,21 @@ namespace MapNotePad.ViewModels
 {
     public class BaseContentPage : BindableBase
     {
-        private INavigationService _navigationService { get; }
+        protected INavigationService _navigationService { get; }
         public BaseContentPage(INavigationService navigationService)
         {
             _navigationService = navigationService;
         }
 
+        #region -- Public properties --
+        #endregion
+        #region -- InterfaceName implementation --
+        #endregion
+        #region -- Overrides --
+        #endregion
+        #region -- Public helpers --
+        #endregion
+        #region -- Private helpers --
+        #endregion
     }
 }

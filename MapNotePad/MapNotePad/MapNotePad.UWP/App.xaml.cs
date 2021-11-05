@@ -58,6 +58,8 @@ namespace MapNotePad.UWP
                 rootFrame.NavigationFailed += OnNavigationFailed;
                 Xamarin.Forms.Forms.Init(e);
 
+                Xamarin.FormsGoogleMaps.Init("AIzaSyC44PvCN5M_NK - 8cPNzccIu7VN14PCUTc0");
+
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: Load state from previously suspended application

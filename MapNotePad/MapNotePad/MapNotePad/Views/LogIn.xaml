@@ -4,20 +4,22 @@
              x:Class="MapNotePad.Views.LogIn">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="5*"/>
-            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <StackLayout Grid.Row="0" Padding="20,0" VerticalOptions="Center">
-            <Entry Text="{Binding Login}" Placeholder="{res:Translate PlaceholderLogin}" Style="{StaticResource EntryStyle}"/>
-            <Entry Text="{Binding Password}" Placeholder="{res:Translate PlaceholderPassword}" IsPassword="true" Style="{StaticResource EntryStyle}"/>
+            <Label Text="Email"/>
+            <Entry Text="{Binding Login}" Placeholder="Enter email" Style="{StaticResource EntryStyle}" Margin="0,0,0,30" />
+            <Label Text="Password"/>
+            <Entry Text="{Binding Password}" Placeholder="Enter password" IsPassword="true" Style="{StaticResource EntryStyle}"/>
         </StackLayout>
         <StackLayout Grid.Row="1" Padding="20,0">
-            <Button Text="{res:Translate ButtonSignIn}" Command="{Binding MainListCommand}"/>
-            <Label Text="{res:Translate LabelSignUp}" TextColor="Blue" TextDecorations="Underline" HorizontalOptions="Center">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SignUpCommand}"/>
-                </Label.GestureRecognizers>
-            </Label>
+            <Button Text="Log In" Command="{Binding MainPageCommand}" FontSize="Medium"/>
+        </StackLayout>
+        <StackLayout Grid.Row="2" Padding="20,0">
+            <Image Source="or.png" HorizontalOptions="FillAndExpand" Aspect="Fill" HeightRequest="18"/>
+            <ImageButton Command="{Binding GoogleMainCommand}" Source="Button.png" BackgroundColor="Transparent" Aspect="Fill" HeightRequest="49" Margin="0,15,0,30"/>
         </StackLayout>
     </Grid>
 </ContentPage>
