@@ -38,6 +38,7 @@
                     Value="{AppThemeBinding Light={StaticResource TransparentColor}, Dark={StaticResource DarkNavigationBarColor}}" />
             <Setter Property="BarTextColor"
                     Value="{AppThemeBinding Light={StaticResource PrimaryColor}, Dark={StaticResource DarkSecondaryColor}}" />
+            <Setter Property="MinimumHeightRequest" Value="150"/>
         </Style>
 
         <Style x:Key="LabelStyle"
@@ -74,12 +75,14 @@
         <Style TargetType="Button">
             <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
             <Setter Property="TextColor" Value="{StaticResource TextColor}" />
+            <Setter Property="FontSize" Value="Medium"/>
         </Style>
         <Style x:Key="buttonStyle" TargetType="Button">
             <Setter Property="TextColor" Value="{StaticResource PrimaryColor}" />
             <Setter Property="BackgroundColor" Value="{StaticResource TransparentColor}" />
             <Setter Property="BorderWidth" Value="2"/>
             <Setter Property="BorderColor" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="FontSize" Value="Medium"/>
         </Style>
     </prism:PrismApplication.Resources>
 </prism:PrismApplication>

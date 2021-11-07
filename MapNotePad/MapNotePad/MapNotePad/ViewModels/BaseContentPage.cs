@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MapNotePad.ViewModels
 {
-    public class BaseContentPage : BindableBase
+    public abstract class BaseContentPage : BindableBase
     {
         protected INavigationService _navigationService { get; }
         public BaseContentPage(INavigationService navigationService)

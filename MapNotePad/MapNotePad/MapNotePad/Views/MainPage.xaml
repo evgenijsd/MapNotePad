@@ -2,18 +2,47 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:clusteredMap="clr-namespace:Xamarin.Forms.GoogleMaps.Clustering;assembly=Xamarin.Forms.GoogleMaps.Clustering"
+             xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
+             xmlns:local="clr-namespace:MapNotePad.ViewModels;assembly=MapNotePad"
              xmlns:maps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
              x:Class="MapNotePad.Views.MainPage">
+    <NavigationPage.TitleView>
+        <SearchBar Placeholder="Search"/>
+    </NavigationPage.TitleView>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="ic_exid.png" Command="{Binding LogOut}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="21*" />
+                <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
 
-            <maps:Map x:Name="map"
-                      InitialCameraUpdate="-23.68, -46.87, 11"
-                      VerticalOptions="FillAndExpand">
-            </maps:Map>
+            <clusteredMap:ClusteredMap>
+                <clusteredMap:ClusteredMap.Behaviors>
+                    <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
+                    <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
+                    <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}"/>
+                </clusteredMap:ClusteredMap.Behaviors>
+            </clusteredMap:ClusteredMap>
+
+            <ImageButton Source="ic_location" Grid.Row="0" BackgroundColor="White"  CornerRadius="40" HorizontalOptions="End" WidthRequest="80" HeightRequest="80" Margin="0,0,30,70" VerticalOptions="End" Command="{Binding GeoLocCommand}"/>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Margin="5,0,40,0">
+                    <ImageButton Source="ic_map" BackgroundColor="Transparent"  VerticalOptions="Fill" Margin="0,0,0,10" Command="{Binding GeoLocCommand}"/>
+                </Grid>
+                <Label Grid.Column="0" Text="Map" FontSize="Large"  Margin="110,10,0,0" TextColor="#495CDD"/>
+                <Grid Grid.Column="1" Margin="5,0,40,0">
+                    <ImageButton Source="ic_pin"  BackgroundColor="Transparent" WidthRequest="10" HeightRequest="10" Margin="0,0,0,10" Command="{Binding GeoLocCommand}"/>
+                </Grid>
+                <Label Grid.Column="1" Text="Pins" FontSize="Large"  Margin="110,10,0,0" TextColor="#495CDD"/>
+            </Grid>
         </Grid>
+        
     </ContentPage.Content>
 </ContentPage>

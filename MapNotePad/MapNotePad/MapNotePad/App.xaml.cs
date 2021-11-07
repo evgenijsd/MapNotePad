@@ -1,4 +1,5 @@
-﻿using MapNotePad.Services.Repository;
+﻿using MapNotePad.Controls;
+using MapNotePad.Services.Repository;
 using MapNotePad.ViewModels;
 using MapNotePad.Views;
 using Prism;
@@ -26,7 +27,7 @@ namespace MapNotePad
             containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());
 
 
-            containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<NavigationPage>(); 
             containerRegistry.RegisterForNavigation<StartPage, StartPageViewModel>();
             containerRegistry.RegisterForNavigation<AddPins, AddPinsViewModel>();
             containerRegistry.RegisterForNavigation<LogIn, LogInViewModel>();
