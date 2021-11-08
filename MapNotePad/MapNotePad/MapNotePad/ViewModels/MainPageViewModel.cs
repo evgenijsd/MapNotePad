@@ -51,10 +51,10 @@ namespace MapNotePad.ViewModels
                 };
                 Pins.Add(pin);
             }
-            var location = await Geolocation.GetLastKnownLocationAsync();
+            /*var location = await Geolocation.GetLastKnownLocationAsync();
             Region = MapSpan.FromCenterAndRadius(
                              new Position(location.Latitude, location.Longitude),
-                             Distance.FromKilometers(1000));
+                             Distance.FromKilometers(1000));*/
 
         }
 
@@ -104,11 +104,11 @@ namespace MapNotePad.ViewModels
         #region -- Private helpers --
         private Task OnGeoLocCommandAsync()
         {
-            //_dialogs.DisplayAlertAsync("Alert", "Alert", "Ok");
-            var location = Geolocation.GetLastKnownLocationAsync();
+            _dialogs.DisplayAlertAsync("Alert", "Alert", "Ok");
+            /*var location = Geolocation.GetLastKnownLocationAsync();
             Region = MapSpan.FromCenterAndRadius(
                              new Position(location.Result.Latitude, location.Result.Longitude),
-                             Distance.FromKilometers(500));
+                             Distance.FromKilometers(500));*/
             return Task.CompletedTask;
         }
 
