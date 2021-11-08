@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Runtime;
+using Plugin.CurrentActivity;
 using System;
 
 namespace MapNotePad.Droid
@@ -11,6 +12,12 @@ namespace MapNotePad.Droid
         public MainApplication(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
         {
+        }
+
+        public override void OnCreate()
+        {
+            base.OnCreate();
+            CrossCurrentActivity.Current.Init(this);
         }
     }
 }

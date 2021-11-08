@@ -2,6 +2,7 @@
 using MapNotePad.Models;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
+using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using Prism.Navigation;
 using Prism.Services;
@@ -19,7 +20,6 @@ namespace MapNotePad.ViewModels
 {
     public class MainPageViewModel : BaseContentPage, IInitialize
     {
-        CancellationTokenSource cts;
         private IPageDialogService _dialogs { get; }
 
         public MainPageViewModel(INavigationService navigationService, IPageDialogService dialogs) : base(navigationService)
@@ -55,6 +55,9 @@ namespace MapNotePad.ViewModels
                 };
                 Pins.Add(pin);
             }
+            Region = MapSpan.FromCenterAndRadius(
+                                 new Xamarin.Forms.GoogleMaps.Position(0, 0),
+                                 Distance.FromKilometers(2000));
 
         }
 
@@ -105,27 +108,14 @@ namespace MapNotePad.ViewModels
         #endregion
         #region -- Private helpers --
 
+        [Obsolete]
         private Task OnGeoLocCommandAsync()
         {
             _dialogs.DisplayAlertAsync("Alert", "Alert", "Ok");
-            try
-            {
-                var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
-                cts = new CancellationTokenSource();
-                var location = Geolocation.GetLocationAsync(request, cts.Token);
-
+            var location = GetPositionAsync();
                 Region = MapSpan.FromCenterAndRadius(
                                  new Xamarin.Forms.GoogleMaps.Position(location.Result.Latitude, location.Result.Longitude),
                                  Distance.FromKilometers(1000));
-            }
-            catch (Exception ex)
-            {
-                _dialogs.DisplayAlertAsync("Uh oh", "Something went wrong, but don't worry we captured for analysis! Thanks.", "OK");
-            }
-            finally
-            {
-                //ButtonGetGPS.IsEnabled = true;
-            }
             /*var location = Geolocation.GetLastKnownLocationAsync();
             Region = MapSpan.FromCenterAndRadius(
                              new Position(location.Result.Latitude, location.Result.Longitude),
@@ -133,8 +123,29 @@ namespace MapNotePad.ViewModels
             return Task.CompletedTask;
         }
 
-
+        [Obsolete]
+        private async Task<Plugin.Geolocator.Abstractions.Position> GetPositionAsync()
+        {
+            Plugin.Geolocator.Abstractions.Position position = new();
+            position.Latitude = 0;
+            position.Longitude = 0;
+            try
+            {
+                var hasPermission = await Util.CheckPermissions(Permission.Location);
+                if (!hasPermission)
+                    return position;
+                var locator = CrossGeolocator.Current;
+                locator.DesiredAccuracy = 50;
+                position = await locator.GetPositionAsync(new TimeSpan(100000000));
+            }
+            catch (Exception e)
+            {
+            }
+            return position;
+        }
         #endregion
+
+
 
     }
 }
