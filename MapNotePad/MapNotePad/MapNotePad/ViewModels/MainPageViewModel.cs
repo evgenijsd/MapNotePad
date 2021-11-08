@@ -1,9 +1,13 @@
 ﻿using MapNotePad.Helpers;
 using MapNotePad.Models;
+using Plugin.Geolocator;
+using Plugin.Geolocator.Abstractions;
+using Plugin.Permissions.Abstractions;
 using Prism.Navigation;
 using Prism.Services;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -15,7 +19,7 @@ namespace MapNotePad.ViewModels
 {
     public class MainPageViewModel : BaseContentPage, IInitialize
     {
-        
+        CancellationTokenSource cts;
         private IPageDialogService _dialogs { get; }
 
         public MainPageViewModel(INavigationService navigationService, IPageDialogService dialogs) : base(navigationService)
@@ -36,7 +40,7 @@ namespace MapNotePad.ViewModels
 //            customMap.CustomPins = new List<CustomPin> { pin };
         }
 
-        public async void Initialize(INavigationParameters parameters)
+        public void Initialize(INavigationParameters parameters)
         {
             Random randomPositionGenerator = new Random();
 
@@ -51,10 +55,6 @@ namespace MapNotePad.ViewModels
                 };
                 Pins.Add(pin);
             }
-            /*var location = await Geolocation.GetLastKnownLocationAsync();
-            Region = MapSpan.FromCenterAndRadius(
-                             new Position(location.Latitude, location.Longitude),
-                             Distance.FromKilometers(1000));*/
 
         }
 
@@ -80,6 +80,8 @@ namespace MapNotePad.ViewModels
         }
 
         private ICommand _GeoLocCommand;
+
+        [Obsolete]
         public ICommand GeoLocCommand => _GeoLocCommand ??= SingleExecutionCommand.FromFunc(OnGeoLocCommandAsync);
 
         private ClusteredMap _clustermap;
@@ -102,9 +104,28 @@ namespace MapNotePad.ViewModels
         #region -- Public helpers --
         #endregion
         #region -- Private helpers --
+
         private Task OnGeoLocCommandAsync()
         {
             _dialogs.DisplayAlertAsync("Alert", "Alert", "Ok");
+            try
+            {
+                var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+                cts = new CancellationTokenSource();
+                var location = Geolocation.GetLocationAsync(request, cts.Token);
+
+                Region = MapSpan.FromCenterAndRadius(
+                                 new Xamarin.Forms.GoogleMaps.Position(location.Result.Latitude, location.Result.Longitude),
+                                 Distance.FromKilometers(1000));
+            }
+            catch (Exception ex)
+            {
+                _dialogs.DisplayAlertAsync("Uh oh", "Something went wrong, but don't worry we captured for analysis! Thanks.", "OK");
+            }
+            finally
+            {
+                //ButtonGetGPS.IsEnabled = true;
+            }
             /*var location = Geolocation.GetLastKnownLocationAsync();
             Region = MapSpan.FromCenterAndRadius(
                              new Position(location.Result.Latitude, location.Result.Longitude),

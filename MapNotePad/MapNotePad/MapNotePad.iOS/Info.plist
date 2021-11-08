@@ -55,5 +55,9 @@
 		<string>MKDirectionsModePlane</string>
 		<string>MKDirectionsModeOther</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 </dict>
 </plist>
