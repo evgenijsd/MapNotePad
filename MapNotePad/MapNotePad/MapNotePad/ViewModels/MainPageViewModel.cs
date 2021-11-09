@@ -1,17 +1,12 @@
 ﻿using MapNotePad.Helpers;
 using MapNotePad.Models;
 using Plugin.Geolocator;
-using Plugin.Geolocator.Abstractions;
-using Plugin.Permissions;
-using Plugin.Permissions.Abstractions;
 using Prism.Navigation;
 using Prism.Services;
 using System;
 using System.Collections.ObjectModel;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Essentials;
 using Xamarin.Forms.GoogleMaps;
 using Xamarin.Forms.GoogleMaps.Clustering;
 using Map = Xamarin.Forms.GoogleMaps.Map;
@@ -111,38 +106,25 @@ namespace MapNotePad.ViewModels
         [Obsolete]
         private Task OnGeoLocCommandAsync()
         {
-            _dialogs.DisplayAlertAsync("Alert", "Alert", "Ok");
-            var location = GetPositionAsync();
-                Region = MapSpan.FromCenterAndRadius(
-                                 new Xamarin.Forms.GoogleMaps.Position(location.Result.Latitude, location.Result.Longitude),
-                                 Distance.FromKilometers(1000));
-            /*var location = Geolocation.GetLastKnownLocationAsync();
-            Region = MapSpan.FromCenterAndRadius(
-                             new Position(location.Result.Latitude, location.Result.Longitude),
-                             Distance.FromKilometers(500));*/
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var locator = CrossGeolocator.Current;
+                    locator.DesiredAccuracy = 10000;
+                    var position = await locator.GetPositionAsync(new TimeSpan(0, 0, 5));
+                    Region = MapSpan.FromCenterAndRadius(
+                                 new Xamarin.Forms.GoogleMaps.Position(position.Latitude, position.Longitude),
+                                 Distance.FromKilometers(2000));
+                }
+                catch (Exception ex)
+                {
+                    await _dialogs.DisplayAlertAsync("Alert", "Alert", "Ok");
+                }
+            });
             return Task.CompletedTask;
         }
 
-        [Obsolete]
-        private async Task<Plugin.Geolocator.Abstractions.Position> GetPositionAsync()
-        {
-            Plugin.Geolocator.Abstractions.Position position = new();
-            position.Latitude = 0;
-            position.Longitude = 0;
-            try
-            {
-                var hasPermission = await Util.CheckPermissions(Permission.Location);
-                if (!hasPermission)
-                    return position;
-                var locator = CrossGeolocator.Current;
-                locator.DesiredAccuracy = 50;
-                position = await locator.GetPositionAsync(new TimeSpan(100000000));
-            }
-            catch (Exception e)
-            {
-            }
-            return position;
-        }
         #endregion
 
 
