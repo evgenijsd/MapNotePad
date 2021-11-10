@@ -12,8 +12,12 @@ using Xamarin.Forms.GoogleMaps.Bindings;
 
 namespace MapNotePad.ViewModels
 {
-    public class PinsViewModel : BindableBase, IInitialize
+    public class PinViewModel : BaseContentPage
     {
+        public PinViewModel(INavigationService navigationService) : base(navigationService)
+        {
+        }
+
         public void Initialize(INavigationParameters parameters)
         {
 

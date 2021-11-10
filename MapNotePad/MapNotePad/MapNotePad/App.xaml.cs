@@ -32,7 +32,7 @@ namespace MapNotePad
             containerRegistry.RegisterForNavigation<AddPins, AddPinsViewModel>();
             containerRegistry.RegisterForNavigation<LogIn, LogInViewModel>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
-            containerRegistry.RegisterForNavigation<Pins, PinsViewModel>();
+            containerRegistry.RegisterForNavigation<PinView, PinViewModel>();
             containerRegistry.RegisterForNavigation<Settings, SettingsViewModel>();
             containerRegistry.RegisterForNavigation<Register, RegisterViewModel>();
         }

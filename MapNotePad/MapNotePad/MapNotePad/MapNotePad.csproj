@@ -28,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\PinView.xaml.cs">
+      <DependentUpon>PinView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
@@ -43,7 +46,7 @@
     <EmbeddedResource Update="Views\MainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Pins.xaml">
+    <EmbeddedResource Update="Views\PinView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Register.xaml">
