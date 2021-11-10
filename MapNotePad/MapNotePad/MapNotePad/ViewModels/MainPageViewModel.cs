@@ -184,7 +184,7 @@ namespace MapNotePad.ViewModels
                     var position = await locator.GetPositionAsync(new TimeSpan(0, 0, 5));
                     Region = MapSpan.FromCenterAndRadius(
                                  new Xamarin.Forms.GoogleMaps.Position(position.Latitude, position.Longitude),
-                                 Distance.FromKilometers(2000));
+                                 Distance.FromKilometers(500));
                 }
                 catch (Exception ex)
                 {
