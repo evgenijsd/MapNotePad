@@ -7,7 +7,7 @@
              xmlns:maps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
              x:Class="MapNotePad.Views.MainPage">
     <NavigationPage.TitleView>
-        <SearchBar Placeholder="Search"/>
+        <SearchBar Placeholder="Search" Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}"/>
     </NavigationPage.TitleView>
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="ic_exid.png" Command="{Binding LogOut}" />
@@ -21,12 +21,16 @@
             </Grid.RowDefinitions>
 
 
-
-            <clusteredMap:ClusteredMap>
+            <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="{Binding PinClicked}" />
+            </Grid.RowDefinitions>
+              <clusteredMap:ClusteredMap IsShowingUser="True">
                 <clusteredMap:ClusteredMap.Behaviors>
                     <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
                     <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
-                    <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}"/>
+                    <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}" />
                     <bindings:PinClickedToCommandBehavior Command="{Binding PinClickedCommand}"/>
                     <bindings:SelectedPinChangedToCommandBehavior Command="{Binding SelectedPinChangedCommand}"/>
                     <bindings:InfoWindowClickedToCommandBehavior Command="{Binding InfoWindowClickedCommand}"/>
@@ -35,9 +39,31 @@
                     <bindings:PinDraggingToCommandBehavior Command="{Binding PinDraggingCommand}"/>
                     <bindings:PinDragEndToCommandBehavior Command="{Binding PinDragEndCommand}"/>
                 </clusteredMap:ClusteredMap.Behaviors>
-            </clusteredMap:ClusteredMap>
+              </clusteredMap:ClusteredMap>
+
+                
+                <Frame Grid.Row="0" BackgroundColor="White"  CornerRadius="40" HorizontalOptions="End" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" VerticalOptions="End" IsVisible="{Binding IsViewBox}">
+                    <ImageButton Source="ic_location"  Command="{Binding GeoLocCommand}" BackgroundColor="Transparent" VerticalOptions="Fill" HorizontalOptions="Fill"/>
+                </Frame>        
+
+                <StackLayout Grid.Row="1" Margin="10,10,10,10">
+                    <Label  Text="{Binding Pin.Label}" FontAttributes="Bold"/>
+                </StackLayout>
+                <StackLayout Grid.Row="1" Margin="10,40,10,10">
+                    <Label  Text="{Binding Position}" />
+                </StackLayout>
+                <StackLayout Grid.Row="1" Margin="10,80,10,10">
+                    <BoxView HorizontalOptions="FillAndExpand" HeightRequest="2" Color="Gray"/>
+                </StackLayout>
+                <StackLayout Grid.Row="1" Margin="10,100,10,10">
+                    <Editor Text="{Binding Pin.Address}" BackgroundColor="Transparent" IsReadOnly="True"/>
+                </StackLayout>
+
+            </Grid>
+
+
+
             
-            <ImageButton Source="ic_location" Grid.Row="0" BackgroundColor="White"  CornerRadius="40" HorizontalOptions="End" WidthRequest="80" HeightRequest="80" Margin="0,0,30,70" VerticalOptions="End" Command="{Binding GeoLocCommand}"/>
 
             
             <Grid Grid.Row="1">

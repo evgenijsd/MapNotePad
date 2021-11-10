@@ -14,6 +14,5 @@ namespace MapNotePad.Views
         {
             InitializeComponent();
         }
-
     }
 }

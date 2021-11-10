@@ -40,7 +40,7 @@ namespace MapNotePad.ViewModels
         {
             Random randomPositionGenerator = new Random();
 
-            for (int i = 0; i < 1500; i++)
+            for (int i = 0; i < 500; i++)
             {
                 Pin pin = new Pin
                 {
@@ -71,6 +71,12 @@ namespace MapNotePad.ViewModels
             get => _animated;
             set => SetProperty(ref _animated, value);
         }
+        private string _search;
+        public string Search
+        {
+            get => _search;
+            set => SetProperty(ref _search, value);
+        }
         private ObservableCollection<Pin> _pins;
         public ObservableCollection<Pin> Pins
         {
@@ -80,10 +86,12 @@ namespace MapNotePad.ViewModels
 
         private ICommand _GeoLocCommand;
         private ICommand _ViewCommand;
+        private ICommand _SearchCommand;
 
         [Obsolete]
         public ICommand GeoLocCommand => _GeoLocCommand ??= SingleExecutionCommand.FromFunc(OnGeoLocCommandAsync);
         public ICommand ViewCommand => _ViewCommand ??= SingleExecutionCommand.FromFunc(OnViewCommandAsync);
+        public ICommand SearchCommand => _SearchCommand ??= SingleExecutionCommand.FromFunc(OnSearchCommandAsync);
 
         private ClusteredMap _clustermap;
         public ClusteredMap ClusterMap
@@ -99,52 +107,41 @@ namespace MapNotePad.ViewModels
         }
 
         private Pin _pin;
-        private bool _isViewBox = false;
-        private int _pinClickedCount;
+        private bool _isViewBox = true;
+        private GridLength _pinClicked = 0;
         private int _selectedPinChangedCount;
         private int _infoWindowClickedCount;
         private int _infoWindowLongClickedCount;
         private string _pinDragStatus;
+        private string _position;
 
         public bool IsViewBox
         {
             get => _isViewBox;
             set => SetProperty(ref _isViewBox, value);
         }
-        public int PinClickedCount
+        public GridLength PinClicked
         {
-            get => _pinClickedCount;
-            set => SetProperty(ref _pinClickedCount, value);
+            get => _pinClicked;
+            set => SetProperty(ref _pinClicked, value);
         }
 
-        public int SelectedPinChangedCount
+        public string Position
         {
-            get => _selectedPinChangedCount;
-            set => SetProperty(ref _selectedPinChangedCount, value);
-        }
-
-        public int InfoWindowClickedCount
-        {
-            get => _infoWindowClickedCount;
-            set => SetProperty(ref _infoWindowClickedCount, value);
-        }
-
-        public int InfoWindowLongClickedCount
-        {
-            get => _infoWindowLongClickedCount;
-            set => SetProperty(ref _infoWindowLongClickedCount, value);
-        }
-
-        public string PinDragStatus
-        {
-            get => _pinDragStatus;
-            set => SetProperty(ref _pinDragStatus, value);
+            get => _position;
+            set => SetProperty(ref _position, value);
         }
 
         public Pin Pin
         {
             get => _pin;
             set => SetProperty(ref _pin, value);
+        }
+        private string _searchText = string.Empty;
+        public string SearchText
+        {
+            get => _searchText;
+            set => SetProperty(ref _searchText, value);
         }
 
         #endregion
@@ -167,7 +164,10 @@ namespace MapNotePad.ViewModels
         {
             //await _navigationService.NavigateAsync("PinView", useModalNavigation: true);
             Pin = args.Pin;
-        });
+            Position = $"{Pin.Position.Latitude}, {Pin.Position.Longitude}";
+            PinClicked = new GridLength(1, GridUnitType.Star);
+            IsViewBox = false;
+            });
 
         #endregion
         #region -- Private helpers --
@@ -177,6 +177,8 @@ namespace MapNotePad.ViewModels
         {
             Task.Run(async () =>
             {
+                PinClicked = new GridLength(0);
+                IsViewBox = true;
                 try
                 {
                     var locator = CrossGeolocator.Current;
@@ -199,6 +201,12 @@ namespace MapNotePad.ViewModels
             //_dialogs.DisplayAlertAsync("Alert", "Alert", "Ok");
             if (IsViewBox) IsViewBox = false;
             else IsViewBox = true;
+            return Task.CompletedTask;
+        }
+
+        private Task OnSearchCommandAsync()
+        {
+            _dialogs.DisplayAlertAsync("Alert", "Alert", "Ok");
             return Task.CompletedTask;
         }
 
