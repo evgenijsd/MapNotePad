@@ -36,7 +36,7 @@ namespace MapNotePad.ViewModels
         }
         private Task OnGoogleMainCommandAsync()
         {
-            _navigationService.NavigateAsync("MainPage");
+            _navigationService.NavigateAsync("AddPins");
             return Task.CompletedTask;
         }
         #endregion

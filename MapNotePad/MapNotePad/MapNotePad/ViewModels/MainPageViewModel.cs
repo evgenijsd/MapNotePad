@@ -237,7 +237,11 @@ namespace MapNotePad.ViewModels
 
         private Task OnAddPinsCommandAsync()
         {
-            _navigationService.NavigateAsync("AddPins");
+            Task.Run(async () =>
+            {
+               await _navigationService.NavigateAsync("PinView");
+            });
+            
             return Task.CompletedTask;
         }
 

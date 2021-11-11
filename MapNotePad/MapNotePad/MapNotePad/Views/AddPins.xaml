@@ -26,23 +26,6 @@
                 MaxLength="60"
                 HeightRequest="100"/>
 
-        <StackLayout Orientation="Horizontal" 
-                     HorizontalOptions="Center">
-            <CheckBox IsChecked="{Binding IsCheckBoxChecked}"
-                      HorizontalOptions="Center">
-                <CheckBox.Behaviors>
-                    <prism:EventToCommandBehavior EventName="CheckedChanged" 
-                                                  Command="{Binding CheckBoxSetCommand}"/>
-
-                </CheckBox.Behaviors>
-            </CheckBox>
-
-            <Label Text="Use map"
-                   FontSize="17"
-                   Margin="-6,3,0,0"/>
-            
-        </StackLayout>
-
         <StackLayout IsVisible="{Binding IsEntryVisible}">
             <Label Text="Latitude"
                    HorizontalOptions="Center"/>

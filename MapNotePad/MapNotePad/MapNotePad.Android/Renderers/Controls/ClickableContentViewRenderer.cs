@@ -1,8 +1,7 @@
-
-using Android.Renderers.Controls;
 using Android.Runtime;
 using Android.Views;
-using Controls;
+using MapNotePad.Controls;
+using MapNotePad.Droid.Renderers.Controls;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
