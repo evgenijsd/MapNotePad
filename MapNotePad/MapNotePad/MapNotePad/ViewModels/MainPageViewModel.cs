@@ -1,12 +1,13 @@
-﻿using MapNotePad.Helpers;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using MapNotePad.Helpers;
 using MapNotePad.Models;
 using Plugin.Geolocator;
 using Prism.Navigation;
 using Prism.Services;
-using System;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 using Xamarin.Forms.GoogleMaps.Clustering;
@@ -35,12 +36,20 @@ namespace MapNotePad.ViewModels
             };
 //            customMap.CustomPins = new List<CustomPin> { pin };
         }
+        public event EventHandler<string> SearchBarTextChanged;
+
+        public void OnSearchBarTextChanged(in string text) => SearchBarTextChanged?.Invoke(this, text);
+
+        void HandleSearchBarTextChanged(object sender, string searchBarText)
+        {
+            //Logic to handle updated search bar text
+        }
 
         public void Initialize(INavigationParameters parameters)
         {
             Random randomPositionGenerator = new Random();
 
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Pin pin = new Pin
                 {
@@ -83,15 +92,25 @@ namespace MapNotePad.ViewModels
             get => _pins;
             set => SetProperty(ref _pins, value);
         }
+        private ObservableCollection<Pin> _searchPins;
+        public ObservableCollection<Pin> SearchPins
+        {
+            get => _searchPins;
+            set => SetProperty(ref _searchPins, value);
+        }
 
         private ICommand _GeoLocCommand;
         private ICommand _ViewCommand;
         private ICommand _SearchCommand;
+        private ICommand _SearchTextCommand;
+        private ICommand _AddPinsCommand;
 
         [Obsolete]
         public ICommand GeoLocCommand => _GeoLocCommand ??= SingleExecutionCommand.FromFunc(OnGeoLocCommandAsync);
         public ICommand ViewCommand => _ViewCommand ??= SingleExecutionCommand.FromFunc(OnViewCommandAsync);
         public ICommand SearchCommand => _SearchCommand ??= SingleExecutionCommand.FromFunc(OnSearchCommandAsync);
+        public ICommand SearchTextCommand => _SearchTextCommand ??= SingleExecutionCommand.FromFunc(OnSearchTextCommandAsync);
+        public ICommand AddPinsCommand => _AddPinsCommand ??= SingleExecutionCommand.FromFunc(OnAddPinsCommandAsync);
 
         private ClusteredMap _clustermap;
         public ClusteredMap ClusterMap
@@ -124,6 +143,12 @@ namespace MapNotePad.ViewModels
         {
             get => _pinClicked;
             set => SetProperty(ref _pinClicked, value);
+        }
+        private GridLength _listViewGrid;
+        public GridLength ListViewGrid
+        {
+            get => _listViewGrid;
+            set => SetProperty(ref _listViewGrid, value);
         }
 
         public string Position
@@ -206,7 +231,26 @@ namespace MapNotePad.ViewModels
 
         private Task OnSearchCommandAsync()
         {
-            _dialogs.DisplayAlertAsync("Alert", "Alert", "Ok");
+            _dialogs.DisplayAlertAsync("Alert", "Alert " + SearchText, "Ok");
+            return Task.CompletedTask;
+        }
+
+        private Task OnAddPinsCommandAsync()
+        {
+            _navigationService.NavigateAsync("AddPins");
+            return Task.CompletedTask;
+        }
+
+        private Task OnSearchTextCommandAsync()
+        {
+            IsViewBox = false;
+            SearchPins = new ObservableCollection<Pin>(Pins.Where(x => (x.Label.Contains(SearchText) || x.Address.Contains(SearchText) || x.Position.Latitude.ToString().Contains(SearchText) || x.Position.Longitude.ToString().Contains(SearchText))));
+            if (SearchPins.Count == 0 && SearchText.Length > 0) _dialogs.DisplayAlertAsync("Alert", $"Not Found {SearchText} {SearchPins.Count} {SearchText.Length}", "Ok");
+            if (SearchText == string.Empty) {
+                SearchPins = new ObservableCollection<Pin>();
+                IsViewBox = true;
+            }
+            ListViewGrid = new GridLength(SearchPins.Count, GridUnitType.Star);
             return Task.CompletedTask;
         }
 

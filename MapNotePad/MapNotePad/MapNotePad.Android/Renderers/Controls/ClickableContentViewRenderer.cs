@@ -1,15 +1,15 @@
 
-using AgentLocator.Droid.Renderers.Controls;
+using Android.Renderers.Controls;
 using Android.Runtime;
 using Android.Views;
-using MapNotePad.Controls;
+using Controls;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(ClickableContentView), typeof(ClickableContentViewRenderer))]
-namespace AgentLocator.Droid.Renderers.Controls
+namespace MapNotePad.Droid.Renderers.Controls
 {
     [Preserve(AllMembers = true)]
     public class ClickableContentViewRenderer : VisualElementRenderer<ClickableContentView>

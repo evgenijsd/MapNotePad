@@ -1,12 +1,91 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:clusteredMap="clr-namespace:Xamarin.Forms.GoogleMaps.Clustering;assembly=Xamarin.Forms.GoogleMaps.Clustering"
+             xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:controls="clr-namespace:MapNotePad.Controls"
+             prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MapNotePad.Views.AddPins">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding SaveClickCommand}"
+                     Text="Save"/>
+        
+    </ContentPage.ToolbarItems>
+
+    <StackLayout>
+        <controls:CustomEntry Text="{Binding NameEntry}" 
+                              Placeholder = "Pin name"  
+                              Margin="50, 20, 50, 0" 
+                              HeightRequest="45"
+                              MaxLength="15"/>
+        
+        <Editor Text="{Binding DescriptionEditor}" 
+                Placeholder="Description" 
+                Margin="50, 5, 50, 0" 
+                MaxLength="60"
+                HeightRequest="100"/>
+
+        <StackLayout Orientation="Horizontal" 
+                     HorizontalOptions="Center">
+            <CheckBox IsChecked="{Binding IsCheckBoxChecked}"
+                      HorizontalOptions="Center">
+                <CheckBox.Behaviors>
+                    <prism:EventToCommandBehavior EventName="CheckedChanged" 
+                                                  Command="{Binding CheckBoxSetCommand}"/>
+
+                </CheckBox.Behaviors>
+            </CheckBox>
+
+            <Label Text="Use map"
+                   FontSize="17"
+                   Margin="-6,3,0,0"/>
+            
         </StackLayout>
-    </ContentPage.Content>
+
+        <StackLayout IsVisible="{Binding IsEntryVisible}">
+            <Label Text="Latitude"
+                   HorizontalOptions="Center"/>
+
+            <Entry Text="{Binding LatitudeEntry}" 
+                   Placeholder = "Pin latitude"
+                   HeightRequest="50"
+                   Margin="50, 0, 50, 0"
+                   Keyboard="Numeric">
+                <Entry.Behaviors>
+                    <prism:EventToCommandBehavior EventName="TextChanged"
+                                                  Command="{Binding LatitudeEntryCommand}"/>
+
+                </Entry.Behaviors>
+            </Entry>
+
+            <Label Text="Longitude"
+                   HorizontalOptions="Center"/>
+
+            <Entry Text="{Binding LongitudeEntry}" 
+                   Placeholder = "Pin longitu"
+                   HeightRequest="50"
+                   Margin="50, 0, 50, 0"
+                   Keyboard="Numeric">
+                <Entry.Behaviors>
+                    <prism:EventToCommandBehavior EventName="TextChanged"
+                                                  Command="{Binding LongitudeEntryCommand}"/>
+                    
+                </Entry.Behaviors>
+            </Entry>
+
+        </StackLayout>
+
+<clusteredMap:ClusteredMap Grid.Row="1" IsShowingUser="True">
+                <clusteredMap:ClusteredMap.Behaviors>
+                    <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
+                    <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
+                    <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}" />
+                    <bindings:PinClickedToCommandBehavior Command="{Binding PinClickedCommand}"/>
+                    <bindings:SelectedPinChangedToCommandBehavior Command="{Binding SelectedPinChangedCommand}"/>
+                    <bindings:InfoWindowClickedToCommandBehavior Command="{Binding InfoWindowClickedCommand}"/>
+                </clusteredMap:ClusteredMap.Behaviors>
+              </clusteredMap:ClusteredMap>
+        
+    </StackLayout>
 </ContentPage>
