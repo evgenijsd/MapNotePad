@@ -14,52 +14,53 @@
     </ContentPage.ToolbarItems>
 
     <StackLayout>
+        <Label Text="Label" Margin="20, 0, 0, 0" />
         <controls:CustomEntry Text="{Binding NameEntry}" 
                               Placeholder = "Pin name"  
-                              Margin="50, 20, 50, 0" 
+                              Margin="20, 5, 20, 0" 
                               HeightRequest="45"
                               MaxLength="15"/>
-        
-        <Editor Text="{Binding DescriptionEditor}" 
+        <Label Text="Description" Margin="20, 20, 0, 0" />
+        <controls:CustomEntry Text="{Binding DescriptionEditor}" 
                 Placeholder="Description" 
-                Margin="50, 5, 50, 0" 
+                Margin="20, 5, 20, 0" 
                 MaxLength="60"
-                HeightRequest="100"/>
+                HeightRequest="45"/>
 
-        <StackLayout IsVisible="{Binding IsEntryVisible}">
-            <Label Text="Latitude"
-                   HorizontalOptions="Center"/>
-
-            <Entry Text="{Binding LatitudeEntry}" 
+        <StackLayout Margin="0, 20, 0, 0">
+            <Label Text="Coordinates" Margin="20, 0, 0, 0" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+            <controls:CustomEntry Text="{Binding LatitudeEntry}" 
                    Placeholder = "Pin latitude"
-                   HeightRequest="50"
-                   Margin="50, 0, 50, 0"
+                   HeightRequest="45"
+                   Margin="20, 0, 5, 20"
                    Keyboard="Numeric">
                 <Entry.Behaviors>
                     <prism:EventToCommandBehavior EventName="TextChanged"
                                                   Command="{Binding LatitudeEntryCommand}"/>
 
                 </Entry.Behaviors>
-            </Entry>
+            </controls:CustomEntry>
 
-            <Label Text="Longitude"
-                   HorizontalOptions="Center"/>
-
-            <Entry Text="{Binding LongitudeEntry}" 
+            <controls:CustomEntry Text="{Binding LongitudeEntry}" Grid.Column="1"
                    Placeholder = "Pin longitu"
-                   HeightRequest="50"
-                   Margin="50, 0, 50, 0"
+                   HeightRequest="45"
+                   Margin="5, 0, 20, 20"
                    Keyboard="Numeric">
                 <Entry.Behaviors>
                     <prism:EventToCommandBehavior EventName="TextChanged"
                                                   Command="{Binding LongitudeEntryCommand}"/>
                     
                 </Entry.Behaviors>
-            </Entry>
-
+            </controls:CustomEntry>
+            </Grid>
         </StackLayout>
 
-<clusteredMap:ClusteredMap Grid.Row="1" IsShowingUser="True">
+<clusteredMap:ClusteredMap Grid.Row="1" IsShowingUser="True" >
                 <clusteredMap:ClusteredMap.Behaviors>
                     <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
                     <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
