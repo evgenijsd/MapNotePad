@@ -63,4 +63,7 @@
   <ItemGroup>
     <Folder Include="Services\Interface\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Naxam.BottomTabbedPage" />
+  </ItemGroup>
 </Project>

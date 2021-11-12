@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local="clr-namespace:MapNotePad.Views;assembly=MapNotePad"
+            xmlns:prism="http://prismlibrary.com"
+             x:Class="MapNotePad.Views.MainTabPage"
+            prism:ViewModelLocator.AutowireViewModel="True">
+  <!--Pages can be added as references or inline-->
+
+    <TabbedPage.Children>
+        <NavigationPage Title="Map" IconImageSource="ic_map.png">
+        <x:Arguments>
+            <local:Settings/>
+        </x:Arguments>
+        </NavigationPage>
+
+        <NavigationPage Title="Pins" IconImageSource="ic_pin.png">
+        <x:Arguments>
+            <local:AddPins Title="Pins"/>
+        </x:Arguments>
+        </NavigationPage>
+    </TabbedPage.Children>
+</TabbedPage>

@@ -1,11 +1,13 @@
-﻿using Xamarin.Forms.Xaml;
+﻿
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace MapNotePad.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage
+    public partial class MainTabPage : TabbedPage
     {
-        public MainPage()
+        public MainTabPage()
         {
             InitializeComponent();
         }

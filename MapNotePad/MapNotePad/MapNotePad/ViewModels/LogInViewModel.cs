@@ -31,7 +31,7 @@ namespace MapNotePad.ViewModels
         #region -- Private helpers --
         private Task OnMainPageCommandAsync()
         {
-            _navigationService.NavigateAsync("MainPage");
+            _navigationService.NavigateAsync("MainTabPage");
             return Task.CompletedTask;
         }
         private Task OnGoogleMainCommandAsync()
