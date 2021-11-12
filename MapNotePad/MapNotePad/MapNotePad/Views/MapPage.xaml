@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:clusteredMap="clr-namespace:Xamarin.Forms.GoogleMaps.Clustering;assembly=Xamarin.Forms.GoogleMaps.Clustering" 
+             xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings" 
+             xmlns:prism="http://prismlibrary.com"
+             x:Class="MapNotePad.Views.MapPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView HasUnevenRows="True" ItemsSource="{Binding SearchPins}" >
+                <ListView.Behaviors>
+                    <prism:EventToCommandBehavior EventName="ItemTapped" Command="{Binding PopUpCommand}" EventArgsParameterPath="Item"/>
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="3*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout HeightRequest="70" Margin="10,10,10,10">
+                                        <Image Source="{Binding Image}"/>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="1">
+                                        <Label Text="{Binding Pin.Label}" FontSize="Medium" Style="{StaticResource LabelStyle}"/>
+                                        <Label Text="{Binding Pin.Address}" FontSize="Small" Style="{StaticResource LabelStyle}"/>
+                                    </StackLayout>
+                                </Grid>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+            <clusteredMap:ClusteredMap IsShowingUser="True">
+                <clusteredMap:ClusteredMap.Behaviors>
+                    <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
+                    <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
+                    <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}" />
+                    <bindings:PinClickedToCommandBehavior Command="{Binding PinClickedCommand}"/>
+                    <bindings:SelectedPinChangedToCommandBehavior Command="{Binding SelectedPinChangedCommand}"/>
+                    <bindings:InfoWindowClickedToCommandBehavior Command="{Binding InfoWindowClickedCommand}"/>
+                </clusteredMap:ClusteredMap.Behaviors>
+            </clusteredMap:ClusteredMap>
+        </StackLayout>
+
+    </ContentPage.Content>
+</ContentPage>

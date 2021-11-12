@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Prism.Navigation;
 
 namespace MapNotePad.ViewModels
 {
-    public class AddPinsViewModel
+    public class AddPinsViewModel : BaseContentPage
     {
+        public AddPinsViewModel(INavigationService navigationService) : base(navigationService)
+        {
+        }
     }
 }

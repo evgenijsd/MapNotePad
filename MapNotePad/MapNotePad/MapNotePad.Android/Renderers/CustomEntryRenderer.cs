@@ -5,7 +5,6 @@ using Android.Graphics.Drawables;
 using Android.Graphics.Drawables.Shapes;
 using Android.Widget;
 using MapNotePad.Controls;
-using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 

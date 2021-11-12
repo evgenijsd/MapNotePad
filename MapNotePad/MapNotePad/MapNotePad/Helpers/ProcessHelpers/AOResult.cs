@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace MapNotePad.Helpers.ProcessHelpers
 {
-     public class AOResult
+    public class AOResult
     {
         private readonly DateTime _creationUtcTime;
 
@@ -154,7 +154,7 @@ namespace MapNotePad.Helpers.ProcessHelpers
 
     public class AOResult<T> : AOResult
     {
-        public AOResult([CallerMemberName]string callerName = null, [CallerFilePath]string callerFile = null, [CallerLineNumber]int callerLineNumber = 0)
+        public AOResult([CallerMemberName] string callerName = null, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLineNumber = 0)
             : base(callerName, callerFile, callerLineNumber)
         {
         }

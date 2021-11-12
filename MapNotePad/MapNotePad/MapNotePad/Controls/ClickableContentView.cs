@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace MapNotePad.Controls
 {
-   public class ClickableContentView : ContentView
+    public class ClickableContentView : ContentView
     {
         public event System.EventHandler OnInvalidate;
 

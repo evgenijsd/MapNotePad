@@ -1,12 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:controls="clr-namespace:MapNotePad.Controls"
              x:Class="MapNotePad.Views.Register">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+        <StackLayout Grid.Row="0" Padding="20,0" VerticalOptions="Center">
+            <Label Text="Name"/>
+            <controls:CustomEntry Text="{Binding Name}" Placeholder="Enter your name" Style="{StaticResource EntryStyle}" Margin="0,0,0,30" />
+            <Label Text="Email"/>
+            <controls:CustomEntry Text="{Binding Email}" Placeholder="Enter email" IsPassword="true" Style="{StaticResource EntryStyle}"/>
         </StackLayout>
-    </ContentPage.Content>
+        <StackLayout Grid.Row="1" Padding="20,0">
+            <Button Text="Log In" Command="{Binding PasswordCommand}" FontSize="Medium"/>
+        </StackLayout>
+        <StackLayout Grid.Row="2" Padding="20,0">
+            <Image Source="or.png" HorizontalOptions="FillAndExpand" Aspect="Fill" HeightRequest="18"/>
+            <ImageButton Command="{Binding GoogleMainCommand}" Source="Button.png" BackgroundColor="Transparent" Aspect="Fill" HeightRequest="49" Margin="0,15,0,30"/>
+        </StackLayout>
+    </Grid>
 </ContentPage>

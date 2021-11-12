@@ -1,8 +1,8 @@
 ﻿using MapNotePad.Helpers;
+using MapNotePad.Views;
 using Prism.Navigation;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Forms;
 
 namespace MapNotePad.ViewModels
 {
@@ -28,15 +28,13 @@ namespace MapNotePad.ViewModels
 
         #endregion
         #region -- Private helpers --
-        private Task OnLogInCommandAsync()
+        private async Task<INavigationResult> OnLogInCommandAsync()
         {
-            _navigationService.NavigateAsync("LogIn");
-            return Task.CompletedTask;
+                return await _navigationService.NavigateAsync($"{nameof(LogIn)}");
         }
-        private Task OnRegisterCommandAsync()
+        private async Task<INavigationResult> OnRegisterCommandAsync()
         {
-            _navigationService.NavigateAsync("Register");
-            return Task.CompletedTask;
+            return await _navigationService.NavigateAsync($"{nameof(Register)}");
         }
         #endregion
     }

@@ -60,16 +60,16 @@
             </Grid>
         </StackLayout>
 
-<clusteredMap:ClusteredMap Grid.Row="1" IsShowingUser="True" >
-                <clusteredMap:ClusteredMap.Behaviors>
-                    <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
-                    <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
-                    <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}" />
-                    <bindings:PinClickedToCommandBehavior Command="{Binding PinClickedCommand}"/>
-                    <bindings:SelectedPinChangedToCommandBehavior Command="{Binding SelectedPinChangedCommand}"/>
-                    <bindings:InfoWindowClickedToCommandBehavior Command="{Binding InfoWindowClickedCommand}"/>
-                </clusteredMap:ClusteredMap.Behaviors>
-              </clusteredMap:ClusteredMap>
-        
+        <clusteredMap:ClusteredMap Grid.Row="1" IsShowingUser="True" >
+            <clusteredMap:ClusteredMap.Behaviors>
+                <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
+                <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
+                <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}" />
+                <bindings:PinClickedToCommandBehavior Command="{Binding PinClickedCommand}"/>
+                <bindings:SelectedPinChangedToCommandBehavior Command="{Binding SelectedPinChangedCommand}"/>
+                <bindings:InfoWindowClickedToCommandBehavior Command="{Binding InfoWindowClickedCommand}"/>
+            </clusteredMap:ClusteredMap.Behaviors>
+        </clusteredMap:ClusteredMap>
+
     </StackLayout>
 </ContentPage>

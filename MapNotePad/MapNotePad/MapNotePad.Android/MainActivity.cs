@@ -1,16 +1,13 @@
-﻿using System;
-
+﻿
 using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
 using Android.OS;
+using Android.Runtime;
 using Prism;
 using Prism.Ioc;
-using Plugin.Permissions;
-using Xamarin.Forms.GoogleMaps.Clustering.Android;
-using Xamarin.Forms.GoogleMaps.Clustering;
 using Xamarin.Forms;
-using Plugin.CurrentActivity;
+using Xamarin.Forms.GoogleMaps.Clustering;
+using Xamarin.Forms.GoogleMaps.Clustering.Android;
 
 [assembly: ExportRenderer(typeof(ClusteredMap), typeof(ClusteredMapRenderer))]
 namespace MapNotePad.Droid
@@ -29,8 +26,8 @@ namespace MapNotePad.Droid
 
             LoadApplication(new App(new AndroidInitializer()));
         }
-        public class AndroidInitializer : IPlatformInitializer 
-        { 
+        public class AndroidInitializer : IPlatformInitializer
+        {
             public void RegisterTypes(IContainerRegistry containerRegistry)
             {
 

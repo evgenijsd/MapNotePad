@@ -1,8 +1,8 @@
 
-using System;
 using AgentLocator.iOS.Renderers.Controls;
 using MapNotePad.Controls;
 using MapNotePad.iOS;
+using System;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;

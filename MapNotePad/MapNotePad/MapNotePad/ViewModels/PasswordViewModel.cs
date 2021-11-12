@@ -1,19 +1,22 @@
 ﻿using MapNotePad.Helpers;
 using Prism.Navigation;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace MapNotePad.ViewModels
 {
-    public class RegisterViewModel : BaseContentPage
+    public class PasswordViewModel : BaseContentPage
     {
-        public RegisterViewModel(INavigationService navigationService) : base(navigationService)
+        public PasswordViewModel(INavigationService navigationService) : base(navigationService)
         {
         }
 
         #region -- Public properties --
-        private ICommand _PasswordCommand;
-        public ICommand PasswordCommand => _PasswordCommand ??= SingleExecutionCommand.FromFunc(OnPasswordCommandAsync);
+        private ICommand _LogInCommand;
+        public ICommand LogInCommand => _LogInCommand ??= SingleExecutionCommand.FromFunc(OnLogInCommandAsync);
         private ICommand _GoogleMainCommand;
         public ICommand GoogleMainCommand => _GoogleMainCommand ??= SingleExecutionCommand.FromFunc(OnGoogleMainCommandAsync);
         #endregion
@@ -25,9 +28,9 @@ namespace MapNotePad.ViewModels
 
         #endregion
         #region -- Private helpers --
-        private Task OnPasswordCommandAsync()
+        private Task OnLogInCommandAsync()
         {
-            _navigationService.NavigateAsync("Password");
+            _navigationService.NavigateAsync("LogIn");
             return Task.CompletedTask;
         }
         private Task OnGoogleMainCommandAsync()

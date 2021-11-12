@@ -1,5 +1,4 @@
-﻿using System;
-using MapNotePad.Controls;
+﻿using MapNotePad.Controls;
 using MapNotePad.iOS.Renderers;
 using UIKit;
 using Xamarin.Forms;

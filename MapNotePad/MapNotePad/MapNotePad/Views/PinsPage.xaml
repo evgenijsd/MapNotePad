@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:prism="http://prismlibrary.com"
+             x:Class="MapNotePad.Views.PinsPage">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ScrollView Grid.Row="0">
+                <StackLayout>
+                    <ListView x:Name="contactsList" 
+                          HasUnevenRows="True" 
+                          ItemsSource="{Binding ContactList}" >
+                        <ListView.Behaviors>
+                            <prism:EventToCommandBehavior EventName="ItemTapped" Command="{Binding PopUpCommand}" EventArgsParameterPath="Item"/>
+                        </ListView.Behaviors>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ViewCell.ContextActions>
+                                        <MenuItem Text="Edit" Command="{Binding Path=EditCommand}" CommandParameter="{Binding}" />
+                                        <MenuItem Text="Del" Command="{Binding Path=DeleteCommand}" CommandParameter="{Binding}" />
+                                    </ViewCell.ContextActions>
+                                    <ViewCell.View>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="3*" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackLayout HeightRequest="70" Margin="10,10,10,10">
+                                                <Image Source="{Binding Image}"/>
+                                            </StackLayout>
+                                            <StackLayout Grid.Column="1">
+                                                <Label Text="{Binding Name}" FontSize="Medium" Style="{StaticResource LabelStyle}"/>
+                                                <Label Text="{Binding Nickname}" FontSize="Small" Style="{StaticResource LabelStyle}"/>
+                                                <Label Text="{Binding Date}" FontSize="Small" Style="{StaticResource LabelStyle}"/>
+                                            </StackLayout>
+                                        </Grid>
+                                    </ViewCell.View>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </ScrollView>
+            <Label Text="" Grid.Row="0" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding IsNull}" Style="{StaticResource LabelStyle}"/>
+            <Frame Grid.Row="1" BackgroundColor="Blue"  CornerRadius="40" HorizontalOptions="End" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" VerticalOptions="End" IsVisible="{Binding IsViewBox}">
+                <ImageButton Source="ic_plus"  Command="{Binding GeoLocCommand}" BackgroundColor="Transparent" VerticalOptions="Fill" HorizontalOptions="Fill"/>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,13 +1,12 @@
-﻿using System;
+﻿using MapNotePad.Helpers;
+using Plugin.Geolocator;
+using Prism.Navigation;
+using Prism.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using MapNotePad.Helpers;
-using MapNotePad.Models;
-using Plugin.Geolocator;
-using Prism.Navigation;
-using Prism.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 using Xamarin.Forms.GoogleMaps.Clustering;
@@ -23,18 +22,7 @@ namespace MapNotePad.ViewModels
         {
             _dialogs = dialogs;
 
-            CustomPin pin = new CustomPin
-            {
-                Pin = new Pin
-                {
-                    Type = PinType.Place,
-                    Position = new Xamarin.Forms.GoogleMaps.Position(37.79752, -122.40183),
-                    Label = "Xamarin San Francisco Office",
-                    Address = "394 Pacific Ave, San Francisco CA"
-                },
-                User = 0
-            };
-//            customMap.CustomPins = new List<CustomPin> { pin };
+            //            customMap.CustomPins = new List<CustomPin> { pin };
         }
         public event EventHandler<string> SearchBarTextChanged;
 
@@ -192,7 +180,7 @@ namespace MapNotePad.ViewModels
             Position = $"{Pin.Position.Latitude}, {Pin.Position.Longitude}";
             PinClicked = new GridLength(1, GridUnitType.Star);
             IsViewBox = false;
-            });
+        });
 
         #endregion
         #region -- Private helpers --
@@ -215,7 +203,7 @@ namespace MapNotePad.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    await _dialogs.DisplayAlertAsync("Alert", "Alert", "Ok");
+                    await _dialogs.DisplayAlertAsync("Alert", $"{ex}", "Ok");
                 }
             });
             return Task.CompletedTask;
@@ -239,9 +227,9 @@ namespace MapNotePad.ViewModels
         {
             Task.Run(async () =>
             {
-               await _navigationService.NavigateAsync("PinView");
+                await _navigationService.NavigateAsync("PinView");
             });
-            
+
             return Task.CompletedTask;
         }
 
@@ -250,7 +238,8 @@ namespace MapNotePad.ViewModels
             IsViewBox = false;
             SearchPins = new ObservableCollection<Pin>(Pins.Where(x => (x.Label.Contains(SearchText) || x.Address.Contains(SearchText) || x.Position.Latitude.ToString().Contains(SearchText) || x.Position.Longitude.ToString().Contains(SearchText))));
             if (SearchPins.Count == 0 && SearchText.Length > 0) _dialogs.DisplayAlertAsync("Alert", $"Not Found {SearchText} {SearchPins.Count} {SearchText.Length}", "Ok");
-            if (SearchText == string.Empty) {
+            if (SearchText == string.Empty)
+            {
                 SearchPins = new ObservableCollection<Pin>();
                 IsViewBox = true;
             }

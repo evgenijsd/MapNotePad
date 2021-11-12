@@ -1,4 +1,3 @@
-using MapNotePad.Controls.StateContainer.Animation;
 using Xamarin.Forms;
 
 namespace MapNotePad.Controls.StateContainer
