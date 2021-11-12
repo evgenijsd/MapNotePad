@@ -15,7 +15,7 @@
 
     <StackLayout>
         <Label Text="Label" Margin="20, 0, 0, 0" />
-        <controls:CustomEntry Text="{Binding NameEntry}" 
+        <controls:CustomEntry Text="{Binding NameEntry}"
                               Placeholder = "Pin name"  
                               Margin="20, 5, 20, 0" 
                               HeightRequest="45"
