@@ -57,6 +57,9 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Acr.UserDialogs">
+      <Version>7.2.0.534</Version>
+    </PackageReference>
     <PackageReference Include="NGraphics">
       <Version>0.5.0</Version>
     </PackageReference>
@@ -201,7 +204,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_pin_gray.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_placeholder.png" />
+    <AndroidAsset Include="Resources\drawable-hdpi\ic_placeholder.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_plus.png" />
@@ -276,7 +279,7 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_pin_gray.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_placeholder.png" />
+    <AndroidAsset Include="Resources\drawable-mdpi\ic_placeholder.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_plus.png" />
@@ -351,7 +354,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_pin_gray.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_placeholder.png" />
+    <AndroidAsset Include="Resources\drawable-xhdpi\ic_placeholder.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_plus.png" />
@@ -426,7 +429,7 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_pin_gray.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_placeholder.png" />
+    <AndroidAsset Include="Resources\drawable-xxhdpi\ic_placeholder.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_plus.png" />
@@ -501,7 +504,7 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_pin_gray.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_placeholder.png" />
+    <AndroidAsset Include="Resources\drawable-xxxhdpi\ic_placeholder.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_plus.png" />
@@ -544,6 +547,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_share.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\ic_placeholder.png">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidAsset>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

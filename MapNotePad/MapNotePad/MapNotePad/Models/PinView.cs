@@ -17,11 +17,18 @@ namespace MapNotePad.Models
             set => SetProperty(ref _id, value);
         }
 
-        private int _userId;
-        public int UserId
+        private int _user;
+        public int User
         {
-            get => _userId;
-            set => SetProperty(ref _userId, value);
+            get => _user;
+            set => SetProperty(ref _user, value);
+        }
+
+        private bool _favourite;
+        public bool Favourite
+        {
+            get => _favourite;
+            set => SetProperty(ref _favourite, value);
         }
 
         private string _image;
@@ -38,11 +45,18 @@ namespace MapNotePad.Models
             set => SetProperty(ref _name, value);
         }
 
-        private string _nickname;
-        public string Nickname
+        private double _latitude;
+        public double Latitude
         {
-            get => _nickname;
-            set => SetProperty(ref _nickname, value);
+            get => _latitude;
+            set => SetProperty(ref _latitude, value);
+        }
+
+        private double _longitude;
+        public double Longitude
+        {
+            get => _longitude;
+            set => SetProperty(ref _longitude, value);
         }
 
         private string _description;

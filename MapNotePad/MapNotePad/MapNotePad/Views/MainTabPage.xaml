@@ -4,23 +4,17 @@
             xmlns:local="clr-namespace:MapNotePad.Views;assembly=MapNotePad"
             xmlns:prism="http://prismlibrary.com"
             xmlns:controls="clr-namespace:MapNotePad.Controls"
-                        xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+            xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
             android:TabbedPage.ToolbarPlacement="Bottom"
-             x:Class="MapNotePad.Views.MainTabPage"
+            x:Class="MapNotePad.Views.MainTabPage"
             prism:ViewModelLocator.AutowireViewModel="True">
   <!--Pages can be added as references or inline-->
 
+    <TabbedPage.Behaviors>
+        <controls:TabbedPageNavigationBehavior />
+    </TabbedPage.Behaviors>
     <TabbedPage.Children>
-        <NavigationPage Title="Map" IconImageSource="ic_map.png">
-        <x:Arguments>
             <local:MapPage/>
-        </x:Arguments>
-        </NavigationPage>
-
-        <NavigationPage Title="Pins" IconImageSource="ic_pin.png">
-        <x:Arguments>
-            <local:PinsPage Title="Pins"/>
-        </x:Arguments>
-        </NavigationPage>
+            <local:PinsPage/>
     </TabbedPage.Children>
 </TabbedPage>

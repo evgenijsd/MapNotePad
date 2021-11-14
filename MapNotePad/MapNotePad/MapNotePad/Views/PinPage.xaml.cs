@@ -5,9 +5,9 @@ using Xamarin.Forms.Xaml;
 namespace MapNotePad.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PinView : ContentPage
+    public partial class PinPage : ContentPage
     {
-        public PinView()
+        public PinPage()
         {
             InitializeComponent();
         }

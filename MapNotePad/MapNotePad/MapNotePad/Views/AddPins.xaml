@@ -6,22 +6,23 @@
              xmlns:prism="http://prismlibrary.com"
              xmlns:controls="clr-namespace:MapNotePad.Controls"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="MapNotePad.Views.AddPins">
+             x:Class="MapNotePad.Views.AddPins"
+             Title="{Binding Title}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding SaveClickCommand}"
-                     Text="Save"/>
+        <ToolbarItem Command="{Binding SaveClickedCommand}"
+                     IconImageSource="ic_save.png"/>
         
     </ContentPage.ToolbarItems>
-
+    
     <StackLayout>
         <Label Text="Label" Margin="20, 0, 0, 0" />
-        <controls:CustomEntry Text="{Binding NameEntry}"
+        <controls:CustomEntry Text="{Binding Name}"
                               Placeholder = "Pin name"  
                               Margin="20, 5, 20, 0" 
                               HeightRequest="45"
                               MaxLength="15"/>
         <Label Text="Description" Margin="20, 20, 0, 0" />
-        <controls:CustomEntry Text="{Binding DescriptionEditor}" 
+        <controls:CustomEntry Text="{Binding Description}" 
                 Placeholder="Description" 
                 Margin="20, 5, 20, 0" 
                 MaxLength="60"
@@ -34,42 +35,48 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-            <controls:CustomEntry Text="{Binding LatitudeEntry}" 
+            <controls:CustomEntry Text="{Binding Latitude}" 
                    Placeholder = "Pin latitude"
                    HeightRequest="45"
                    Margin="20, 0, 5, 20"
                    Keyboard="Numeric">
                 <Entry.Behaviors>
                     <prism:EventToCommandBehavior EventName="TextChanged"
-                                                  Command="{Binding LatitudeEntryCommand}"/>
+                                                  Command="{Binding LatitudeCommand}"/>
 
                 </Entry.Behaviors>
             </controls:CustomEntry>
 
-            <controls:CustomEntry Text="{Binding LongitudeEntry}" Grid.Column="1"
-                   Placeholder = "Pin longitu"
+            <controls:CustomEntry Text="{Binding Longitude}" Grid.Column="1"
+                   Placeholder = "Pin longitude"
                    HeightRequest="45"
                    Margin="5, 0, 20, 20"
                    Keyboard="Numeric">
                 <Entry.Behaviors>
                     <prism:EventToCommandBehavior EventName="TextChanged"
-                                                  Command="{Binding LongitudeEntryCommand}"/>
+                                                  Command="{Binding LongitudeCommand}"/>
                     
                 </Entry.Behaviors>
             </controls:CustomEntry>
             </Grid>
         </StackLayout>
-
-        <clusteredMap:ClusteredMap Grid.Row="1" IsShowingUser="True" >
+        <AbsoluteLayout VerticalOptions="FillAndExpand">
+            <clusteredMap:ClusteredMap IsShowingUser="True" AbsoluteLayout.LayoutBounds="0,0,1,1"
+               AbsoluteLayout.LayoutFlags="All" 
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="FillAndExpand">
             <clusteredMap:ClusteredMap.Behaviors>
                 <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
                 <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
-                <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}" />
-                <bindings:PinClickedToCommandBehavior Command="{Binding PinClickedCommand}"/>
-                <bindings:SelectedPinChangedToCommandBehavior Command="{Binding SelectedPinChangedCommand}"/>
-                <bindings:InfoWindowClickedToCommandBehavior Command="{Binding InfoWindowClickedCommand}"/>
-            </clusteredMap:ClusteredMap.Behaviors>
+                    <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}" />
+                </clusteredMap:ClusteredMap.Behaviors>
         </clusteredMap:ClusteredMap>
 
+            <Frame BackgroundColor="White"  CornerRadius="40" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize">
+                <ImageButton Source="ic_location"  Command="{Binding GeoLocCommand}" BackgroundColor="Transparent" VerticalOptions="Fill" HorizontalOptions="Fill"/>
+            </Frame>
+        </AbsoluteLayout>
     </StackLayout>
+        
+
 </ContentPage>

@@ -2,50 +2,88 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:clusteredMap="clr-namespace:Xamarin.Forms.GoogleMaps.Clustering;assembly=Xamarin.Forms.GoogleMaps.Clustering" 
-             xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings" 
+             xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              xmlns:prism="http://prismlibrary.com"
-             x:Class="MapNotePad.Views.MapPage">
+             x:Class="MapNotePad.Views.MapPage"
+             Title="Map" IconImageSource="ic_map.png">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="ic_exid.png" Command="{prism:NavigateTo '/NavigationPage/StartPage'}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <ListView HasUnevenRows="True" ItemsSource="{Binding SearchPins}" >
-                <ListView.Behaviors>
-                    <prism:EventToCommandBehavior EventName="ItemTapped" Command="{Binding PopUpCommand}" EventArgsParameterPath="Item"/>
-                </ListView.Behaviors>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <ViewCell.View>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="3*" />
-                                    </Grid.ColumnDefinitions>
-                                    <StackLayout HeightRequest="70" Margin="10,10,10,10">
-                                        <Image Source="{Binding Image}"/>
-                                    </StackLayout>
-                                    <StackLayout Grid.Column="1">
-                                        <Label Text="{Binding Pin.Label}" FontSize="Medium" Style="{StaticResource LabelStyle}"/>
-                                        <Label Text="{Binding Pin.Address}" FontSize="Small" Style="{StaticResource LabelStyle}"/>
-                                    </StackLayout>
-                                </Grid>
-                            </ViewCell.View>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
+            <StackLayout Grid.Row="1" IsVisible="{Binding IsViewSearch}" HeightRequest="300">
+                <ListView HasUnevenRows="True" ItemsSource="{Binding SearchPins}" >
+                    <ListView.Behaviors>
+                        <prism:EventToCommandBehavior EventName="ItemTapped" Command="{Binding TapShowCommand}" EventArgsParameterPath="Item"/>
+                    </ListView.Behaviors>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.View>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="9*" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout HeightRequest="40" Margin="15,13,0,0">
+                                            <Image Source="{Binding Image}"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="1">
+                                            <Label Text="{Binding Name}" FontSize="Medium" Style="{StaticResource LabelStyle}"/>
+                                            <Label Text="{Binding Description}" FontSize="Small" Style="{StaticResource LabelStyle}"/>
+                                        </StackLayout>
+                                    </Grid>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+            
+            <StackLayout Grid.Row="0">
+                <SearchBar Placeholder="Search" Text="{Binding SearchText}" >
+                    <SearchBar.Behaviors>
+                        <prism:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchTextCommand}"/>
+                    </SearchBar.Behaviors>
+                </SearchBar>
+            </StackLayout>
+            
+            <StackLayout Grid.Row="2">
+                <clusteredMap:ClusteredMap IsShowingUser="True" WidthRequest="960" HeightRequest="200">
+                    <clusteredMap:ClusteredMap.Behaviors>
+                        <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
+                        <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
+                        <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}" />
+                        <bindings:PinClickedToCommandBehavior Command="{Binding PinClickedCommand}"/>
+                        <bindings:SelectedPinChangedToCommandBehavior Command="{Binding SelectedPinChangedCommand}"/>
+                        <bindings:InfoWindowClickedToCommandBehavior Command="{Binding InfoWindowClickedCommand}"/>
+                    </clusteredMap:ClusteredMap.Behaviors>
+                </clusteredMap:ClusteredMap>
+            </StackLayout>
 
-            <clusteredMap:ClusteredMap IsShowingUser="True">
-                <clusteredMap:ClusteredMap.Behaviors>
-                    <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
-                    <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
-                    <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}" />
-                    <bindings:PinClickedToCommandBehavior Command="{Binding PinClickedCommand}"/>
-                    <bindings:SelectedPinChangedToCommandBehavior Command="{Binding SelectedPinChangedCommand}"/>
-                    <bindings:InfoWindowClickedToCommandBehavior Command="{Binding InfoWindowClickedCommand}"/>
-                </clusteredMap:ClusteredMap.Behaviors>
-            </clusteredMap:ClusteredMap>
-        </StackLayout>
+            <Frame Grid.Row="2" BackgroundColor="White"  CornerRadius="40" HorizontalOptions="End" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" VerticalOptions="End" IsVisible="{Binding IsViewButton}">
+                <ImageButton Source="ic_location"  Command="{Binding GeoLocCommand}" BackgroundColor="Transparent" VerticalOptions="Fill" HorizontalOptions="Fill"/>
+            </Frame>
+
+            <StackLayout Grid.Row="3" IsVisible="{Binding IsViewPin}" HeightRequest="170">
+                <Label  Text="{Binding Pin.Label}" Margin="20,10,10,10" FontAttributes="Bold" FontSize="Medium" />
+                <StackLayout Orientation="Horizontal" Margin="20,0,10,0" HeightRequest="20">
+                    <Label  Text="{Binding Pin.Position.Latitude}" FontSize="Medium" />
+                    <Label  Text=", " FontSize="Medium" />
+                    <Label  Text="{Binding Pin.Position.Longitude}" FontSize="Medium" />
+                </StackLayout>
+                <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="10,5,10,0" Color="Gray"/>
+                <Editor Text="{Binding Pin.Address}" Margin="20,0,10,10" IsReadOnly="True" FontSize="Medium" BackgroundColor="Transparent" HeightRequest="200" PlaceholderColor="Transparent" IsSpellCheckEnabled="False"/>
+            </StackLayout>
+        </Grid>
 
     </ContentPage.Content>
 </ContentPage>

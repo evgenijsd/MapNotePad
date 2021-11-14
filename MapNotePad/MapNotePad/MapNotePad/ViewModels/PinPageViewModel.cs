@@ -3,9 +3,9 @@ using System.ComponentModel;
 
 namespace MapNotePad.ViewModels
 {
-    public class PinViewModel : BaseContentPage
+    public class PinPageViewModel : BaseContentPage
     {
-        public PinViewModel(INavigationService navigationService) : base(navigationService)
+        public PinPageViewModel(INavigationService navigationService) : base(navigationService)
         {
         }
 

@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace MapNotePad.ViewModels
 {
-    public class LogInViewModel : BaseContentPage, IInitialize
+    public class LogInViewModel : BaseContentPage, IInitialize, INavigationAware
     {
 
         private IPageDialogService _dialogs { get; }
@@ -44,7 +44,20 @@ namespace MapNotePad.ViewModels
         private ICommand _GoogleMainCommand;
         public ICommand GoogleMainCommand => _GoogleMainCommand ??= SingleExecutionCommand.FromFunc(OnGoogleMainCommandAsync);
         #endregion
+
         #region -- InterfaceName implementation --
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+            if (parameters.ContainsKey("User"))
+            {
+                var user = parameters.GetValue<Users>("User");
+                Email = user.Email;
+            }
+        }
         #endregion
         #region -- Overrides --
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
@@ -91,8 +104,6 @@ namespace MapNotePad.ViewModels
         {
             await _navigationService.NavigateAsync("/StartPage");
         }
-
-
         #endregion
     }
 }
