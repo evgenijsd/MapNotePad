@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Xamarin.Forms;
-using Xamarin.Forms.GoogleMaps;
-using Xamarin.Forms.Xaml;
+﻿using Xamarin.Forms.Xaml;
 
 namespace MapNotePad.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : ContentPage
+    public partial class MainPage
     {
         public MainPage()
         {
             InitializeComponent();
         }
-
     }
 }

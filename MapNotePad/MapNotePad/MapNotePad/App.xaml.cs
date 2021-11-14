@@ -1,13 +1,12 @@
-﻿using MapNotePad.Controls;
+﻿using MapNotePad.Services;
+using MapNotePad.Services.Interface;
 using MapNotePad.Services.Repository;
 using MapNotePad.ViewModels;
 using MapNotePad.Views;
 using Prism;
 using Prism.Ioc;
 using Prism.Unity;
-using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace MapNotePad
 {
@@ -25,16 +24,23 @@ namespace MapNotePad
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());
+            containerRegistry.RegisterInstance<IAuthentication>(Container.Resolve<Authentication>());
+            containerRegistry.RegisterInstance<IRegistration>(Container.Resolve<Registration>());
+            containerRegistry.RegisterInstance<IMapService>(Container.Resolve<MapService>());
 
 
-            containerRegistry.RegisterForNavigation<NavigationPage>(); 
+            containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<StartPage, StartPageViewModel>();
             containerRegistry.RegisterForNavigation<AddPins, AddPinsViewModel>();
             containerRegistry.RegisterForNavigation<LogIn, LogInViewModel>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
-            containerRegistry.RegisterForNavigation<Pins, PinsViewModel>();
+            containerRegistry.RegisterForNavigation<MapPage, MapPageViewModel>();
+            containerRegistry.RegisterForNavigation<MainTabPage, MainTabPageViewModel>();
+            containerRegistry.RegisterForNavigation<PinPage, PinPageViewModel>();
+            containerRegistry.RegisterForNavigation<PinsPage, PinsPageViewModel>();
             containerRegistry.RegisterForNavigation<Settings, SettingsViewModel>();
             containerRegistry.RegisterForNavigation<Register, RegisterViewModel>();
+            containerRegistry.RegisterForNavigation<Password, PasswordViewModel>();
         }
 
         protected override void OnStart()

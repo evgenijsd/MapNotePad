@@ -1,19 +1,14 @@
-﻿using MapNotePad.Helpers;
-using Prism.Mvvm;
-using Prism.Navigation;
-using System;
-using System.Collections.ObjectModel;
+﻿using Prism.Navigation;
 using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Xamarin.Essentials;
-using Xamarin.Forms.GoogleMaps;
-using Xamarin.Forms.GoogleMaps.Bindings;
 
 namespace MapNotePad.ViewModels
 {
-    public class PinsViewModel : BindableBase, IInitialize
+    public class PinPageViewModel : BaseContentPage
     {
+        public PinPageViewModel(INavigationService navigationService) : base(navigationService)
+        {
+        }
+
         public void Initialize(INavigationParameters parameters)
         {
 

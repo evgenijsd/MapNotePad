@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Forms.GoogleMaps;
 
 namespace MapNotePad.Services.Repository
 {
@@ -22,7 +20,7 @@ namespace MapNotePad.Services.Repository
                 SQLiteAsyncConnection database = new SQLiteAsyncConnection(path);
 
                 database.CreateTableAsync<Users>().Wait();
-                database.CreateTableAsync<CustomPin>().Wait();
+                database.CreateTableAsync<PinModel>().Wait();
 
                 return database;
             });

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MapNotePad.ViewModels
+﻿namespace MapNotePad.ViewModels
 {
     public class SettingsViewModel
     {

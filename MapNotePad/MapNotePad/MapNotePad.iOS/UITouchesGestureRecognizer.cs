@@ -1,10 +1,7 @@
 ﻿using CoreGraphics;
-using Foundation;
 using MapNotePad.Controls;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UIKit;
 
 namespace MapNotePad.iOS
