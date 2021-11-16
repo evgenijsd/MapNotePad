@@ -96,29 +96,11 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _region, value);
         }
 
-        private string _day;
-        public string Day
+        private ObservableCollection<ForecastView> _forecastViews = new();
+        public ObservableCollection<ForecastView> ForecastViews
         {
-            get => _day;
-            set => SetProperty(ref _day, value);
-        }
-        private string _cloud;
-        public string Cloud
-        {
-            get => _cloud;
-            set => SetProperty(ref _cloud, value);
-        }
-        private string _maxTemp;
-        public string MaxTemp
-        {
-            get => _maxTemp;
-            set => SetProperty(ref _maxTemp, value);
-        }
-        private string _minTemp;
-        public string MinTemp
-        {
-            get => _minTemp;
-            set => SetProperty(ref _minTemp, value);
+            get => _forecastViews;
+            set => SetProperty(ref _forecastViews, value);
         }
 
         private ICommand _GeoLocCommand;
@@ -186,14 +168,22 @@ namespace MapNotePad.ViewModels
             Pin = args.Pin;
             IsViewPin = true;
             IsViewSearch = false;
+            if (ForecastViews != null) ForecastViews.Clear();
             //_dialogs.DisplayAlertAsync("Alert", $"{args.Pin.Position.Latitude}", "Ok");
             //return await _navigationService.NavigateAsync($"{nameof(Register)}");
-            var weatherData = await _mapService.GetWeather(Pin.Position.Latitude, Pin.Position.Longitude);
-            MinTemp = weatherData.Main.TempMin.ToString();
-            MaxTemp = weatherData.Main.TempMax.ToString();
-            Cloud = $"http://openweathermap.org/img/w/{weatherData.Weather[0].Icon}.png";
-            Day = $"{weatherData.Weather[0].Icon} {DateTime.Now.ToString("ddd")}";
-
+            var forecastData = await _mapService.GetForecast(Pin.Position.Latitude, Pin.Position.Longitude);
+            DateTime data = DateTime.Now;
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            for (int i = 0; i <= 3; i++)
+            {
+                ForecastViews.Add(new ForecastView
+                {
+                    Day = data.AddDays(i).ToString("ddd"),
+                    Image = $"ic_{forecastData.Daily[i].Weather[0].Icon}.png",
+                    TempMin = forecastData.Daily[i].Temperature.Min.ToString(),
+                    TempMax = forecastData.Daily[i].Temperature.Max.ToString()
+                });
+            }
         }
         private Task OnMapClickedCommandAsync(MapClickedEventArgs args)
         {

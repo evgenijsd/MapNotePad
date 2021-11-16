@@ -35,5 +35,25 @@ namespace MapNotePad.Helpers
 
             return weatherData;
         }
+
+        public async Task<ForecastData> GetForecastData(string query)
+        {
+            ForecastData forecastData = null;
+            try
+            {
+                var response = await _client.GetAsync(query);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    forecastData = JsonConvert.DeserializeObject<ForecastData>(content);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\t\tERROR {0}", ex.Message);
+            }
+
+            return forecastData;
+        }
     }
 }

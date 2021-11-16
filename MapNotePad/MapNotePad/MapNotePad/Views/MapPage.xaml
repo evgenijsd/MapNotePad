@@ -82,11 +82,11 @@
                 </StackLayout>
                 <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="10,5,10,0" Color="Gray"/>
                 <StackLayout Orientation="Horizontal">
-                    <Label  Text="{Binding Day}" Margin="20,0,0,0" FontSize="Medium" />
-                    <Label  Text="{Binding MaxTemp}" Margin="20,0,0,0" FontSize="Medium" />
-                    <Label  Text="{Binding MinTemp}" Margin="20,0,0,0" FontSize="Medium" />
+                    <Label  Text="{Binding ForecastViews[0].Day}" Margin="20,0,0,0" FontSize="Medium" />
+                    <Label  Text="{Binding ForecastViews[0].TempMax}" Margin="20,0,0,0" FontSize="Medium" />
+                    <Label  Text="{Binding ForecastViews[0].TempMin}" Margin="20,0,0,0" FontSize="Medium" />
                 </StackLayout>
-                <Image Source="{Binding Cloud}" Aspect="AspectFit" Margin="20,0,0,0"/>
+                <Image Source="{Binding ForecastViews[0].Image}" Aspect="AspectFit"  Margin="20,0,0,0"/>
             </StackLayout>
         </Grid>
 
