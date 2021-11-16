@@ -96,6 +96,31 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _region, value);
         }
 
+        private string _day;
+        public string Day
+        {
+            get => _day;
+            set => SetProperty(ref _day, value);
+        }
+        private string _cloud;
+        public string Cloud
+        {
+            get => _cloud;
+            set => SetProperty(ref _cloud, value);
+        }
+        private string _maxTemp;
+        public string MaxTemp
+        {
+            get => _maxTemp;
+            set => SetProperty(ref _maxTemp, value);
+        }
+        private string _minTemp;
+        public string MinTemp
+        {
+            get => _minTemp;
+            set => SetProperty(ref _minTemp, value);
+        }
+
         private ICommand _GeoLocCommand;
         public ICommand GeoLocCommand => _GeoLocCommand ??= SingleExecutionCommand.FromFunc(OnGeoLocCommandAsync);
         private ICommand _PinClickedCommand;
@@ -155,14 +180,20 @@ namespace MapNotePad.ViewModels
         #region -- Public helpers --
         #endregion
         #region -- Private helpers --
-        private Task OnPinClickedCommandAsync(PinClickedEventArgs args)
+        // день недели, дождь/ясно, температура днем ночью
+        private async Task OnPinClickedCommandAsync(PinClickedEventArgs args)
         {
             Pin = args.Pin;
             IsViewPin = true;
             IsViewSearch = false;
             //_dialogs.DisplayAlertAsync("Alert", $"{args.Pin.Position.Latitude}", "Ok");
             //return await _navigationService.NavigateAsync($"{nameof(Register)}");
-            return Task.CompletedTask;
+            var weatherData = await _mapService.GetWeather(Pin.Position.Latitude, Pin.Position.Longitude);
+            MinTemp = weatherData.Main.TempMin.ToString();
+            MaxTemp = weatherData.Main.TempMax.ToString();
+            Cloud = $"http://openweathermap.org/img/w/{weatherData.Weather[0].Icon}.png";
+            Day = $"{weatherData.Weather[0].Icon} {DateTime.Now.ToString("ddd")}";
+
         }
         private Task OnMapClickedCommandAsync(MapClickedEventArgs args)
         {
@@ -172,27 +203,22 @@ namespace MapNotePad.ViewModels
             //return await _navigationService.NavigateAsync($"{nameof(Register)}");
             return Task.CompletedTask;
         }
-        private Task OnGeoLocCommandAsync()
+        private async Task OnGeoLocCommandAsync()
         {
-            Task.Run(async () =>
+            PinClicked = new GridLength(0);
+            try
             {
-                PinClicked = new GridLength(0);
-                IsViewPin = true;
-                try
-                {
-                    var locator = CrossGeolocator.Current;
-                    locator.DesiredAccuracy = 10000;
-                    var position = await locator.GetPositionAsync(new TimeSpan(0, 0, 5));
-                    Region = MapSpan.FromCenterAndRadius(
-                                 new Position(position.Latitude, position.Longitude),
-                                 Distance.FromKilometers(500));
-                }
-                catch (Exception ex)
-                {
-                    await _dialogs.DisplayAlertAsync("Alert", $"{ex}", "Ok");
-                }
-            });
-            return Task.CompletedTask;
+                var locator = CrossGeolocator.Current;
+                locator.DesiredAccuracy = 10000;
+                var position = await locator.GetPositionAsync(new TimeSpan(0, 0, 5));
+                Region = MapSpan.FromCenterAndRadius(
+                             new Position(position.Latitude, position.Longitude),
+                             Distance.FromKilometers(100));
+            }
+            catch (Exception ex)
+            {
+                await _dialogs.DisplayAlertAsync("Alert", $"{ex}", "Ok");
+            }
         }
 
         private Task OnSearchTextCommandAsync()

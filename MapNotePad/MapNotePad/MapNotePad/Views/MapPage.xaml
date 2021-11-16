@@ -73,7 +73,7 @@
                 <ImageButton Source="ic_location"  Command="{Binding GeoLocCommand}" BackgroundColor="Transparent" VerticalOptions="Fill" HorizontalOptions="Fill"/>
             </Frame>
 
-            <StackLayout Grid.Row="3" IsVisible="{Binding IsViewPin}" HeightRequest="170">
+            <StackLayout Grid.Row="3" IsVisible="{Binding IsViewPin}" HeightRequest="200">
                 <Label  Text="{Binding Pin.Label}" Margin="20,10,10,10" FontAttributes="Bold" FontSize="Medium" />
                 <StackLayout Orientation="Horizontal" Margin="20,0,10,0" HeightRequest="20">
                     <Label  Text="{Binding Pin.Position.Latitude}" FontSize="Medium" />
@@ -81,7 +81,12 @@
                     <Label  Text="{Binding Pin.Position.Longitude}" FontSize="Medium" />
                 </StackLayout>
                 <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="10,5,10,0" Color="Gray"/>
-                <Editor Text="{Binding Pin.Address}" Margin="20,0,10,10" IsReadOnly="True" FontSize="Medium" BackgroundColor="Transparent" HeightRequest="200" PlaceholderColor="Transparent" IsSpellCheckEnabled="False"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label  Text="{Binding Day}" Margin="20,0,0,0" FontSize="Medium" />
+                    <Label  Text="{Binding MaxTemp}" Margin="20,0,0,0" FontSize="Medium" />
+                    <Label  Text="{Binding MinTemp}" Margin="20,0,0,0" FontSize="Medium" />
+                </StackLayout>
+                <Image Source="{Binding Cloud}" Aspect="AspectFit" Margin="20,0,0,0"/>
             </StackLayout>
         </Grid>
 
