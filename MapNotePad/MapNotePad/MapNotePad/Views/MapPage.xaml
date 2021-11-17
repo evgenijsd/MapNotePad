@@ -81,17 +81,38 @@
                     <Label  Text="{Binding Pin.Position.Longitude}" FontSize="Medium" />
                 </StackLayout>
                 <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="10,5,10,0" Color="Gray"/>
-                <CarouselView ItemsSource="{Binding ForecastViews}">
+                <CarouselView ItemsSource="{Binding ForecastViews}" PeekAreaInsets="4">
+
                     <CarouselView.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout>
+                            <StackLayout WidthRequest="100">
                             <Label Text="{Binding Day}" FontSize="Medium" Margin="20,0,0,0" />
-                            <Image Source="{Binding Image}" Aspect="AspectFit"  Margin="20,0,0,0"/>
+
+                                <StackLayout WidthRequest="100">
+                            <Image Source="{Binding Image}"  Margin="20,0,0,0" />
+                                    </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding TempMax}" FontSize="Medium" Margin="10,0,0,0"/>
+                                    <Label Text="{Binding TempMin}" FontSize="Medium" />
+                                </StackLayout>
                             </StackLayout>
                         </DataTemplate>
                     </CarouselView.ItemTemplate>
                 </CarouselView>
-                
+                <ListView x:Name="MessagesListView" Rotation="270" ItemsSource="{Binding ForecastViews}" RowHeight="40">
+  <ListView.ItemTemplate>
+    <DataTemplate>
+      <ViewCell>
+        <ViewCell.View>
+          <StackLayout>
+            <Label Text="{Binding Day}" FontSize="Medium" Margin="20,0,0,0" />
+                            <Image Source="{Binding Image}" Aspect="AspectFit"  Margin="20,0,0,0"/>
+          </StackLayout>
+        </ViewCell.View>
+      </ViewCell>
+    </DataTemplate>
+  </ListView.ItemTemplate>
+</ListView>
             </StackLayout>
         </Grid>
 
