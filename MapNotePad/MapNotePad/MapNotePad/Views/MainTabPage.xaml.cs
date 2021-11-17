@@ -1,4 +1,5 @@
 ﻿
+using MapNotePad.Controls;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

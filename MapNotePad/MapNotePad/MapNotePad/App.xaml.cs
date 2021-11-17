@@ -30,12 +30,12 @@ namespace MapNotePad
 
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<MainTabPage>();
             containerRegistry.RegisterForNavigation<StartPage, StartPageViewModel>();
             containerRegistry.RegisterForNavigation<AddPins, AddPinsViewModel>();
             containerRegistry.RegisterForNavigation<LogIn, LogInViewModel>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
             containerRegistry.RegisterForNavigation<MapPage, MapPageViewModel>();
-            containerRegistry.RegisterForNavigation<MainTabPage, MainTabPageViewModel>();
             containerRegistry.RegisterForNavigation<PinPage, PinPageViewModel>();
             containerRegistry.RegisterForNavigation<PinsPage, PinsPageViewModel>();
             containerRegistry.RegisterForNavigation<Settings, SettingsViewModel>();

@@ -87,7 +87,7 @@ namespace MapNotePad.ViewModels
                     if (id != 0)
                     {
                         var p = new NavigationParameters { { "UserId", id } };
-                        await _navigationService.NavigateAsync("/MainTabPage", p);
+                        await _navigationService.NavigateAsync("/NavigationPage/MainTabPage", p);
                     }
                     else
                     {
