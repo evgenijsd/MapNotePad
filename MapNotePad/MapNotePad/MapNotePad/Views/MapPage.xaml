@@ -81,12 +81,17 @@
                     <Label  Text="{Binding Pin.Position.Longitude}" FontSize="Medium" />
                 </StackLayout>
                 <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="10,5,10,0" Color="Gray"/>
-                <StackLayout Orientation="Horizontal">
-                    <Label  Text="{Binding ForecastViews[0].Day}" Margin="20,0,0,0" FontSize="Medium" />
-                    <Label  Text="{Binding ForecastViews[0].TempMax}" Margin="20,0,0,0" FontSize="Medium" />
-                    <Label  Text="{Binding ForecastViews[0].TempMin}" Margin="20,0,0,0" FontSize="Medium" />
-                </StackLayout>
-                <Image Source="{Binding ForecastViews[0].Image}" Aspect="AspectFit"  Margin="20,0,0,0"/>
+                <CarouselView ItemsSource="{Binding ForecastViews}">
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                            <Label Text="{Binding Day}" FontSize="Medium" Margin="20,0,0,0" />
+                            <Image Source="{Binding Image}" Aspect="AspectFit"  Margin="20,0,0,0"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
+                
             </StackLayout>
         </Grid>
 

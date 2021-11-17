@@ -174,7 +174,7 @@ namespace MapNotePad.ViewModels
             var forecastData = await _mapService.GetForecast(Pin.Position.Latitude, Pin.Position.Longitude);
             DateTime data = DateTime.Now;
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-            for (int i = 0; i <= 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 ForecastViews.Add(new ForecastView
                 {
