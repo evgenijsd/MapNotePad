@@ -4,6 +4,14 @@
              xmlns:controls="clr-namespace:MapNotePad.Controls"
              x:Class="MapNotePad.Views.LogIn"
              Title="Log In">
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal" VerticalOptions="Center" Margin="0,0,0,0" Spacing="0">
+            <ImageButton Source="ic_left_blue.png"
+                         HorizontalOptions="Start"
+                         HeightRequest="50"
+                         WidthRequest="50"/>
+        </StackLayout>
+    </NavigationPage.TitleView>
     <ContentPage.Content>
     <Grid>
         <Grid.RowDefinitions>

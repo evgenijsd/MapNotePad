@@ -180,8 +180,8 @@ namespace MapNotePad.ViewModels
                 {
                     Day = data.AddDays(i).ToString("ddd"),
                     Image = $"ic_{forecastData.Daily[i].Weather[0].Icon}.png",
-                    TempMin = forecastData.Daily[i].Temperature.Min.ToString(),
-                    TempMax = forecastData.Daily[i].Temperature.Max.ToString()
+                    TempMin = $"{(int)forecastData.Daily[i].Temperature.Min}°",
+                    TempMax = $"{(int)forecastData.Daily[i].Temperature.Max}°"
                 });
             }
         }
