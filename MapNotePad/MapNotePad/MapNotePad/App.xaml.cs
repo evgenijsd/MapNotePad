@@ -18,7 +18,7 @@ namespace MapNotePad
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/StartPage");
+            await NavigationService.NavigateAsync(nameof(StartPage));
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

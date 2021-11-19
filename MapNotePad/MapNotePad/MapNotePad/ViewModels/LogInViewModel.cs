@@ -38,7 +38,8 @@ namespace MapNotePad.ViewModels
         }
 
 
-
+        private ICommand _goBackCommand;
+        public ICommand GoBackCommand => _goBackCommand ??= SingleExecutionCommand.FromFunc(OnGoBackCommandAsync);
         private ICommand _MainTabPageCommand;
         public ICommand MainTabPageCommand => _MainTabPageCommand ??= SingleExecutionCommand.FromFunc(OnMainTabPageCommandAsync);
         private ICommand _GoogleMainCommand;
@@ -79,6 +80,10 @@ namespace MapNotePad.ViewModels
         }
         #endregion
         #region -- Private helpers --
+        private async Task OnGoBackCommandAsync()
+        {
+           await  _navigationService.GoBackAsync();
+        }
         private async Task OnMainTabPageCommandAsync()
         {
                 try
@@ -87,7 +92,7 @@ namespace MapNotePad.ViewModels
                     if (id != 0)
                     {
                         var p = new NavigationParameters { { "UserId", id } };
-                        await _navigationService.NavigateAsync("/NavigationPage/MainTabPage", p);
+                        await _navigationService.NavigateAsync("/MainTabPage", p);
                     }
                     else
                     {

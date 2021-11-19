@@ -4,16 +4,27 @@
              xmlns:clusteredMap="clr-namespace:Xamarin.Forms.GoogleMaps.Clustering;assembly=Xamarin.Forms.GoogleMaps.Clustering" 
              xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-             xmlns:prism="http://prismlibrary.com"
+             xmlns:prism="http://prismlibrary.com" 
+             xmlns:controls="clr-namespace:MapNotePad.Controls"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MapNotePad.Views.MapPage"
              Title="Map" IconImageSource="ic_map.png">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Icon="ic_exid.png" Command="{prism:NavigateTo '/NavigationPage/StartPage'}" />
-    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <controls:CustomSearchBar Grid.Row="0"
+                                          Text="{Binding Text}"
+                                          Placeholder="Search"
+                                          IsShowList="{Binding IsShowList}"
+                                          LeftButtonCommand="{Binding GoSettingsButtonCommand}"
+                                          RightButtonCommand="{Binding ExitButtonCommand}"/>
+
+            <Grid Grid.Row="1" RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
                 <RowDefinition Height="auto" />
@@ -106,6 +117,6 @@
                 </CarouselView>
             </StackLayout>
         </Grid>
-
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -2,6 +2,7 @@
 <prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
+             xmlns:controls="clr-namespace:MapNotePad.Controls"
              x:Class="MapNotePad.App">
     <prism:PrismApplication.Resources>
 
@@ -83,6 +84,130 @@
             <Setter Property="BorderWidth" Value="2"/>
             <Setter Property="BorderColor" Value="{StaticResource PrimaryColor}"/>
             <Setter Property="FontSize" Value="Medium"/>
+        </Style>
+
+        <!--System-->
+        <Color x:Key="White">#FEFEFD</Color>
+        <Color x:Key="LightGray">#D7DDE8</Color>
+        <Color x:Key="Gray">#858E9E</Color>
+        <Color x:Key="DarkGray">#3D4E61</Color>
+        <Color x:Key="Black">#1E242B</Color>
+
+        <!--Indications-->
+        <Color x:Key="Error">#F24545</Color>
+        <Color x:Key="Confirm">#F6EA62</Color>
+        <Color x:Key="Success">#32D27F</Color>
+
+        <!--Light-->
+        <Color x:Key="Primary">#596EFB</Color>
+        <Color x:Key="Disabled">#C7CDF5</Color>
+        <Color x:Key="HoveredFocused">#273BC6</Color>
+        <Color x:Key="Pressed">#192680</Color>
+        <Color x:Key="Variant">#F1F3FD</Color>
+        
+
+        <!-- Base Style-->
+    <Style x:Key="BaseButton" 
+           TargetType="Button">
+        <Setter Property="FontSize" Value="18" />
+        <!--Setter Property="FontFamily" Value="Montserrat-Medium" /-->
+        <Setter Property="TextTransform" Value="None" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="BorderWidth" Value="1" />
+    </Style>
+        <Style x:Key="GoogleButton" TargetType="ImageButton">
+            <Setter Property="Source" Value="ic_google.png" />
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="BorderColor" Value="{DynamicResource LightGray}" />
+            <Setter Property="BorderWidth" Value="1" />
+        </Style>
+        <Style x:Key="BlueButton" 
+           TargetType="Button"
+           BasedOn="{StaticResource Key=BaseButton}">
+            <Setter Property="BorderColor" Value="{DynamicResource Primary}" />
+            <Setter Property="BackgroundColor" Value="{DynamicResource Primary}" />
+            <Setter Property="TextColor" Value="{DynamicResource White}" />
+        </Style>
+        <Style x:Key="WhiteButton" 
+           TargetType="Button"
+           BasedOn="{StaticResource Key=BaseButton}">
+            <Setter Property="BorderColor" Value="{DynamicResource Primary}" />
+            <Setter Property="BackgroundColor" Value="{DynamicResource White}" />
+            <Setter Property="TextColor" Value="{DynamicResource Primary}" />
+        </Style>
+        <Style TargetType="controls:CustomToolBar">
+            <!--Setter Property="FontFamily" Value="Montserrat-Medium" /-->
+            <Setter Property="LeftImageSource" Value="ic_left_blue.png" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="{DynamicResource DarkGray}" />
+            <!--Setter Property="FontFamily" Value="Montserrat-Medium" /-->
+        </Style>
+        <Style TargetType="controls:CustomSeparator">
+            <Setter Property="Text" Value="Or" />
+            <Setter Property="TextColor" Value="{DynamicResource LightGray}" />
+            <Setter Property="LineColor" Value="{DynamicResource LightGray}" />
+            <Setter Property="Margin" Value="0, 16, 0, 10" />
+        </Style>
+        <Style x:Key="Logo" 
+           TargetType="Image">
+            <Setter Property="Source" Value="pic_enter_page.png" />
+            <Setter Property="HeightRequest" Value="185" />
+            <Setter Property="WidthRequest" Value="190" />
+        </Style>
+        <Style x:Key="TextBrend" 
+           TargetType="Label">
+            <Setter Property="Text" Value="MapNotepad" />
+            <!--Setter Property="FontFamily" Value="Montserrat-Bold" /-->
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="TextColor" Value="{DynamicResource Primary}" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+        </Style>
+        <!--Style TargetType="controls:CustomEntry">
+            <Setter Property="ClearImageSource" Value="ic_clear.png" />
+            <Setter Property="EyeOnImageSource" Value="ic_eye.png" />
+            <Setter Property="EyeOffImageSource" Value="ic_eye_off.png" />
+            <Setter Property="HasShadow" Value="False" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="FontFamily" Value="Montserrat-Light" />
+            <Setter Property="TextColor" Value="{DynamicResource Black}" />
+            <Setter Property="PlaceholderColor" Value="{DynamicResource Gray}" />
+            <Setter Property="BorderColor" Value="{DynamicResource LightGray}" />
+            <Setter Property="BackgroundColor" Value="{DynamicResource White}" />
+        </Style-->
+        <Style TargetType="controls:CustomSearchBar">
+            <Setter Property="LeftImageSource" Value="ic_settings.png" />
+            <Setter Property="RightImageSource" Value="ic_exid.png" />
+            <Setter Property="GoBackImageSource" Value="ic_left_blue.png" />
+            <Setter Property="ClearImageSource" Value="ic_clear.png" />
+            <!--" Setter Property="FontFamily" Value="Montserrat-Light" /-->
+            <Setter Property="TextColor" Value="{DynamicResource Black}" />
+            <Setter Property="PlaceholderColor" Value="{DynamicResource Gray}" />
+            <Setter Property="EntryBackgroundColor" Value="{DynamicResource Variant}" />
+            <Setter Property="BackgroundColor" Value="{DynamicResource White}" />
+        </Style>
+        <Style x:Key="floatingButton" 
+           TargetType="ImageButton">
+            <Setter Property="BorderWidth" Value="8" />
+            <Setter Property="Source" Value="ic_plus.png" />
+            <Setter Property="BackgroundColor" Value="{DynamicResource Primary}" />
+            <Setter Property="CornerRadius" Value="35" />
+            <Setter Property="WidthRequest" Value="55" />
+            <Setter Property="HeightRequest" Value="55" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="Margin" Value="0, 0, 17, 17" />
+            <Setter Property="VerticalOptions" Value="End" />
+            <Setter Property="HorizontalOptions" Value="End" />
+        </Style>
+        <Style x:Key="imageFrame" 
+           TargetType="Frame">
+            <Setter Property="HeightRequest" Value="30" />
+            <Setter Property="WidthRequest" Value="30" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="HasShadow" Value="False" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="BackgroundColor" Value="{DynamicResource Variant}" />
         </Style>
     </prism:PrismApplication.Resources>
 </prism:PrismApplication>
