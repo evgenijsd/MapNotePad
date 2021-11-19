@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<view:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:clusteredMap="clr-namespace:Xamarin.Forms.GoogleMaps.Clustering;assembly=Xamarin.Forms.GoogleMaps.Clustering" 
              xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-             xmlns:prism="http://prismlibrary.com" 
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:view="clr-namespace:MapNotePad.Views"
              xmlns:controls="clr-namespace:MapNotePad.Controls"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MapNotePad.Views.MapPage"
              Title="Map" IconImageSource="ic_map.png">
 
-    <ContentPage.Content>
+    <view:BaseContentPage.Content>
         <Grid RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -118,5 +119,5 @@
             </StackLayout>
         </Grid>
         </Grid>
-    </ContentPage.Content>
-</ContentPage>
+    </view:BaseContentPage.Content>
+</view:BaseContentPage>
