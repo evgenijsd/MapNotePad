@@ -21,9 +21,17 @@ namespace MapNotePad.ViewModels
         {
             _dialogs = dialogs;
             _authentication = authentication;
+            UserId = _authentication.UserId;
         }
 
         #region -- Public properties --
+        private int _userId;
+        public int UserId
+        {
+            get => _userId;
+            set => SetProperty(ref _userId, value);
+        }
+
         private string _email = string.Empty;
         public string Email
         {
@@ -77,6 +85,11 @@ namespace MapNotePad.ViewModels
         public async void Initialize(INavigationParameters parameters)
         {
             await Task.Delay(TimeSpan.FromSeconds(0.1));
+            if (UserId > 0)
+            {
+                var p = new NavigationParameters { { "UserId", UserId } };
+                await _navigationService.NavigateAsync("/MainTabPage", p);
+            }
         }
         #endregion
         #region -- Private helpers --
@@ -91,6 +104,8 @@ namespace MapNotePad.ViewModels
                     int id = await _authentication.CheckAsync(Email, Password);
                     if (id != 0)
                     {
+                        UserId = id;
+                        _authentication.UserId = id;
                         var p = new NavigationParameters { { "UserId", id } };
                         await _navigationService.NavigateAsync("/MainTabPage", p);
                     }
