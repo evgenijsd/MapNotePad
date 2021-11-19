@@ -65,7 +65,7 @@
                                                TextColor="{Binding TextColor, Source={x:Reference customSearchBar}}"
                                                Placeholder="{Binding Placeholder, Source={x:Reference customSearchBar}}" 
                                                PlaceholderColor="{Binding PlaceholderColor, Source={x:Reference customSearchBar}}" 
-                                               BackgroundColor="Transparent"
+                                               BackgroundColor="{Binding EntryBackgroundColor, Source={x:Reference customSearchBar}}"
                                                HorizontalOptions="FillAndExpand">
                         <local:CustomNoBorderEntry.Behaviors>
                             <Behaviors:EventToCommandBehavior Command="{Binding FocusedCommand, Source={x:Reference customSearchBar}}" 

@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<view:BaseContentPage  xmlns:view="clr-namespace:MapNotePad.Views" 
+                       xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MapNotePad.Views.PinsPage"
              Title="Pins" IconImageSource="ic_pin.png">
-    <ContentPage.ToolbarItems>
+    <view:BaseContentPage.ToolbarItems>
         <ToolbarItem Icon="ic_exid.png" Command="{prism:NavigateTo '/NavigationPage/StartPage'}" />
-    </ContentPage.ToolbarItems>
-    <ContentPage.Content>
+    </view:BaseContentPage.ToolbarItems>
+    <view:BaseContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
@@ -68,5 +69,5 @@
                 <ImageButton Source="ic_plus"  Command="{Binding AddPinCommand}" BackgroundColor="Transparent" VerticalOptions="Fill" HorizontalOptions="Fill"/>
             </Frame>
         </Grid>
-    </ContentPage.Content>
-</ContentPage>
+    </view:BaseContentPage.Content>
+</view:BaseContentPage>
