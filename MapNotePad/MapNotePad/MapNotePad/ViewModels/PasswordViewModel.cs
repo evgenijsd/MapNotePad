@@ -10,7 +10,7 @@ using static MapNotePad.Enum.CheckType;
 
 namespace MapNotePad.ViewModels
 {
-    public class PasswordViewModel : BaseContentPage, INavigationAware, IInitialize
+    public class PasswordViewModel : BaseViewModel
     {
         private IPageDialogService _dialogs { get; }
         private IRegistration _registration;
@@ -47,26 +47,18 @@ namespace MapNotePad.ViewModels
         public ICommand GoogleMainCommand => _GoogleMainCommand ??= SingleExecutionCommand.FromFunc(OnGoogleMainCommandAsync);
         #endregion
         #region -- InterfaceName implementation --
-        public void Initialize(INavigationParameters parameters)
-        {
-            
-        }
-
         #endregion
         #region -- Overrides --
-        #endregion
-        #region -- Public helpers --
-        public void OnNavigatedFrom(INavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.ContainsKey("User"))
             {
                 User = parameters.GetValue<Users>("User");
             }
         }
+        #endregion
+        #region -- Public helpers --
+
         #endregion
         #region -- Private helpers --
         private async Task OnLogInCommandAsync()

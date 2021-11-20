@@ -15,7 +15,7 @@ using System.Windows.Input;
 
 namespace MapNotePad.ViewModels
 {
-    public class PinsPageViewModel : BaseContentPage, INavigationAware, IInitialize
+    public class PinsPageViewModel : BaseViewModel
     {
         private IMapService _mapService { get; set; }
 
@@ -25,15 +25,6 @@ namespace MapNotePad.ViewModels
         {
             _dialogs = dialogs;
             _mapService = mapService;
-        }
-
-        public void Initialize(INavigationParameters parameters)
-        {
-            //await Task.Delay(TimeSpan.FromSeconds(0.1));
-            //await _dialogs.DisplayAlertAsync("Alert", $"{UserId}", "Ok");
-            
-            //var pins = await _mapService.GetPinsModelAsync();
-            //await _dialogs.DisplayAlertAsync("Alert", $"{pins.Count}", "Ok");
         }
 
         #region -- Public properties --
@@ -75,18 +66,20 @@ namespace MapNotePad.ViewModels
         public ICommand FavouriteCommand => _FavouriteCommand ??= SingleExecutionCommand.FromFunc<object>(OnFavouriteCommandAsync);
         #endregion
         #region -- InterfaceName implementation --
-        public void OnNavigatedFrom(INavigationParameters parameters)
+        #endregion
+        #region -- Overrides --
+        public override void OnNavigatedFrom(INavigationParameters parameters)
         {
             parameters.Add(nameof(this.UserId), this.UserId);
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.ContainsKey("UserId"))
             {
                 int id = parameters.GetValue<int>("UserId");
                 UserId = id;
-                PinViews = await _mapService.GetPinsViewAsync(UserId); 
+                PinViews = await _mapService.GetPinsViewAsync(UserId);
                 foreach (PinView pin in PinViews)
                 {
                     pin.EditCommand = EditCommand;
@@ -95,8 +88,6 @@ namespace MapNotePad.ViewModels
                 PinSearch = PinViews;
             }
         }
-        #endregion
-        #region -- Overrides --
         #endregion
         #region -- Public helpers --
         #endregion

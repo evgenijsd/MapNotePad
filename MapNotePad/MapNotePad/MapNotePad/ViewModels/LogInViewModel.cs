@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace MapNotePad.ViewModels
 {
-    public class LogInViewModel : BaseContentPage, IInitialize, INavigationAware
+    public class LogInViewModel : BaseViewModel
     {
 
         private IPageDialogService _dialogs { get; }
@@ -38,11 +38,23 @@ namespace MapNotePad.ViewModels
             get => _email;
             set => SetProperty(ref _email, value);
         }
+        private bool _isWrongEmail = false;
+        public bool IsWrongEmail
+        {
+            get => _isWrongEmail;
+            set => SetProperty(ref _isWrongEmail, value);
+        }
         private string _password = string.Empty;
         public string Password
         {
             get => _password;
             set => SetProperty(ref _password, value);
+        }
+        private bool _isIncorrectPassword = false;
+        public bool IsIncorrectPassword
+        {
+            get => _isIncorrectPassword;
+            set => SetProperty(ref _isIncorrectPassword, value);
         }
 
 
@@ -52,14 +64,15 @@ namespace MapNotePad.ViewModels
         public ICommand MainTabPageCommand => _MainTabPageCommand ??= SingleExecutionCommand.FromFunc(OnMainTabPageCommandAsync);
         private ICommand _GoogleMainCommand;
         public ICommand GoogleMainCommand => _GoogleMainCommand ??= SingleExecutionCommand.FromFunc(OnGoogleMainCommandAsync);
+        private ICommand _ErrorCommand;
+        public ICommand ErrorCommand => _ErrorCommand ??= SingleExecutionCommand.FromFunc(OnErrorCommandAsync);
         #endregion
 
         #region -- InterfaceName implementation --
-        public void OnNavigatedFrom(INavigationParameters parameters)
-        {
-        }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        #endregion
+        #region -- Overrides --
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.ContainsKey("User"))
             {
@@ -67,8 +80,6 @@ namespace MapNotePad.ViewModels
                 Email = user.Email;
             }
         }
-        #endregion
-        #region -- Overrides --
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
@@ -82,7 +93,7 @@ namespace MapNotePad.ViewModels
         }
         #endregion
         #region -- Public helpers --
-        public async void Initialize(INavigationParameters parameters)
+        public override async void Initialize(INavigationParameters parameters)
         {
             await Task.Delay(TimeSpan.FromSeconds(0.1));
             if (UserId > 0)
@@ -121,6 +132,11 @@ namespace MapNotePad.ViewModels
                 }
         }
         private async Task OnGoogleMainCommandAsync()
+        {
+            await _navigationService.NavigateAsync("/StartPage");
+        }
+
+        private async Task OnErrorCommandAsync()
         {
             await _navigationService.NavigateAsync("/StartPage");
         }

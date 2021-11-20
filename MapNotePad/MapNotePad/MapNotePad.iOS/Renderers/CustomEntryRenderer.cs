@@ -4,7 +4,7 @@ using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
-[assembly: ExportRenderer(typeof(CustomEntry), typeof(CustomEntryRenderer))]
+[assembly: ExportRenderer(typeof(CustomEntry1), typeof(CustomEntryRenderer))]
 namespace MapNotePad.iOS.Renderers
 {
     public class CustomEntryRenderer : EntryRenderer

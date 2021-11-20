@@ -27,6 +27,7 @@ namespace MapNotePad
             containerRegistry.RegisterInstance<IAuthentication>(Container.Resolve<Authentication>());
             containerRegistry.RegisterInstance<IRegistration>(Container.Resolve<Registration>());
             containerRegistry.RegisterInstance<IMapService>(Container.Resolve<MapService>());
+            containerRegistry.RegisterInstance<ISettings>(Container.Resolve<Settings>());
 
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
@@ -36,7 +37,7 @@ namespace MapNotePad
             containerRegistry.RegisterForNavigation<LogIn, LogInViewModel>();
             containerRegistry.RegisterForNavigation<MapPage, MapPageViewModel>();
             containerRegistry.RegisterForNavigation<PinsPage, PinsPageViewModel>();
-            containerRegistry.RegisterForNavigation<Settings, SettingsViewModel>();
+            containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
             containerRegistry.RegisterForNavigation<Register, RegisterViewModel>();
             containerRegistry.RegisterForNavigation<Password, PasswordViewModel>();
         }

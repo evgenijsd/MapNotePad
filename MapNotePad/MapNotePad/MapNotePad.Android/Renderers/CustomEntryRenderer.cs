@@ -8,7 +8,7 @@ using MapNotePad.Controls;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
-[assembly: ExportRenderer(typeof(CustomEntry), typeof(CustomEntryRenderer))]
+[assembly: ExportRenderer(typeof(CustomEntry1), typeof(CustomEntryRenderer))]
 namespace AgentLocator.Droid.Renderers
 {
     public class CustomEntryRenderer : EntryRenderer

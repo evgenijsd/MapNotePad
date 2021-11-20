@@ -2,9 +2,9 @@
 
 namespace MapNotePad.Controls
 {
-    public class CustomEntry : Entry
+    public class CustomEntry1 : Entry
     {
-        public CustomEntry()
+        public CustomEntry1()
         {
         }
     }

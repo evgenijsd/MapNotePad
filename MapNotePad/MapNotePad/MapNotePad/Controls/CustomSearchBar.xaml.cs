@@ -29,6 +29,19 @@ namespace MapNotePad.Controls
             get => (ICommand)GetValue(LeftButtonCommandProperty);
         }
 
+        public static readonly BindableProperty TextChangedCommandProperty = BindableProperty.Create(
+            propertyName: nameof(TextChangedCommand),
+            returnType: typeof(ICommand),
+            declaringType: typeof(CustomSearchBar),
+            defaultValue: null,
+            defaultBindingMode: BindingMode.TwoWay);
+
+        public ICommand TextChangedCommand
+        {
+            set => SetValue(TextChangedCommandProperty, value);
+            get => (ICommand)GetValue(TextChangedCommandProperty);
+        }
+
         public static readonly BindableProperty RightButtonCommandProperty = BindableProperty.Create(
             propertyName: nameof(RightButtonCommand),
             returnType: typeof(ICommand),
@@ -232,7 +245,6 @@ namespace MapNotePad.Controls
 
             return Task.CompletedTask;
         }
-
         #endregion
     }
 }

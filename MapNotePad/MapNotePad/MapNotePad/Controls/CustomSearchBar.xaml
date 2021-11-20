@@ -68,8 +68,8 @@
                                                BackgroundColor="{Binding EntryBackgroundColor, Source={x:Reference customSearchBar}}"
                                                HorizontalOptions="FillAndExpand">
                         <local:CustomNoBorderEntry.Behaviors>
-                            <Behaviors:EventToCommandBehavior Command="{Binding FocusedCommand, Source={x:Reference customSearchBar}}" 
-                                                              EventName="Focused"/>
+                            <Behaviors:EventToCommandBehavior Command="{Binding TextChangedCommand, Source={x:Reference customSearchBar}}" EventName="TextChanged"/>
+                            <Behaviors:EventToCommandBehavior Command="{Binding FocusedCommand, Source={x:Reference customSearchBar}}" EventName="Focused"/>
                         </local:CustomNoBorderEntry.Behaviors>
                     </local:CustomNoBorderEntry>
 

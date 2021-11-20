@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:prism="http://prismlibrary.com"
                        xmlns:controls="clr-namespace:MapNotePad.Controls"
+                       xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MapNotePad.Views.PinsPage"
              Title="Pins" IconImageSource="ic_pin.png">
@@ -15,13 +16,13 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-                                <controls:CustomSearchBar Grid.Row="0"
-                                          Text="{Binding Text}"
+            <controls:CustomSearchBar Grid.Row="0" LeftImageSource="ic_settings.png" RightImageSource="ic_exid.png"
+                                          Text="{Binding SearchText}"
                                           Placeholder="Search"
-                                                          LineColor="Gray"
-                                          IsShowList="{Binding IsShowList}"
-                                          LeftButtonCommand="{Binding GoSettingsButtonCommand}"
-                                          RightButtonCommand="{Binding ExitButtonCommand}"/>
+                                          LeftButtonCommand="{Binding SettingsCommand}"
+                                          RightButtonCommand="{Binding ExitCommand}"
+                                          LineColor="{StaticResource LineColor}"
+                                      TextChangedCommand="{Binding SearchTextCommand}"/>
         <Grid Grid.Row="1" RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
@@ -41,18 +42,22 @@
                     <ListView x:Name="pinList" 
                           HasUnevenRows="True" 
                           ItemsSource="{Binding PinSearch}" >
-                        <ListView.Behaviors>
-                            <prism:EventToCommandBehavior EventName="ItemTapped" Command="{Binding PopUpCommand}" EventArgsParameterPath="Item"/>
-                        </ListView.Behaviors>
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <ViewCell.ContextActions>
+                                        
+                                            
+                                        
+                                    <!--ViewCell.ContextActions>
                                         <MenuItem Text="Edit" Command="{Binding Path=EditCommand}" CommandParameter="{Binding}" />
                                         <MenuItem Text="Del" Command="{Binding Path=DeleteCommand}" CommandParameter="{Binding}" />
-                                    </ViewCell.ContextActions>
-                                    <ViewCell.View>
-                                        <Grid>
+                                    </ViewCell.ContextActions-->
+                                        <SwipeView>
+                                            <SwipeView.RightItems>
+                                                <SwipeItem Text="Delete" BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"
+                                                           Command="{Binding Path=DeleteCommand}" CommandParameter="{Binding}" />
+                                            </SwipeView.RightItems>
+                                            <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="2*" />
                                                 <ColumnDefinition Width="8*" />
@@ -61,23 +66,24 @@
                                                 <ImageButton Source="{Binding Image}" Command="{Binding Source={x:Reference pinList}, Path=BindingContext.FavouriteCommand}" CommandParameter="{Binding .}" HeightRequest="60" WidthRequest="60" HorizontalOptions="Center" Margin="10,15,0,0" Padding="12" CornerRadius="25"/>
                                             </StackLayout>
                                             <StackLayout Grid.Column="1" Margin="0,20,10,20">
-                                                <Label Text="{Binding Name}" FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelStyle}"/>
+                                                    <Label Text="{Binding Name}" FontSize="Medium" FontAttributes="Bold" Style="{StaticResource baseLabel}"/>
                                                 <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Latitude}" FontSize="Small" Style="{StaticResource LabelStyle}"/>
-                                                <Label Text=", " FontSize="Small" Style="{StaticResource LabelStyle}"/>
-                                                <Label Text="{Binding Longitude}" FontSize="Small" Style="{StaticResource LabelStyle}"/>
+                                                        <Label Text="{Binding Latitude}" FontSize="Small" Style="{StaticResource baseLabel}"/>
+                                                        <Label Text=", " FontSize="Small" Style="{StaticResource baseLabel}"/>
+                                                        <Label Text="{Binding Longitude}" FontSize="Small" Style="{StaticResource baseLabel}"/>
                                                 </StackLayout>
                                             </StackLayout>
                                         </Grid>
-                                    </ViewCell.View>
-                                </ViewCell>
+                                        </SwipeView>
+                                    </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
                 </StackLayout>
             </ScrollView>
-            
-            <Frame Grid.Row="1" BackgroundColor="Blue"  CornerRadius="40" HorizontalOptions="End" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" VerticalOptions="End" >
+
+      
+                <Frame Grid.Row="1" BackgroundColor="Blue"  CornerRadius="40" HorizontalOptions="End" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" VerticalOptions="End" >
                 <ImageButton Source="ic_plus"  Command="{Binding AddPinCommand}" BackgroundColor="Transparent" VerticalOptions="Fill" HorizontalOptions="Fill"/>
             </Frame>
         </Grid>

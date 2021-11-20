@@ -13,7 +13,7 @@ using Xamarin.Forms.GoogleMaps;
 
 namespace MapNotePad.ViewModels
 {
-    public class AddPinsViewModel : BaseContentPage, IInitialize, INavigationAware
+    public class AddPinsViewModel : BaseViewModel
     {
         private IPageDialogService _dialogs { get; }
         private IMapService _mapService { get; set; }
@@ -103,22 +103,21 @@ namespace MapNotePad.ViewModels
         #endregion
         #region -- InterfaceName implementation --
 
-        public async void Initialize(INavigationParameters parameters)
+        public override async void Initialize(INavigationParameters parameters)
         {
             await Task.Delay(TimeSpan.FromSeconds(0.1));
         }
-        public void OnNavigatedFrom(INavigationParameters parameters)
+        public override void OnNavigatedFrom(INavigationParameters parameters)
         {
             parameters.Add(nameof(this.UserId), this.UserId);
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             string parameterName = "UserId";
             if (parameters.ContainsKey(parameterName))
             {
                 int id = parameters.GetValue<int>(parameterName);
-                //await _dialogs.DisplayAlertAsync("Alert", $"{id}", "Ok");
                 UserId = id;
                 await _mapService.SetPinsAsync(Pins, UserId);
                 if (Pins?.Count > 0) Pins?.Add(Pins[0]);
@@ -157,7 +156,6 @@ namespace MapNotePad.ViewModels
         #region -- Private helpers --
         private Task OnMapClickedCommandAsync(MapClickedEventArgs args)
         {
-            //await _dialogs.DisplayAlertAsync("Alert", $"{args.Point.Latitude}", "Ok");
             Latitude = args.Point.Latitude.ToString();
             Longitude = args.Point.Longitude.ToString();
             Pins.RemoveAt(Pins.Count - 1);
@@ -169,7 +167,6 @@ namespace MapNotePad.ViewModels
                 Address = "Add Discription",
                 Icon = BitmapDescriptorFactory.FromBundle("ic_placeholder.png")
             });
-            //return await _navigationService.NavigateAsync($"{nameof(Register)}");
             return Task.CompletedTask;
         }
         private async Task OnSaveClickedCommandAsync()
@@ -189,7 +186,6 @@ namespace MapNotePad.ViewModels
             await _mapService.AddEditExecute(Choise, pin);
             if (Choise == AddEditType.Add) Pins?.Add(pin.ToPin());
             else await _mapService.SetPinsAsync(Pins, UserId);
-            //await _dialogs.DisplayAlertAsync("Alert", $"{pin.Id}", "Ok");
             //var p = new NavigationParameters { { "Pin", pin } };
             //await _navigationService.GoBackAsync(p);
         }

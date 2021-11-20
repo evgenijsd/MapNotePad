@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 
 namespace MapNotePad.Views
@@ -18,4 +12,15 @@ namespace MapNotePad.Views
             On<iOS>().SetUseSafeArea(true);
         }
     }
+
+    #region -- Public properties --
+    #endregion
+    #region -- InterfaceName implementation --
+    #endregion
+    #region -- Overrides --
+    #endregion
+    #region -- Public helpers --
+    #endregion
+    #region -- Private helpers --
+    #endregion
 }

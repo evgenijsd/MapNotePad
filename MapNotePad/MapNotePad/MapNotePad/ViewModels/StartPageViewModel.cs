@@ -1,4 +1,6 @@
-﻿using MapNotePad.Helpers;
+﻿using MapNotePad.Enum;
+using MapNotePad.Helpers;
+using MapNotePad.Services.Interface;
 using MapNotePad.Views;
 using Prism.Navigation;
 using System.Threading.Tasks;
@@ -6,10 +8,15 @@ using System.Windows.Input;
 
 namespace MapNotePad.ViewModels
 {
-    public class StartPageViewModel : BaseContentPage
+    public class StartPageViewModel : BaseViewModel
     {
-        public StartPageViewModel(INavigationService navigationService) : base(navigationService)
+        private ISettings _settings;
+
+        public StartPageViewModel(INavigationService navigationService, ISettings settings) : base(navigationService)
         {
+            _settings = settings;
+            _settings.ChangeTheme(_settings.ThemeSet == (int)ThemeType.LightTheme ? false : true);
+            //_settings.Language((LangType)_settings.LangSet);
         }
 
 

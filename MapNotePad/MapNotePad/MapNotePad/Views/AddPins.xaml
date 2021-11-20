@@ -9,75 +9,83 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MapNotePad.Views.AddPins"
              Title="{Binding Title}">
-    <view:BaseContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding SaveClickedCommand}"
-                     IconImageSource="ic_save.png"/>
-        
-    </view:BaseContentPage.ToolbarItems>
-    
-    <StackLayout>
-        <Label Text="Label" Margin="20, 0, 0, 0" />
-        <controls:CustomEntry Text="{Binding Name}"
+    <view:BaseContentPage.Content>
+
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <controls:CustomToolBar Title="{Binding Title}" 
+                                        RightImageSource="ic_save.png"
+                                        LineColor="{DynamicResource Variant}"
+                                        LeftButtonCommand="{Binding GoBackCommand}"
+                                        RightButtonCommand="{Binding SaveCommand}"
+                                        IsEnabledRightButton="{Binding IsEnableSaveButton}"/>
+        <StackLayout>
+            <Label Text="Label" Margin="20, 0, 0, 0" />
+            <controls:CustomEntry1 Text="{Binding Name}"
                               Placeholder = "Pin name"  
                               Margin="20, 5, 20, 0" 
                               HeightRequest="45"
                               MaxLength="15"/>
-        <Label Text="Description" Margin="20, 20, 0, 0" />
-        <controls:CustomEntry Text="{Binding Description}" 
+            <Label Text="Description" Margin="20, 20, 0, 0" />
+            <controls:CustomEntry1 Text="{Binding Description}" 
                 Placeholder="Description" 
                 Margin="20, 5, 20, 0" 
                 MaxLength="60"
                 HeightRequest="45"/>
 
-        <StackLayout Margin="0, 20, 0, 0">
-            <Label Text="Coordinates" Margin="20, 0, 0, 0" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-            <controls:CustomEntry Text="{Binding Latitude}" 
+            <StackLayout Margin="0, 20, 0, 0">
+                <Label Text="Coordinates" Margin="20, 0, 0, 0" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:CustomEntry1 Text="{Binding Latitude}" 
                    Placeholder = "Pin latitude"
                    HeightRequest="45"
                    Margin="20, 0, 5, 20"
                    Keyboard="Numeric">
-                <Entry.Behaviors>
-                    <prism:EventToCommandBehavior EventName="TextChanged"
+                        <Entry.Behaviors>
+                            <prism:EventToCommandBehavior EventName="TextChanged"
                                                   Command="{Binding LatitudeCommand}"/>
 
-                </Entry.Behaviors>
-            </controls:CustomEntry>
+                        </Entry.Behaviors>
+                    </controls:CustomEntry1>
 
-            <controls:CustomEntry Text="{Binding Longitude}" Grid.Column="1"
+                    <controls:CustomEntry1 Text="{Binding Longitude}" Grid.Column="1"
                    Placeholder = "Pin longitude"
                    HeightRequest="45"
                    Margin="5, 0, 20, 20"
                    Keyboard="Numeric">
-                <Entry.Behaviors>
-                    <prism:EventToCommandBehavior EventName="TextChanged"
+                        <Entry.Behaviors>
+                            <prism:EventToCommandBehavior EventName="TextChanged"
                                                   Command="{Binding LongitudeCommand}"/>
-                    
-                </Entry.Behaviors>
-            </controls:CustomEntry>
-            </Grid>
-        </StackLayout>
-        <AbsoluteLayout VerticalOptions="FillAndExpand">
-            <clusteredMap:ClusteredMap IsShowingUser="True" AbsoluteLayout.LayoutBounds="0,0,1,1"
+
+                        </Entry.Behaviors>
+                    </controls:CustomEntry1>
+                </Grid>
+            </StackLayout>
+            <AbsoluteLayout VerticalOptions="FillAndExpand">
+                <clusteredMap:ClusteredMap IsShowingUser="True" AbsoluteLayout.LayoutBounds="0,0,1,1"
                AbsoluteLayout.LayoutFlags="All" 
                HorizontalOptions="FillAndExpand"
                VerticalOptions="FillAndExpand">
-            <clusteredMap:ClusteredMap.Behaviors>
-                <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
-                <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
-                    <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}" />
-                </clusteredMap:ClusteredMap.Behaviors>
-        </clusteredMap:ClusteredMap>
+                    <clusteredMap:ClusteredMap.Behaviors>
+                        <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
+                        <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
+                        <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}" />
+                    </clusteredMap:ClusteredMap.Behaviors>
+                </clusteredMap:ClusteredMap>
 
-            <Frame BackgroundColor="White"  CornerRadius="40" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize">
-                <ImageButton Source="ic_location"  Command="{Binding GeoLocCommand}" BackgroundColor="Transparent" VerticalOptions="Fill" HorizontalOptions="Fill"/>
-            </Frame>
-        </AbsoluteLayout>
-    </StackLayout>
-        
-
+                <Frame BackgroundColor="White"  CornerRadius="40" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize">
+                    <ImageButton Source="ic_location"  Command="{Binding GeoLocCommand}" BackgroundColor="Transparent" VerticalOptions="Fill" HorizontalOptions="Fill"/>
+                </Frame>
+            </AbsoluteLayout>
+        </StackLayout>
+    </Grid>
+    </view:BaseContentPage.Content>
 </view:BaseContentPage>

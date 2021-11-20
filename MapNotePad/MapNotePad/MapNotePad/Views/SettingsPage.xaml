@@ -3,8 +3,7 @@
                        xmlns="http://xamarin.com/schemas/2014/forms"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                        xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad"
-                       x:Class="MapNotePad.Views.StartPage"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+             x:Class="MapNotePad.Views.SettingsPage">
     <view:BaseContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -16,8 +15,8 @@
                 <Label Text="{res:Translate MapNotepad}" Style="{StaticResource baseMapLabel}"/>
             </StackLayout>
             <StackLayout Grid.Row="1" Padding="20,0">
-                <Button Text="Log in" Margin="0,0,0,20"  Command="{Binding LogInCommand}" Style="{StaticResource baseButton}"/>
-                <Button Text="Create account"  Command="{Binding RegisterCommand}" Style="{StaticResource inverseButtonStyle}"/>
+                <Button Text="Log in" Margin="0,0,0,20" Style="{StaticResource baseButton}" Command="{Binding LogInCommand}" />
+                <Button Text="Create account" Style="{StaticResource inverseButtonStyle}" Command="{Binding RegisterCommand}" />
             </StackLayout>
         </Grid>
     </view:BaseContentPage.Content>

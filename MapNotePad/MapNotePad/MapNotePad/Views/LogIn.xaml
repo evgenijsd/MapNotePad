@@ -3,35 +3,39 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:view="clr-namespace:MapNotePad.Views"
              xmlns:controls="clr-namespace:MapNotePad.Controls"
+             xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad"
              x:Class="MapNotePad.Views.LogIn"
-             Title="Log In">
+             BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
     <view:BaseContentPage.Content>
         <StackLayout>
-            <controls:CustomToolBar Title="Log In" TitleColor="{StaticResource PrimaryColor}"
+            <controls:CustomToolBar Title="{res:Translate LogIn}" TitleColor="{AppThemeBinding Light={StaticResource LightTextPrimaryColor}, Dark={StaticResource DarkTextPrimaryColor}}"
+                                    FontFamily="Monserrat" LeftImageSource="ic_left_blue.png"
                                     LeftButtonCommand="{Binding GoBackCommand}"/>
-        
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="4*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="5*"/>
-        </Grid.RowDefinitions>
-                <StackLayout Grid.Row="0" Padding="20,0" VerticalOptions="Center" Margin="0,20,0,0">
-            <Label Text="Email" FontSize="Small"/>
-            <controls:CustomEntry Text="{Binding Email}" Placeholder="Enter email"  />
-                    <Label Text="Wrong Email" FontSize="Micro" Margin="0,0,0,20"/>
-                    <Label Text="Password" FontSize="Small"/>
-            <controls:CustomEntry Text="{Binding Password}" Placeholder="Enter password" IsPassword="true" />
-                    <Label Text="The password is incorrect" FontSize="Micro" Margin="0,0,0,20"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0" Padding="20,0,20,20" VerticalOptions="Center" Margin="0,10,0,0">
+                    <Label Text="{res:Translate Email}" FontSize="18" Style="{StaticResource secondLabel}" Margin="20,0,0,0"/>
+                    <controls:CustomEntry Text="{Binding Email}" Placeholder="{res:Translate EnterEmail}"  BorderColor="{StaticResource LineColor}"/>
+                    <Label Text="{res:Translate WrongEmail}" FontSize="15" Margin="20,0,0,0" Style="{StaticResource errorLabel}" IsVisible="{Binding IsWrongEmail}"/>
                 </StackLayout>
-        <StackLayout Grid.Row="1" Padding="20,0">
-            <Button Text="Log In" Command="{Binding MainTabPageCommand}" FontSize="Medium"/>
-        </StackLayout>
-        <StackLayout Grid.Row="2" Padding="20,0">
-            <Image Source="or.png" HorizontalOptions="FillAndExpand" Aspect="Fill" HeightRequest="18"/>
-            <ImageButton Command="{Binding GoogleMainCommand}" Source="Button.png" BackgroundColor="Transparent" Aspect="Fill" HeightRequest="49" Margin="0,15,0,30"/>
-        </StackLayout>
-    </Grid>
+                <StackLayout Grid.Row="1" Padding="20,0,20,20" VerticalOptions="Center" Margin="0,10,0,0">
+                        <Label Text="{res:Translate Password}" FontSize="18" Style="{StaticResource secondLabel}" Margin="30,0,0,0"/>
+                    <controls:CustomEntry Text="{Binding Password}" Placeholder="{res:Translate EnterPassword}" BorderColor="{StaticResource LineColor}" IsPassword="true" />
+                    <Label Text="{res:Translate PasswordIncorrect}" FontSize="15" Style="{StaticResource errorLabel}" IsVisible="{Binding IsIncorrectPassword}" Margin="20,0,0,0"/>
+                </StackLayout>
+                <StackLayout Grid.Row="2" Padding="20,20,20,20">
+                    <Button Text="Log In" Command="{Binding MainTabPageCommand}" Style="{StaticResource baseButton}"/>
+                </StackLayout>
+                <StackLayout Grid.Row="3" Padding="20,0">
+                    <Image Source="or.png" HorizontalOptions="FillAndExpand" Aspect="Fill" HeightRequest="18"/>
+                    <ImageButton Command="{Binding GoogleMainCommand}" Source="Button.png" BackgroundColor="Transparent" Aspect="Fill" HeightRequest="49" Margin="0,15,0,30"/>
+                </StackLayout>
+            </Grid>
         </StackLayout>
     </view:BaseContentPage.Content>
 </view:BaseContentPage>

@@ -1,6 +1,8 @@
-﻿using MapNotePad.Helpers;
+﻿using Acr.UserDialogs;
+using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
+using MapNotePad.Views;
 using Plugin.Geolocator;
 using Prism.Navigation;
 using Prism.Services;
@@ -15,15 +17,17 @@ using Xamarin.Forms.GoogleMaps;
 
 namespace MapNotePad.ViewModels
 {
-    public class MapPageViewModel : BaseContentPage, INavigationAware
+    public class MapPageViewModel : BaseViewModel
     {
         private IPageDialogService _dialogs { get; }
         private IMapService _mapService { get; set; }
+        private IAuthentication _authentication { get; }
 
-        public MapPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService) : base(navigationService)
+        public MapPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService, IAuthentication authentication) : base(navigationService)
         {
             _dialogs = dialogs;
             _mapService = mapService;
+            _authentication = authentication;
         }
 
 
@@ -103,6 +107,10 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _forecastViews, value);
         }
 
+        private ICommand _settingsCommand;
+        public ICommand SettingsCommand => _settingsCommand ??= SingleExecutionCommand.FromFunc(OnSettingsCommandAsync);
+        private ICommand _exitCommand;
+        public ICommand ExitCommand => _exitCommand ??= SingleExecutionCommand.FromFunc(OnExitCommandAsync);
         private ICommand _GeoLocCommand;
         public ICommand GeoLocCommand => _GeoLocCommand ??= SingleExecutionCommand.FromFunc(OnGeoLocCommandAsync);
         private ICommand _PinClickedCommand;
@@ -116,12 +124,14 @@ namespace MapNotePad.ViewModels
 
         #endregion
         #region -- InterfaceName implementation --
-        public void OnNavigatedFrom(INavigationParameters parameters)
+        #endregion
+        #region -- Overrides --
+        public override void OnNavigatedFrom(INavigationParameters parameters)
         {
             parameters.Add(nameof(this.UserId), this.UserId);
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.ContainsKey("UserId"))
             {
@@ -134,8 +144,6 @@ namespace MapNotePad.ViewModels
                 _mapService.SetPinsFavouriteAsync(Pins, pinviews);
             }
         }
-        #endregion
-        #region -- Overrides --
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
@@ -162,7 +170,6 @@ namespace MapNotePad.ViewModels
         #region -- Public helpers --
         #endregion
         #region -- Private helpers --
-        // день недели, дождь/ясно, температура днем ночью
         private async Task OnPinClickedCommandAsync(PinClickedEventArgs args)
         {
             Pin = args.Pin;
@@ -173,7 +180,7 @@ namespace MapNotePad.ViewModels
             //return await _navigationService.NavigateAsync($"{nameof(Register)}");
             var forecastData = await _mapService.GetForecast(Pin.Position.Latitude, Pin.Position.Longitude);
             DateTime data = DateTime.Now;
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             for (int i = 0; i < 4; i++)
             {
                 ForecastViews.Add(new ForecastView
@@ -246,6 +253,30 @@ namespace MapNotePad.ViewModels
             Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
             //return await _navigationService.NavigateAsync($"{nameof(Register)}");
             return Task.CompletedTask;
+        }
+
+        private async Task OnSettingsCommandAsync()
+        {
+            
+                await _navigationService.NavigateAsync($"{nameof(SettingsPage)}");
+            
+        }
+        private async Task OnExitCommandAsync()
+        {
+            var confirmConfig = new ConfirmConfig()
+            {
+                Message = Resources.Resource.ExitUser,
+                OkText = Resources.Resource.Exit,
+                CancelText = Resources.Resource.Cancel
+            };
+            var confirm = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
+            if (confirm)
+            {
+                _authentication.UserId = 0;
+                await _navigationService.NavigateAsync($"{nameof(StartPage)}");
+            }
+
+
         }
 
         #endregion
