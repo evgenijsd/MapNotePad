@@ -19,6 +19,7 @@
             <local:CustomNoBorderEntry.Behaviors>
                 <Behaviors:EventToCommandBehavior Command="{Binding FocusedCommand, Source={x:Reference customEntry}}" EventName="Focused"/>
                 <Behaviors:EventToCommandBehavior Command="{Binding UnFocusedCommand, Source={x:Reference customEntry}}" EventName="Unfocused"/>
+                <Behaviors:EventToCommandBehavior Command="{Binding TextChangedCommand, Source={x:Reference customEntry}}" EventName="TextChanged"/>
             </local:CustomNoBorderEntry.Behaviors>
         </local:CustomNoBorderEntry>
         <ImageButton Source="{Binding ImageSource, Source={x:Reference customEntry}}"
@@ -27,6 +28,7 @@
                      HeightRequest="24"
                      WidthRequest="24"
                      Aspect="Fill"
+                     Margin="0,12,0,12"
                      HorizontalOptions="End"
                      BackgroundColor="Transparent"/>
     </StackLayout>

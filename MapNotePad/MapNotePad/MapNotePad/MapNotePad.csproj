@@ -91,5 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Naxam.BottomTabbedPage" />
+    <None Remove="Resources\MapStyle.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MapStyle.json" />
   </ItemGroup>
 </Project>

@@ -7,14 +7,16 @@
             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
             android:TabbedPage.ToolbarPlacement="Bottom"
             x:Class="MapNotePad.Views.MainTabPage"
-            prism:ViewModelLocator.AutowireViewModel="True">
+            prism:ViewModelLocator.AutowireViewModel="True"
+                           BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"
+                           BarBackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
   <!--Pages can be added as references or inline-->
 
     <controls:CustomTabbedPage.Behaviors>
         <controls:TabbedPageNavigationBehavior />
     </controls:CustomTabbedPage.Behaviors>
     <controls:CustomTabbedPage.Children>
-            <local:MapPage/>
-            <local:PinsPage/>
+        <local:MapPage BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"/>
+        <local:PinsPage BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"/>
     </controls:CustomTabbedPage.Children>
 </controls:CustomTabbedPage>

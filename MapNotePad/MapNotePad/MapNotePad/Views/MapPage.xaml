@@ -30,7 +30,7 @@
 
             <Grid Grid.Row="1" RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="{Binding ListViewHeight}" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
@@ -44,17 +44,17 @@
                             <DataTemplate>
                                 <ViewCell>
                                     <ViewCell.View>
-                                        <Grid>
+                                        <Grid BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="2*" />
                                                 <ColumnDefinition Width="9*" />
                                             </Grid.ColumnDefinitions>
-                                            <StackLayout HeightRequest="40" Margin="15,13,0,0">
-                                                <Image Source="{Binding Image}"/>
+                                            <StackLayout HeightRequest="40" Margin="15,13,0,0" BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+                                                <Image Source="{Binding Image}" Aspect="AspectFit" HeightRequest="40" WidthRequest="40"/>
                                             </StackLayout>
-                                            <StackLayout Grid.Column="1">
-                                                <Label Text="{Binding Name}" FontSize="Medium" Style="{StaticResource baseLabel}"/>
-                                                <Label Text="{Binding Description}" FontSize="Small" Style="{StaticResource baseLabel}"/>
+                                            <StackLayout Grid.Column="1" Margin="10,10,0,10" BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+                                                <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
+                                                <Label Text="{Binding Description}" FontSize="18" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
                                             </StackLayout>
                                         </Grid>
                                     </ViewCell.View>
@@ -65,7 +65,7 @@
                 </StackLayout>
 
                 <StackLayout Grid.Row="1">
-                <clusteredMap:ClusteredMap IsShowingUser="True" WidthRequest="960" HeightRequest="200">
+                    <clusteredMap:ClusteredMap IsShowingUser="True" WidthRequest="960" HeightRequest="200" BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
                     <clusteredMap:ClusteredMap.Behaviors>
                         <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
                         <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
@@ -77,7 +77,8 @@
                 </clusteredMap:ClusteredMap>
             </StackLayout>
 
-            <Frame Grid.Row="1" BackgroundColor="White"  CornerRadius="40" HorizontalOptions="End" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" VerticalOptions="End" IsVisible="{Binding IsViewButton}">
+                <Frame Grid.Row="1"   CornerRadius="40" HorizontalOptions="End" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" VerticalOptions="End" IsVisible="{Binding IsViewButton}" 
+                       BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
                 <ImageButton Source="ic_location"  Command="{Binding GeoLocCommand}" BackgroundColor="Transparent" VerticalOptions="Fill" HorizontalOptions="Fill"/>
             </Frame>
 

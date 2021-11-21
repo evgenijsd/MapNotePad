@@ -104,7 +104,7 @@ namespace MapNotePad.Services
             requestUri += "&exclude=minutely,hourly,alerts,current";
             requestUri += "&units=metric"; 
             requestUri += $"&appid={AppConstants.OpenWeatherMapAPIKey}";
-            ForecastData forecastData = await _restService.GetForecastData(requestUri);//");https://api.openweathermap.org/data/2.5/onecall?lat=12&lon=12&exclude=minutely,hourly,alerts,current&units=metric&appid=6a13cd8fbbd77a77ff4666d8b6ac1336
+            ForecastData forecastData = await _restService.GetForecastData(requestUri);//https://api.openweathermap.org/data/2.5/onecall?lat=12&lon=12&exclude=minutely,hourly,alerts,current&units=metric&appid=6a13cd8fbbd77a77ff4666d8b6ac1336
             return forecastData;
         }
 
@@ -116,7 +116,7 @@ namespace MapNotePad.Services
             requestUri += $"&lon={longitude}";
             requestUri += "&units=metric";
             requestUri += $"&appid={AppConstants.OpenWeatherMapAPIKey}";
-            WeatherData weatherData = await _restService.GetWeatherData(requestUri);//");"https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&units=metric&appid=6a13cd8fbbd77a77ff4666d8b6ac1336"
+            WeatherData weatherData = await _restService.GetWeatherData(requestUri);//https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&units=metric&appid=6a13cd8fbbd77a77ff4666d8b6ac1336"
             return weatherData;
         }
 

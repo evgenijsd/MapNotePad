@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <view:BaseContentPage  xmlns:view="clr-namespace:MapNotePad.Views" 
                        xmlns="http://xamarin.com/schemas/2014/forms"
+                       xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:clusteredMap="clr-namespace:Xamarin.Forms.GoogleMaps.Clustering;assembly=Xamarin.Forms.GoogleMaps.Clustering"
              xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
@@ -8,7 +9,7 @@
              xmlns:controls="clr-namespace:MapNotePad.Controls"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MapNotePad.Views.AddPins"
-             Title="{Binding Title}">
+             BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
     <view:BaseContentPage.Content>
 
     <Grid RowSpacing="0">
@@ -18,58 +19,32 @@
         </Grid.RowDefinitions>
 
         <controls:CustomToolBar Title="{Binding Title}" 
+                                LeftImageSource="ic_left_blue.png"
                                         RightImageSource="ic_save.png"
-                                        LineColor="{DynamicResource Variant}"
+                                        LineColor="{AppThemeBinding Light={StaticResource LightLineColor}, Dark={StaticResource DarkLineColor}}"
                                         LeftButtonCommand="{Binding GoBackCommand}"
-                                        RightButtonCommand="{Binding SaveCommand}"
-                                        IsEnabledRightButton="{Binding IsEnableSaveButton}"/>
-        <StackLayout>
-            <Label Text="Label" Margin="20, 0, 0, 0" />
-            <controls:CustomEntry1 Text="{Binding Name}"
-                              Placeholder = "Pin name"  
-                              Margin="20, 5, 20, 0" 
-                              HeightRequest="45"
-                              MaxLength="15"/>
-            <Label Text="Description" Margin="20, 20, 0, 0" />
-            <controls:CustomEntry1 Text="{Binding Description}" 
-                Placeholder="Description" 
-                Margin="20, 5, 20, 0" 
-                MaxLength="60"
-                HeightRequest="45"/>
-
-            <StackLayout Margin="0, 20, 0, 0">
-                <Label Text="Coordinates" Margin="20, 0, 0, 0" />
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <controls:CustomEntry1 Text="{Binding Latitude}" 
-                   Placeholder = "Pin latitude"
-                   HeightRequest="45"
-                   Margin="20, 0, 5, 20"
-                   Keyboard="Numeric">
-                        <Entry.Behaviors>
-                            <prism:EventToCommandBehavior EventName="TextChanged"
-                                                  Command="{Binding LatitudeCommand}"/>
-
-                        </Entry.Behaviors>
-                    </controls:CustomEntry1>
-
-                    <controls:CustomEntry1 Text="{Binding Longitude}" Grid.Column="1"
-                   Placeholder = "Pin longitude"
-                   HeightRequest="45"
-                   Margin="5, 0, 20, 20"
-                   Keyboard="Numeric">
-                        <Entry.Behaviors>
-                            <prism:EventToCommandBehavior EventName="TextChanged"
-                                                  Command="{Binding LongitudeCommand}"/>
-
-                        </Entry.Behaviors>
-                    </controls:CustomEntry1>
-                </Grid>
-            </StackLayout>
-            <AbsoluteLayout VerticalOptions="FillAndExpand">
+                                        RightButtonCommand="{Binding SaveClickedCommand}"/>
+        <StackLayout Grid.Row="1">
+                <StackLayout Margin="20">
+                    <Label Text="{res:Translate Label}" FontSize="18"  />
+                    <controls:CustomEntry Text="{Binding Name}" Placeholder="{res:Translate EnterLabel}" HeightRequest="45" MaxLength="15"/>
+                </StackLayout>
+                <StackLayout Margin="20, 0, 20, 0">
+                    <Label Text="{res:Translate Description}" FontSize="18"  />
+                    <controls:CustomEntry Text="{Binding Description}" Placeholder="{res:Translate Description}" HeightRequest="45" MaxLength="60" />
+                </StackLayout>
+                <StackLayout Margin="20">
+                    <Label Text="Coordinates" FontSize="18"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:CustomEntry Grid.Column="1" Text="{Binding Latitude}" Placeholder="{res:Translate Latitude}" HeightRequest="45" TextChangedCommand="{Binding LatitudeCommand}" />
+                        <controls:CustomEntry Grid.Column="0" Text="{Binding Longitude}" Placeholder="{res:Translate Longitude}" HeightRequest="45" TextChangedCommand="{Binding LongitudeCommand}" />
+                    </Grid>
+                </StackLayout>
+                <AbsoluteLayout VerticalOptions="FillAndExpand">
                 <clusteredMap:ClusteredMap IsShowingUser="True" AbsoluteLayout.LayoutBounds="0,0,1,1"
                AbsoluteLayout.LayoutFlags="All" 
                HorizontalOptions="FillAndExpand"

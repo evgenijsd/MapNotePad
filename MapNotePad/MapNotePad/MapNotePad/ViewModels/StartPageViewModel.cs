@@ -16,7 +16,7 @@ namespace MapNotePad.ViewModels
         {
             _settings = settings;
             _settings.ChangeTheme(_settings.ThemeSet == (int)ThemeType.LightTheme ? false : true);
-            //_settings.Language((LangType)_settings.LangSet);
+            _settings.Language((LangType)_settings.LangSet);
         }
 
 

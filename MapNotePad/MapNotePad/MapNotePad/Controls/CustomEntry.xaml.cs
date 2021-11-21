@@ -13,9 +13,33 @@ namespace MapNotePad.Controls
         }
 
         #region -- Public properties --
+        public static readonly BindableProperty TextChangedCommandProperty = BindableProperty.Create(
+            propertyName: nameof(TextChangedCommand),
+            returnType: typeof(ICommand),
+            declaringType: typeof(CustomEntry),
+            defaultValue: null,
+            defaultBindingMode: BindingMode.TwoWay);
+
+        public ICommand TextChangedCommand
+        {
+            set => SetValue(TextChangedCommandProperty, value);
+            get => (ICommand)GetValue(TextChangedCommandProperty);
+        }
 
         public static readonly BindableProperty TextProperty = BindableProperty.Create(
             propertyName: nameof(Text),
+            returnType: typeof(string),
+            declaringType: typeof(CustomEntry),
+            defaultValue: string.Empty,
+            defaultBindingMode: BindingMode.TwoWay);
+
+        public string MaxLength
+        {
+            set => SetValue(MaxLengthProperty, value);
+            get => (string)GetValue(MaxLengthProperty);
+        }
+        public static readonly BindableProperty MaxLengthProperty = BindableProperty.Create(
+            propertyName: nameof(MaxLength),
             returnType: typeof(string),
             declaringType: typeof(CustomEntry),
             defaultValue: string.Empty,

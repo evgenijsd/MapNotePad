@@ -23,8 +23,8 @@ namespace MapNotePad.Services
             CheckEnter check = CheckEnter.ChecksArePassed;
 
             int s = email.IndexOf('@');
-            if (user != null) check = CheckEnter.LoginExist;
-            if (s > MaxLengthEmail || (email.Length - s) > MaxLengthEmail) check = CheckEnter.EmailLengthNotValid;
+            if (user != null && name != string.Empty) check = CheckEnter.LoginExist;
+            if (s > MaxLengthEmail || (email.Length - s) > MaxLengthEmail || email.Length-1 == s || s == 0) check = CheckEnter.EmailLengthNotValid;
             if (s == -1) check = CheckEnter.EmailANotVaid;
             return (int)check;
         }

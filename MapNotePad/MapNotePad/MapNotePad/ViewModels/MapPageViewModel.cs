@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using MapNotePad.Enum;
 using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
@@ -22,12 +23,15 @@ namespace MapNotePad.ViewModels
         private IPageDialogService _dialogs { get; }
         private IMapService _mapService { get; set; }
         private IAuthentication _authentication { get; }
+        private ISettings _settings;
 
-        public MapPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService, IAuthentication authentication) : base(navigationService)
+        public MapPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService, IAuthentication authentication, ISettings settings) : base(navigationService)
         {
             _dialogs = dialogs;
             _mapService = mapService;
             _authentication = authentication;
+            _settings = settings;
+            _settings.Language((LangType)_settings.LangSet);
         }
 
 
@@ -99,6 +103,12 @@ namespace MapNotePad.ViewModels
             get => _region;
             set => SetProperty(ref _region, value);
         }
+        private GridLength _listViewHeight;
+        public GridLength ListViewHeight
+        {
+            get => _listViewHeight;
+            set => SetProperty(ref _listViewHeight, value);
+        }
 
         private ObservableCollection<ForecastView> _forecastViews = new();
         public ObservableCollection<ForecastView> ForecastViews
@@ -117,8 +127,7 @@ namespace MapNotePad.ViewModels
         public ICommand PinClickedCommand => _PinClickedCommand ??= SingleExecutionCommand.FromFunc<PinClickedEventArgs>(OnPinClickedCommandAsync);
         private ICommand _MapClickedCommand;
         public ICommand MapClickedCommand => _MapClickedCommand ??= SingleExecutionCommand.FromFunc<MapClickedEventArgs>(OnMapClickedCommandAsync);
-        private ICommand _SearchTextCommand;
-        public ICommand SearchTextCommand => _SearchTextCommand ??= SingleExecutionCommand.FromFunc(OnSearchTextCommandAsync);
+        public ICommand SearchTextCommand => new Command(OnSearchTextCommandAsync);
         private ICommand _TapShowCommand;
         public ICommand TapShowCommand => _TapShowCommand ??= SingleExecutionCommand.FromFunc<SearchView>(OnTapShowCommandAsync);
 
@@ -180,6 +189,7 @@ namespace MapNotePad.ViewModels
             //return await _navigationService.NavigateAsync($"{nameof(Register)}");
             var forecastData = await _mapService.GetForecast(Pin.Position.Latitude, Pin.Position.Longitude);
             DateTime data = DateTime.Now;
+            _settings.Language((LangType)_settings.LangSet);
             //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             for (int i = 0; i < 4; i++)
             {
@@ -218,7 +228,7 @@ namespace MapNotePad.ViewModels
             }
         }
 
-        private Task OnSearchTextCommandAsync()
+        private void OnSearchTextCommandAsync()
         {
             SearchPins = new ObservableCollection<SearchView>();
             if (!string.IsNullOrEmpty(SearchText))
@@ -238,11 +248,23 @@ namespace MapNotePad.ViewModels
                     SearchPins.Add(search);
                 }
 
-                if (SearchPins.Count == 0 && SearchText.Length > 0) _dialogs.DisplayAlertAsync("Alert", $"Not Found \"{SearchText}\"", "Ok");
+                if (SearchPins.Count == 0 && SearchText.Length > 0)
+                {
+                    _dialogs.DisplayAlertAsync("Alert", $"Not Found \"{SearchText}\"", "Ok");
+                    ListViewHeight = new GridLength(0);
+                    IsViewSearch = false;
+                }
+                else
+                {
+                    ListViewHeight = new GridLength(SearchPins.Count * 70);
+                }
             }
-            else IsViewSearch = false;
+            else
+            {
+                IsViewSearch = false;
+                ListViewHeight = new GridLength(0);
+            }
             //ListViewGrid = new GridLength(SearchPins.Count, GridUnitType.Star);
-            return Task.CompletedTask;
         }
 
         private Task OnTapShowCommandAsync(SearchView pin)

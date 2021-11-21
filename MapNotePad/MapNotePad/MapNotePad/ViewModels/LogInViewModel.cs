@@ -7,6 +7,7 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace MapNotePad.ViewModels
 {
@@ -15,13 +16,15 @@ namespace MapNotePad.ViewModels
 
         private IPageDialogService _dialogs { get; }
         private IAuthentication _authentication { get; }
+        private IRegistration _registration { get; }
 
         public LogInViewModel(INavigationService navigationService, IPageDialogService dialogs,
-                       IAuthentication authentication) : base(navigationService)
+                       IAuthentication authentication, IRegistration registration) : base(navigationService)
         {
             _dialogs = dialogs;
             _authentication = authentication;
             UserId = _authentication.UserId;
+            _registration = registration;
         }
 
         #region -- Public properties --
@@ -64,8 +67,7 @@ namespace MapNotePad.ViewModels
         public ICommand MainTabPageCommand => _MainTabPageCommand ??= SingleExecutionCommand.FromFunc(OnMainTabPageCommandAsync);
         private ICommand _GoogleMainCommand;
         public ICommand GoogleMainCommand => _GoogleMainCommand ??= SingleExecutionCommand.FromFunc(OnGoogleMainCommandAsync);
-        private ICommand _ErrorCommand;
-        public ICommand ErrorCommand => _ErrorCommand ??= SingleExecutionCommand.FromFunc(OnErrorCommandAsync);
+        public ICommand ErrorCommand => new Command(OnErrorCommandAsync);
         #endregion
 
         #region -- InterfaceName implementation --
@@ -136,9 +138,10 @@ namespace MapNotePad.ViewModels
             await _navigationService.NavigateAsync("/StartPage");
         }
 
-        private async Task OnErrorCommandAsync()
+        private async void OnErrorCommandAsync()
         {
-            await _navigationService.NavigateAsync("/StartPage");
+            IsIncorrectPassword = !string.IsNullOrEmpty(Password) && _registration.CheckTheCorrectPassword(Password, Password) > 0;
+            IsWrongEmail = !string.IsNullOrEmpty(Email) && await _registration.CheckTheCorrectEmailAsync(string.Empty, Email) > 0;
         }
         #endregion
     }

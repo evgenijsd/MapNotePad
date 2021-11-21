@@ -2,22 +2,45 @@
 <view:BaseContentPage  xmlns:view="clr-namespace:MapNotePad.Views" 
                        xmlns="http://xamarin.com/schemas/2014/forms"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                       xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad"
-             x:Class="MapNotePad.Views.SettingsPage">
+                       xmlns:prism="http://prismlibrary.com"
+                       xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad" 
+                       xmlns:controls="clr-namespace:MapNotePad.Controls"
+                       x:Class="MapNotePad.Views.SettingsPage"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
     <view:BaseContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="8*"/>
-                <RowDefinition Height="2*"/>
-            </Grid.RowDefinitions>
-            <StackLayout Grid.Row="0" VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand">
-                <Image Source="pic_enter_page.png" HeightRequest="190" WidthRequest="200"/>
-                <Label Text="{res:Translate MapNotepad}" Style="{StaticResource baseMapLabel}"/>
-            </StackLayout>
-            <StackLayout Grid.Row="1" Padding="20,0">
-                <Button Text="Log in" Margin="0,0,0,20" Style="{StaticResource baseButton}" Command="{Binding LogInCommand}" />
-                <Button Text="Create account" Style="{StaticResource inverseButtonStyle}" Command="{Binding RegisterCommand}" />
-            </StackLayout>
-        </Grid>
+        <StackLayout>
+            <controls:CustomToolBar Title="{res:Translate Settings}" 
+                                LeftImageSource="ic_left_blue.png"
+                                        RightImageSource="ic_save.png"
+                                        LineColor="{AppThemeBinding Light={StaticResource LightLineColor}, Dark={StaticResource DarkLineColor}}"
+                                        LeftButtonCommand="{Binding GoBackCommand}"
+                                        RightButtonCommand="{Binding ThemeLightCommand}"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0" Padding="20,0,20,0" Orientation="Horizontal">
+                    <Label Text="{res:Translate or}" VerticalOptions="Center" FontSize="18" Style="{StaticResource lineLabel}" />
+                    <CheckBox Grid.Row="0" IsChecked="{Binding Theme}" HorizontalOptions="End">
+                        <CheckBox.Behaviors>
+                            <prism:EventToCommandBehavior EventName="CheckedChanged" Command="{Binding ThemeLightCommand}" CommandParameter="{Binding}"/>
+                        </CheckBox.Behaviors>
+                    </CheckBox>
+                    
+                </StackLayout>
+                <StackLayout Grid.Row="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                    <OnPlatform x:TypeArguments="View">
+                        <On Platform="Android">
+                            <controls:CustomSwitch Scale="1.5" Grid.Row="1" />
+                        </On>
+                        <On Platform="iOS">
+                            <Switch Scale="1.5" IsToggled="{Binding Theme}"/>
+                        </On>
+                    </OnPlatform>
+                </StackLayout>
+            </Grid>
+            <Label Text="{Binding Theme}" FontSize="18" />
+        </StackLayout>
     </view:BaseContentPage.Content>
 </view:BaseContentPage>

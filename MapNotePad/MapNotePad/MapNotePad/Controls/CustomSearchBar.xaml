@@ -80,7 +80,7 @@
                                  Aspect="Fill"
                                  HorizontalOptions="End"
                                  BackgroundColor="Transparent"
-                                 Margin="0,8,0,8">
+                                 Margin="0,9,0,9">
                         <ImageButton.Triggers>
                             <DataTrigger TargetType="ImageButton" 
                                          Binding="{Binding IsShowList, Source={x:Reference customSearchBar}}"

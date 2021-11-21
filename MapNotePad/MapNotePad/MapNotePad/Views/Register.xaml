@@ -1,30 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <view:BaseContentPage  xmlns:view="clr-namespace:MapNotePad.Views" 
                        xmlns="http://xamarin.com/schemas/2014/forms"
+                       xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:controls="clr-namespace:MapNotePad.Controls"
              x:Class="MapNotePad.Views.Register"
-             Title="Create an accaunt">
+             BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
     <view:BaseContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="4*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="5*"/>
-            </Grid.RowDefinitions>
-            <StackLayout Grid.Row="0" Padding="20,0" VerticalOptions="Center">
-                <Label Text="Name"/>
-                <controls:CustomEntry Text="{Binding Name}" Placeholder="Enter your name"  Margin="0,0,0,30" />
-                <Label Text="Email"/>
-                <controls:CustomEntry Text="{Binding Email}" Placeholder="Enter email" />
-            </StackLayout>
-            <StackLayout Grid.Row="1" Padding="20,0">
-                <Button Text="Next" Command="{Binding PasswordCommand}" FontSize="Medium"/>
-            </StackLayout>
-            <StackLayout Grid.Row="2" Padding="20,0">
-                <Image Source="or.png" HorizontalOptions="FillAndExpand" Aspect="Fill" HeightRequest="18"/>
-                <ImageButton Command="{Binding GoogleMainCommand}" Source="Button.png" BackgroundColor="Transparent" Aspect="Fill" HeightRequest="49" Margin="0,15,0,30"/>
-            </StackLayout>
-        </Grid>
+        <StackLayout>
+            <controls:CustomToolBar Title="{res:Translate CreateAnAccount}" TitleColor="{AppThemeBinding Light={StaticResource LightTextPrimaryColor}, Dark={StaticResource DarkTextPrimaryColor}}"
+                                    FontFamily="Monserrat" LeftImageSource="ic_left_blue.png"
+                                    LeftButtonCommand="{Binding GoBackCommand}"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="130"/>
+                    <RowDefinition Height="90"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0" Padding="20,0,20,20" VerticalOptions="Center" Margin="0,10,0,0">
+                    <Label Text="{res:Translate Name}" FontSize="18" Style="{StaticResource secondLabel}" Margin="20,0,0,0"/>
+                    <controls:CustomEntry Text="{Binding Name}" Placeholder="{res:Translate EnterName}" />
+                </StackLayout>
+                <StackLayout Grid.Row="1" Padding="20,10,20,20" VerticalOptions="Center" Margin="0,10,0,0">
+                    <Label Text="{res:Translate Email}" FontSize="18" Style="{StaticResource secondLabel}" Margin="20,0,0,0"/>
+                    <controls:CustomEntry Text="{Binding Email}" Placeholder="{res:Translate EnterEmail}"/>
+                </StackLayout>
+                <StackLayout Grid.Row="2" Padding="20,20,20,0">
+                    <Button Text="{res:Translate Next}" Command="{Binding PasswordCommand}" Style="{StaticResource baseButton}"/>
+                </StackLayout>
+                <StackLayout Grid.Row="3" Padding="20,0,20,0" Orientation="Horizontal">
+                    <BoxView Style="{StaticResource lineBox}"/>
+                    <Label Text="{res:Translate or}" VerticalOptions="Center" FontSize="18" Style="{StaticResource lineLabel}" />
+                    <BoxView Style="{StaticResource lineBox}"/>
+                </StackLayout>
+                <StackLayout Grid.Row="4" Padding="20,20,20,20">
+                    <ImageButton Command="{Binding GoogleMainCommand}" Source="ic_google" Style="{StaticResource gButton}"/>
+                </StackLayout>
+            </Grid>
+        </StackLayout>
     </view:BaseContentPage.Content>
 </view:BaseContentPage>

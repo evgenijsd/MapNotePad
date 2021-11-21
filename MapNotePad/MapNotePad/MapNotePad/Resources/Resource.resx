@@ -120,6 +120,9 @@
   <data name="AddPin" xml:space="preserve">
     <value>Add pin</value>
   </data>
+  <data name="Alert" xml:space="preserve">
+    <value>Alert</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -153,6 +156,9 @@
   <data name="EnterLabel" xml:space="preserve">
     <value>Enter the label</value>
   </data>
+  <data name="EnterName" xml:space="preserve">
+    <value>Enter your name</value>
+  </data>
   <data name="EnterPassword" xml:space="preserve">
     <value>Enter password</value>
   </data>
@@ -161,6 +167,12 @@
   </data>
   <data name="ExitUser" xml:space="preserve">
     <value>Are you out of the current user?</value>
+  </data>
+  <data name="IncorrectLatitude" xml:space="preserve">
+    <value>Incorrectly set latitude</value>
+  </data>
+  <data name="IncorrectLongitude" xml:space="preserve">
+    <value>Incorrectly set longitude</value>
   </data>
   <data name="Label" xml:space="preserve">
     <value>Label</value>
@@ -186,8 +198,14 @@
   <data name="MapNotepad" xml:space="preserve">
     <value>MapNotepad</value>
   </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Not found</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
   </data>
   <data name="or" xml:space="preserve">
     <value>or</value>
@@ -203,6 +221,9 @@
   </data>
   <data name="Pins" xml:space="preserve">
     <value>Pins</value>
+  </data>
+  <data name="RepeatPassword" xml:space="preserve">
+    <value>Repeat password</value>
   </data>
   <data name="Serach" xml:space="preserve">
     <value>Search</value>

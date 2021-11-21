@@ -35,6 +35,8 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _email, value);
         }
 
+        private ICommand _goBackCommand;
+        public ICommand GoBackCommand => _goBackCommand ??= SingleExecutionCommand.FromFunc(OnGoBackCommandAsync);
         private ICommand _PasswordCommand;
         public ICommand PasswordCommand => _PasswordCommand ??= SingleExecutionCommand.FromFunc(OnPasswordCommandAsync);
         private ICommand _GoogleMainCommand;
@@ -79,7 +81,10 @@ namespace MapNotePad.ViewModels
             _navigationService.NavigateAsync("StartPage");
             return Task.CompletedTask;
         }
-
+        private async Task OnGoBackCommandAsync()
+        {
+            await _navigationService.GoBackAsync();
+        }
 
         #endregion
     }

@@ -70,6 +70,15 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Alert.
+        /// </summary>
+        internal static string Alert {
+            get {
+                return ResourceManager.GetString("Alert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Cancel.
         /// </summary>
         internal static string Cancel {
@@ -169,6 +178,15 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter your name.
+        /// </summary>
+        internal static string EnterName {
+            get {
+                return ResourceManager.GetString("EnterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Enter password.
         /// </summary>
         internal static string EnterPassword {
@@ -192,6 +210,24 @@ namespace MapNotePad.Resources {
         internal static string ExitUser {
             get {
                 return ResourceManager.GetString("ExitUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Incorrectly set latitude.
+        /// </summary>
+        internal static string IncorrectLatitude {
+            get {
+                return ResourceManager.GetString("IncorrectLatitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Incorrectly set longitude.
+        /// </summary>
+        internal static string IncorrectLongitude {
+            get {
+                return ResourceManager.GetString("IncorrectLongitude", resourceCulture);
             }
         }
         
@@ -268,11 +304,29 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Next.
+        /// </summary>
+        internal static string Next {
+            get {
+                return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Not found.
         /// </summary>
         internal static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ok.
+        /// </summary>
+        internal static string Ok {
+            get {
+                return ResourceManager.GetString("Ok", resourceCulture);
             }
         }
         
@@ -318,6 +372,15 @@ namespace MapNotePad.Resources {
         internal static string Pins {
             get {
                 return ResourceManager.GetString("Pins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Repeat password.
+        /// </summary>
+        internal static string RepeatPassword {
+            get {
+                return ResourceManager.GetString("RepeatPassword", resourceCulture);
             }
         }
         
