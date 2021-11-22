@@ -32,7 +32,11 @@
                             </controls:CustomSwitch>
                         </On>
                         <On Platform="iOS">
-                            <Switch Scale="1.5" IsToggled="{Binding Theme}"/>
+                            <Switch Scale="1" IsToggled="{Binding Theme}">
+                                <Switch.Behaviors>
+                                    <prism:EventToCommandBehavior EventName="Toggled" Command="{Binding ThemeCommand}" CommandParameter="{Binding}"/>
+                                </Switch.Behaviors>
+                            </Switch>
                         </On>
                     </OnPlatform>
                 </StackLayout>

@@ -35,7 +35,9 @@ namespace MapNotePad.Droid.Renderers
             {
                 SwitchButton switchButton = new SwitchButton(context);
 
-                //  switchButton.SetHighlightColor(Android.Graphics.Color.Green);
+                switchButton.SetHighlightColor(Android.Graphics.Color.Green);
+                //switchButton.TintColor = Android.Graphics.Color.Green;
+
 
                 switchButton.CheckedChange += SwitchButton_CheckedChange;
                 //switchButton.Toggle();
