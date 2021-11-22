@@ -1,7 +1,9 @@
-﻿using MapNotePad.Helpers;
+﻿using MapNotePad.Enum;
+using MapNotePad.Helpers;
 using MapNotePad.Services.Interface;
 using Prism.Navigation;
 using Prism.Services;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -11,11 +13,13 @@ namespace MapNotePad.ViewModels
     {
         private IPageDialogService _dialogs { get; }
         private ISettings _settings;
+        private bool isEnable = false;
 
         public SettingsPageViewModel(INavigationService navigationService, IPageDialogService dialogs, ISettings settings) : base(navigationService)
         {
             _dialogs = dialogs;
             _settings = settings;
+            Theme = _settings.ThemeSet == (int)ThemeType.LightTheme ? false : true;
         }
 
         #region -- Public properties --
@@ -28,14 +32,19 @@ namespace MapNotePad.ViewModels
 
         private ICommand _GoBackCommand;
         public ICommand GoBackCommand => _GoBackCommand ??= SingleExecutionCommand.FromFunc(OnGoBackCommandAsync);
-        private ICommand _ThemeLightCommand;
-        public ICommand ThemeLightCommand => _ThemeLightCommand ??= SingleExecutionCommand.FromFunc(OnThemeLightCommandAsync);
+        private ICommand _ThemeiOSCommand;
+        public ICommand ThemeiOSCommand => _ThemeiOSCommand ??= SingleExecutionCommand.FromFunc(OnThemeiOSCommandAsync);
         private ICommand _ThemeCommand;
         public ICommand ThemeCommand => _ThemeCommand ??= SingleExecutionCommand.FromFunc(OnThemeCommandAsync);
         #endregion
         #region -- InterfaceName implementation --
         #endregion
         #region -- Overrides --
+        public override async void Initialize(INavigationParameters parameters)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(0.1));
+            isEnable = true;
+        }
         #endregion
         #region -- Public helpers --
         #endregion
@@ -45,9 +54,8 @@ namespace MapNotePad.ViewModels
             await _navigationService.GoBackAsync();
         }
 
-        private Task OnThemeLightCommandAsync()
+        private Task OnThemeiOSCommandAsync()
         {
-            //await _dialogs.DisplayAlertAsync("Alert", "Light", "Ok");
             _settings.ThemeSet = _settings.ChangeTheme(Theme);
 
             return Task.CompletedTask;
@@ -55,9 +63,11 @@ namespace MapNotePad.ViewModels
 
         private Task OnThemeCommandAsync()
         {
-            //await _dialogs.DisplayAlertAsync("Alert", "Dark", "Ok");
-            Theme = !Theme;
-            _settings.ThemeSet = _settings.ChangeTheme(Theme);
+            if (isEnable)
+            {
+                Theme = !Theme;
+                _settings.ThemeSet = _settings.ChangeTheme(Theme);
+            }
             return Task.CompletedTask;
         }
 

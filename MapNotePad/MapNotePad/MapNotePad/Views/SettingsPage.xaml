@@ -25,7 +25,7 @@
                 <StackLayout Grid.Row="1" VerticalOptions="Start"  HorizontalOptions="End" Padding="20,5,30,0">
                     <OnPlatform x:TypeArguments="View">
                         <On Platform="Android">
-                            <controls:CustomSwitch Scale="1.5">
+                            <controls:CustomSwitch Scale="1.5" IsInit="{Binding Theme}">
                                 <controls:CustomSwitch.Behaviors>
                                     <prism:EventToCommandBehavior EventName="Toggled" Command="{Binding ThemeCommand}" CommandParameter="{Binding}"/>
                                 </controls:CustomSwitch.Behaviors>
@@ -34,14 +34,13 @@
                         <On Platform="iOS">
                             <Switch Scale="1" IsToggled="{Binding Theme}">
                                 <Switch.Behaviors>
-                                    <prism:EventToCommandBehavior EventName="Toggled" Command="{Binding ThemeCommand}" CommandParameter="{Binding}"/>
+                                    <prism:EventToCommandBehavior EventName="Toggled" Command="{Binding ThemeiOSCommand}" CommandParameter="{Binding}"/>
                                 </Switch.Behaviors>
                             </Switch>
                         </On>
                     </OnPlatform>
                 </StackLayout>
             </Grid>
-            <Label Text="{Binding Theme}" VerticalOptions="Start"  FontSize="21" Style="{StaticResource baseLabel}" />
         </StackLayout>
     </view:BaseContentPage.Content>
 </view:BaseContentPage>

@@ -54,9 +54,6 @@
     <EmbeddedResource Update="Controls\CustomSearchBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Controls\CustomSeparator.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Controls\CustomToolBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>

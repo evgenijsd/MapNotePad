@@ -93,8 +93,6 @@ namespace MapNotePad.ViewModels
                     break;
             }
         }
-        #endregion
-        #region -- Public helpers --
         public override async void Initialize(INavigationParameters parameters)
         {
             await Task.Delay(TimeSpan.FromSeconds(0.1));
@@ -104,6 +102,9 @@ namespace MapNotePad.ViewModels
                 await _navigationService.NavigateAsync("/MainTabPage", p);
             }
         }
+        #endregion
+        #region -- Public helpers --
+
         #endregion
         #region -- Private helpers --
         private async Task OnGoBackCommandAsync()

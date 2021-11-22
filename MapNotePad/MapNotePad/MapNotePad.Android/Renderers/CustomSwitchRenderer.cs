@@ -34,13 +34,14 @@ namespace MapNotePad.Droid.Renderers
             if (Control != null)
             {
                 SwitchButton switchButton = new SwitchButton(context);
+                var element = Element as CustomSwitch;
 
-                switchButton.SetHighlightColor(Android.Graphics.Color.Green);
-                //switchButton.TintColor = Android.Graphics.Color.Green;
+                //switchButton.
+                switchButton.TintColor = Android.Graphics.Color.Green;
 
 
                 switchButton.CheckedChange += SwitchButton_CheckedChange;
-                //switchButton.Toggle();
+                if (element.IsInit) switchButton.Toggle();
 
                 SetNativeControl(switchButton);
             }
