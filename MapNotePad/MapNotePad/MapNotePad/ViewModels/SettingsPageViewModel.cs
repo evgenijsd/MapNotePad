@@ -19,7 +19,7 @@ namespace MapNotePad.ViewModels
         }
 
         #region -- Public properties --
-        private bool _theme;
+        private bool _theme = false;
         public bool Theme
         {
             get { return _theme; }
@@ -30,8 +30,8 @@ namespace MapNotePad.ViewModels
         public ICommand GoBackCommand => _goBackCommand ??= SingleExecutionCommand.FromFunc(OnGoBackCommandAsync);
         private ICommand _ThemeLightCommand;
         public ICommand ThemeLightCommand => _ThemeLightCommand ??= SingleExecutionCommand.FromFunc(OnThemeLightCommandAsync);
-        private ICommand _ThemeDarkCommand;
-        public ICommand ThemeDarkCommand => _ThemeDarkCommand ??= SingleExecutionCommand.FromFunc(OnThemeDarkCommandAsync);
+        private ICommand _ThemeCommand;
+        public ICommand ThemeCommand => _ThemeCommand ??= SingleExecutionCommand.FromFunc(OnThemeCommandAsync);
         #endregion
         #region -- InterfaceName implementation --
         #endregion
@@ -53,9 +53,12 @@ namespace MapNotePad.ViewModels
             return Task.CompletedTask;
         }
 
-        private async Task OnThemeDarkCommandAsync()
+        private Task OnThemeCommandAsync()
         {
-            await _dialogs.DisplayAlertAsync("Alert", "Dark", "Ok");
+            //await _dialogs.DisplayAlertAsync("Alert", "Dark", "Ok");
+            Theme = !Theme;
+            _settings.ThemeSet = _settings.ChangeTheme(Theme);
+            return Task.CompletedTask;
         }
 
         #endregion

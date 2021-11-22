@@ -38,9 +38,9 @@ namespace MapNotePad.Droid.Renderers
                 //  switchButton.SetHighlightColor(Android.Graphics.Color.Green);
 
                 switchButton.CheckedChange += SwitchButton_CheckedChange;
+                //switchButton.Toggle();
 
                 SetNativeControl(switchButton);
-
             }
 
         }
@@ -51,7 +51,6 @@ namespace MapNotePad.Droid.Renderers
             customSwitch.IsToggle = e.IsChecked;
 
             customSwitch.OnToggled();
-
         }
     }
 }

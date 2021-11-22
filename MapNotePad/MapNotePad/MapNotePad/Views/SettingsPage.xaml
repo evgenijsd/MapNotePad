@@ -11,36 +11,37 @@
         <StackLayout>
             <controls:CustomToolBar Title="{res:Translate Settings}" 
                                 LeftImageSource="ic_left_blue.png"
-                                        RightImageSource="ic_save.png"
                                         LineColor="{AppThemeBinding Light={StaticResource LightLineColor}, Dark={StaticResource DarkLineColor}}"
-                                        LeftButtonCommand="{Binding GoBackCommand}"
-                                        RightButtonCommand="{Binding ThemeLightCommand}"/>
+                                        LeftButtonCommand="{Binding GoBackCommand}"/>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="100"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackLayout Grid.Row="0" Padding="20,0,20,0" Orientation="Horizontal">
-                    <Label Text="{res:Translate or}" VerticalOptions="Center" FontSize="18" Style="{StaticResource lineLabel}" />
-                    <CheckBox Grid.Row="0" IsChecked="{Binding Theme}" HorizontalOptions="End">
-                        <CheckBox.Behaviors>
-                            <prism:EventToCommandBehavior EventName="CheckedChanged" Command="{Binding ThemeLightCommand}" CommandParameter="{Binding}"/>
-                        </CheckBox.Behaviors>
-                    </CheckBox>
-                    
+                <StackLayout Grid.Row="1" Padding="30,0,20,0" Orientation="Horizontal">
+                    <Label Text="{res:Translate DarkTheme}" VerticalOptions="Start"  FontSize="21" Style="{StaticResource baseLabel}" />
                 </StackLayout>
-                <StackLayout Grid.Row="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <StackLayout Grid.Row="1" VerticalOptions="Start"  HorizontalOptions="End" Padding="20,5,30,0">
                     <OnPlatform x:TypeArguments="View">
                         <On Platform="Android">
-                            <controls:CustomSwitch Scale="1.5" Grid.Row="1" />
+                            <controls:CustomSwitch Scale="1.5">
+                                <controls:CustomSwitch.Behaviors>
+                                    <prism:EventToCommandBehavior EventName="Toggled" Command="{Binding ThemeCommand}" CommandParameter="{Binding}"/>
+                                </controls:CustomSwitch.Behaviors>
+                            </controls:CustomSwitch>
                         </On>
                         <On Platform="iOS">
-                            <Switch Scale="1.5" IsToggled="{Binding Theme}"/>
+                            <Switch Scale="1.5" IsToggled="{Binding Theme}">
+                                <Switch.Behaviors>
+                                    <prism:EventToCommandBehavior EventName="Toggled" Command="{Binding ThemeCommand}" CommandParameter="{Binding}"/>
+                                </Switch.Behaviors>
+                            </Switch>
                         </On>
                     </OnPlatform>
                 </StackLayout>
             </Grid>
-            <Label Text="{Binding Theme}" FontSize="18" />
+            <Label Text="{Binding Theme}" VerticalOptions="Start"  FontSize="21" Style="{StaticResource baseLabel}" />
         </StackLayout>
     </view:BaseContentPage.Content>
 </view:BaseContentPage>

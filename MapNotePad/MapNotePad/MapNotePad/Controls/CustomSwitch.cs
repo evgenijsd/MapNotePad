@@ -9,10 +9,8 @@ namespace MapNotePad.Controls
     {
         public bool IsToggle { get; set; }
 
-
         public event EventHandler Toggled;
 
-        public void OnToggled() =>
-        Toggled?.Invoke(this, null);
+        public void OnToggled() => Toggled?.Invoke(this, null);
     }
 }
