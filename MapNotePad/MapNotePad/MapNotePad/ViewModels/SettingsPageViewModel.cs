@@ -26,8 +26,8 @@ namespace MapNotePad.ViewModels
             set { SetProperty(ref _theme, value); }
         }
 
-        private ICommand _goBackCommand;
-        public ICommand GoBackCommand => _goBackCommand ??= SingleExecutionCommand.FromFunc(OnGoBackCommandAsync);
+        private ICommand _GoBackCommand;
+        public ICommand GoBackCommand => _GoBackCommand ??= SingleExecutionCommand.FromFunc(OnGoBackCommandAsync);
         private ICommand _ThemeLightCommand;
         public ICommand ThemeLightCommand => _ThemeLightCommand ??= SingleExecutionCommand.FromFunc(OnThemeLightCommandAsync);
         private ICommand _ThemeCommand;
@@ -56,7 +56,7 @@ namespace MapNotePad.ViewModels
         private Task OnThemeCommandAsync()
         {
             //await _dialogs.DisplayAlertAsync("Alert", "Dark", "Ok");
-            Theme = !Theme;
+            //Theme = !Theme;
             _settings.ThemeSet = _settings.ChangeTheme(Theme);
             return Task.CompletedTask;
         }

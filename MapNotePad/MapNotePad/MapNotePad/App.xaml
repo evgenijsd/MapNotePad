@@ -133,6 +133,7 @@
             <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource LightLineColor}, Dark={StaticResource DarkLineColor}}" />
             <Setter Property="BackgroundColor" Value="{StaticResource TransparentColor}" />
             <Setter Property="Padding" Value="10,0,10,0"/>
+            <Setter Property="HeightRequest" Value="45" />
         </Style>
         
         <Style TargetType="controls:CustomSearchBar">

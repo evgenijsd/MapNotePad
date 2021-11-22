@@ -52,28 +52,32 @@ namespace MapNotePad.ViewModels
         #region -- Private helpers --
         private async Task OnPasswordCommandAsync()
         {
-            var check = (CheckEnter)await _registration.CheckTheCorrectEmailAsync(Name, Email);
-            switch (check)
+            var result = await _registration.CheckTheCorrectEmailAsync(Name, Email);
+            var check = (CheckEnter)result.Result;
+            if (result.IsSuccess)
             {
-                case CheckEnter.LoginExist:
-                    await _dialogs.DisplayAlertAsync("Alert", "This login is already taken", "Ok");
-                    break;
-                case CheckEnter.EmailANotVaid:
-                    await _dialogs.DisplayAlertAsync("Alert", "In Email there is no symbol @", "Ok");
-                    break;
-                case CheckEnter.EmailLengthNotValid:
-                    await _dialogs.DisplayAlertAsync("Alert", "In email name and domain no more than 64 characters", "Ok");
-                    break;
-                    
-                default:
-                    {
-                        var user = new Users();
-                        user.Email = Email;
-                        user.Name = Name;
-                        var p = new NavigationParameters { { "User", user } };
-                        await _navigationService.NavigateAsync($"{nameof(Password)}", p);
-                    }
-                    break;
+                switch (check)
+                {
+                    case CheckEnter.LoginExist:
+                        await _dialogs.DisplayAlertAsync("Alert", "This login is already taken", "Ok");
+                        break;
+                    case CheckEnter.EmailANotVaid:
+                        await _dialogs.DisplayAlertAsync("Alert", "In Email there is no symbol @", "Ok");
+                        break;
+                    case CheckEnter.EmailLengthNotValid:
+                        await _dialogs.DisplayAlertAsync("Alert", "In email name and domain no more than 64 characters", "Ok");
+                        break;
+
+                    default:
+                        {
+                            var user = new Users();
+                            user.Email = Email;
+                            user.Name = Name;
+                            var p = new NavigationParameters { { "User", user } };
+                            await _navigationService.NavigateAsync($"{nameof(Password)}", p);
+                        }
+                        break;
+                }
             }
         }
         private Task OnGoogleMainCommandAsync()

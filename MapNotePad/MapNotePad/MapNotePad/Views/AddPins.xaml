@@ -27,11 +27,11 @@
         <StackLayout Grid.Row="1">
                 <StackLayout Margin="20">
                     <Label Text="{res:Translate Label}" FontSize="18"  />
-                    <controls:CustomEntry Text="{Binding Name}" Placeholder="{res:Translate EnterLabel}" HeightRequest="45" MaxLength="15"/>
+                    <controls:CustomEntry Text="{Binding Name}" Placeholder="{res:Translate EnterLabel}" MaxLength="15"/>
                 </StackLayout>
                 <StackLayout Margin="20, 0, 20, 0">
                     <Label Text="{res:Translate Description}" FontSize="18"  />
-                    <controls:CustomEntry Text="{Binding Description}" Placeholder="{res:Translate Description}" HeightRequest="45" MaxLength="60" />
+                    <controls:CustomEntry Text="{Binding Description}" Placeholder="{res:Translate Description}" MaxLength="60" />
                 </StackLayout>
                 <StackLayout Margin="20">
                     <Label Text="Coordinates" FontSize="18"/>
@@ -40,8 +40,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <controls:CustomEntry Grid.Column="1" Text="{Binding Latitude}" Placeholder="{res:Translate Latitude}" HeightRequest="45" TextChangedCommand="{Binding LatitudeCommand}" />
-                        <controls:CustomEntry Grid.Column="0" Text="{Binding Longitude}" Placeholder="{res:Translate Longitude}" HeightRequest="45" TextChangedCommand="{Binding LongitudeCommand}" />
+                        <controls:CustomEntry Grid.Column="1" Text="{Binding Latitude}" Placeholder="{res:Translate Latitude}" TextChangedCommand="{Binding LatitudeCommand}" />
+                        <controls:CustomEntry Grid.Column="0" Text="{Binding Longitude}" Placeholder="{res:Translate Longitude}" TextChangedCommand="{Binding LongitudeCommand}" />
                     </Grid>
                 </StackLayout>
                 <AbsoluteLayout VerticalOptions="FillAndExpand">

@@ -140,8 +140,11 @@ namespace MapNotePad.ViewModels
 
         private async void OnErrorCommandAsync()
         {
+            
             IsIncorrectPassword = !string.IsNullOrEmpty(Password) && _registration.CheckTheCorrectPassword(Password, Password) > 0;
-            IsWrongEmail = !string.IsNullOrEmpty(Email) && await _registration.CheckTheCorrectEmailAsync(string.Empty, Email) > 0;
+            var result = await _registration.CheckTheCorrectEmailAsync(string.Empty, Email);
+            if (result.IsSuccess)
+            IsWrongEmail = !string.IsNullOrEmpty(Email) && result.Result > 0;
         }
         #endregion
     }
