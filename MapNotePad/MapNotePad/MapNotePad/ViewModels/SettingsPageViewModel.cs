@@ -56,7 +56,7 @@ namespace MapNotePad.ViewModels
         private Task OnThemeCommandAsync()
         {
             //await _dialogs.DisplayAlertAsync("Alert", "Dark", "Ok");
-            //Theme = !Theme;
+            Theme = !Theme;
             _settings.ThemeSet = _settings.ChangeTheme(Theme);
             return Task.CompletedTask;
         }
