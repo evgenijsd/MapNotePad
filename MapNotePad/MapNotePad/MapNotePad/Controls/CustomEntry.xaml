@@ -28,7 +28,7 @@
                      HeightRequest="24"
                      WidthRequest="24"
                      Aspect="Fill"
-                     Margin="0,12,0,12"
+                     Margin="0,11,0,11"
                      HorizontalOptions="End"
                      BackgroundColor="Transparent"/>
     </StackLayout>

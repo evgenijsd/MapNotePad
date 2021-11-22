@@ -92,6 +92,7 @@
   <ItemGroup>
     <None Remove="Naxam.BottomTabbedPage" />
     <None Remove="Resources\MapStyle.json" />
+    <None Remove="XamTop.ContextMenu" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\MapStyle.json" />

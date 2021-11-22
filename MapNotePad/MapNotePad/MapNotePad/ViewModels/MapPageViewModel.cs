@@ -145,7 +145,6 @@ namespace MapNotePad.ViewModels
             if (parameters.ContainsKey("UserId"))
             {
                 int id = parameters.GetValue<int>("UserId");
-                //_dialogs.DisplayAlertAsync("Alert", $"{id}", "Ok");
                 UserId = id;
                 IsViewPin = false;
                 var pinviews = await _mapService.GetPinsViewAsync(UserId);
@@ -185,12 +184,9 @@ namespace MapNotePad.ViewModels
             IsViewPin = true;
             IsViewSearch = false;
             if (ForecastViews != null) ForecastViews.Clear();
-            //_dialogs.DisplayAlertAsync("Alert", $"{args.Pin.Position.Latitude}", "Ok");
-            //return await _navigationService.NavigateAsync($"{nameof(Register)}");
             var forecastData = await _mapService.GetForecast(Pin.Position.Latitude, Pin.Position.Longitude);
             DateTime data = DateTime.Now;
             _settings.Language((LangType)_settings.LangSet);
-            //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             for (int i = 0; i < 4; i++)
             {
                 ForecastViews.Add(new ForecastView
@@ -204,10 +200,8 @@ namespace MapNotePad.ViewModels
         }
         private Task OnMapClickedCommandAsync(MapClickedEventArgs args)
         {
-            //await _dialogs.DisplayAlertAsync("Alert", $"{args.Point.Latitude}", "Ok");
             IsViewPin = false;
             IsViewSearch = false;
-            //return await _navigationService.NavigateAsync($"{nameof(Register)}");
             return Task.CompletedTask;
         }
         private async Task OnGeoLocCommandAsync()
@@ -264,16 +258,11 @@ namespace MapNotePad.ViewModels
                 IsViewSearch = false;
                 ListViewHeight = new GridLength(0);
             }
-            //ListViewGrid = new GridLength(SearchPins.Count, GridUnitType.Star);
         }
 
         private Task OnTapShowCommandAsync(SearchView pin)
         {
-            //Pin = args.Pin;
-            //IsViewPin = true;
-            //await _dialogs.DisplayAlertAsync("Alert", $"{pin.Name}", "Ok");
             Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
-            //return await _navigationService.NavigateAsync($"{nameof(Register)}");
             return Task.CompletedTask;
         }
 
