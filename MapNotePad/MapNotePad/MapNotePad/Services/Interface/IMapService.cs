@@ -16,8 +16,9 @@ namespace MapNotePad.Services.Interface
         Task<ObservableCollection<PinView>> GetPinsViewAsync(int userId);
         void SetPinsFavouriteAsync(ObservableCollection<Pin> pins, ObservableCollection<PinView> pinviews);
         Task SetPinsAsync(ObservableCollection<Pin> pins, int userId);
-        public Task<int> SetPinsFavourite(PinModel pin);
-        public Task<WeatherData> GetWeather(double latitude, double longitude);
-        public Task<ForecastData> GetForecast(double latitude, double longitude);
+        Task<int> SetPinsFavourite(PinModel pin);
+        Task<WeatherData> GetWeather(double latitude, double longitude);
+        Task<ForecastData> GetForecast(double latitude, double longitude);
+        Task<MapSpan> CurrentLocation(MapSpan region);
     }
 }

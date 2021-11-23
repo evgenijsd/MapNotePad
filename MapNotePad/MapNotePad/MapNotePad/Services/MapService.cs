@@ -3,6 +3,7 @@ using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
 using MapNotePad.Services.Repository;
+using Plugin.Geolocator;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -94,6 +95,24 @@ namespace MapNotePad.Services
             return result;
         }
 
+        public async Task<MapSpan> CurrentLocation(MapSpan region)
+        {
+            try
+            {
+                var locator = CrossGeolocator.Current;
+                locator.DesiredAccuracy = 10000;
+                var position = await locator.GetPositionAsync(new TimeSpan(0, 0, 5));
+                region = MapSpan.FromCenterAndRadius(
+                             new Position(position.Latitude, position.Longitude),
+                             Distance.FromKilometers(100));
+            }
+            catch (Exception ex)
+            {
+                //await _dialogs.DisplayAlertAsync("Alert", $"{ex}", "Ok");
+            }
+            return region;
+        }
+
         //api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
         public async Task<ForecastData> GetForecast(double latitude, double longitude)
         {
@@ -119,6 +138,8 @@ namespace MapNotePad.Services
             WeatherData weatherData = await _restService.GetWeatherData(requestUri);//https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&units=metric&appid=6a13cd8fbbd77a77ff4666d8b6ac1336"
             return weatherData;
         }
+
+
 
         #region -- Public properties --
         #endregion

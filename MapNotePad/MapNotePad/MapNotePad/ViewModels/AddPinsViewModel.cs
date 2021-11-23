@@ -214,9 +214,6 @@ namespace MapNotePad.ViewModels
             {
                 await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, Resources.Resource.IncorrectLongitude, Resources.Resource.Ok);
             }
-
-            //var p = new NavigationParameters { { "Pin", pin } };
-            //await _navigationService.GoBackAsync(p);
         }
 
         private async Task OnGeoLocCommandAsync()

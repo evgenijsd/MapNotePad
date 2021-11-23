@@ -73,12 +73,7 @@ namespace MapNotePad.ViewModels
             get => _search;
             set => SetProperty(ref _search, value);
         }
-        private GridLength _pinClicked = 0;
-        public GridLength PinClicked
-        {
-            get => _pinClicked;
-            set => SetProperty(ref _pinClicked, value);
-        }
+
         private bool _isViewPin = false;
         public bool IsViewPin
         {
@@ -168,7 +163,7 @@ namespace MapNotePad.ViewModels
                         IsViewButton = false;
                         IsViewPin = false;
                     }
-                    else IsViewButton = true;
+                    else if (!IsViewPin) IsViewButton = true;
                     break;
                 default:
                     break;
@@ -206,20 +201,7 @@ namespace MapNotePad.ViewModels
         }
         private async Task OnGeoLocCommandAsync()
         {
-            PinClicked = new GridLength(0);
-            try
-            {
-                var locator = CrossGeolocator.Current;
-                locator.DesiredAccuracy = 10000;
-                var position = await locator.GetPositionAsync(new TimeSpan(0, 0, 5));
-                Region = MapSpan.FromCenterAndRadius(
-                             new Position(position.Latitude, position.Longitude),
-                             Distance.FromKilometers(100));
-            }
-            catch (Exception ex)
-            {
-                await _dialogs.DisplayAlertAsync("Alert", $"{ex}", "Ok");
-            }
+            Region = await _mapService.CurrentLocation(Region);
         }
 
         private void OnSearchTextCommandAsync()
