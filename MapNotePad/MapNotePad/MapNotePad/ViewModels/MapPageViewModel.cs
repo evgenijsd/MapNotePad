@@ -1,6 +1,9 @@
-﻿using MapNotePad.Helpers;
+﻿using Acr.UserDialogs;
+using MapNotePad.Enum;
+using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
+using MapNotePad.Views;
 using Plugin.Geolocator;
 using Prism.Navigation;
 using Prism.Services;
@@ -15,15 +18,20 @@ using Xamarin.Forms.GoogleMaps;
 
 namespace MapNotePad.ViewModels
 {
-    public class MapPageViewModel : BaseContentPage, INavigationAware
+    public class MapPageViewModel : BaseViewModel
     {
         private IPageDialogService _dialogs { get; }
         private IMapService _mapService { get; set; }
+        private IAuthentication _authentication { get; }
+        private ISettings _settings;
 
-        public MapPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService) : base(navigationService)
+        public MapPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService, IAuthentication authentication, ISettings settings) : base(navigationService)
         {
             _dialogs = dialogs;
             _mapService = mapService;
+            _authentication = authentication;
+            _settings = settings;
+            _settings.Language((LangType)_settings.LangSet);
         }
 
 
@@ -95,31 +103,48 @@ namespace MapNotePad.ViewModels
             get => _region;
             set => SetProperty(ref _region, value);
         }
+        private GridLength _listViewHeight;
+        public GridLength ListViewHeight
+        {
+            get => _listViewHeight;
+            set => SetProperty(ref _listViewHeight, value);
+        }
 
+        private ObservableCollection<ForecastView> _forecastViews = new();
+        public ObservableCollection<ForecastView> ForecastViews
+        {
+            get => _forecastViews;
+            set => SetProperty(ref _forecastViews, value);
+        }
+
+        private ICommand _settingsCommand;
+        public ICommand SettingsCommand => _settingsCommand ??= SingleExecutionCommand.FromFunc(OnSettingsCommandAsync);
+        private ICommand _exitCommand;
+        public ICommand ExitCommand => _exitCommand ??= SingleExecutionCommand.FromFunc(OnExitCommandAsync);
         private ICommand _GeoLocCommand;
         public ICommand GeoLocCommand => _GeoLocCommand ??= SingleExecutionCommand.FromFunc(OnGeoLocCommandAsync);
         private ICommand _PinClickedCommand;
         public ICommand PinClickedCommand => _PinClickedCommand ??= SingleExecutionCommand.FromFunc<PinClickedEventArgs>(OnPinClickedCommandAsync);
         private ICommand _MapClickedCommand;
         public ICommand MapClickedCommand => _MapClickedCommand ??= SingleExecutionCommand.FromFunc<MapClickedEventArgs>(OnMapClickedCommandAsync);
-        private ICommand _SearchTextCommand;
-        public ICommand SearchTextCommand => _SearchTextCommand ??= SingleExecutionCommand.FromFunc(OnSearchTextCommandAsync);
+        public ICommand SearchTextCommand => new Command(OnSearchTextCommandAsync);
         private ICommand _TapShowCommand;
         public ICommand TapShowCommand => _TapShowCommand ??= SingleExecutionCommand.FromFunc<SearchView>(OnTapShowCommandAsync);
 
         #endregion
         #region -- InterfaceName implementation --
-        public void OnNavigatedFrom(INavigationParameters parameters)
+        #endregion
+        #region -- Overrides --
+        public override void OnNavigatedFrom(INavigationParameters parameters)
         {
             parameters.Add(nameof(this.UserId), this.UserId);
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.ContainsKey("UserId"))
             {
                 int id = parameters.GetValue<int>("UserId");
-                //_dialogs.DisplayAlertAsync("Alert", $"{id}", "Ok");
                 UserId = id;
                 IsViewPin = false;
                 var pinviews = await _mapService.GetPinsViewAsync(UserId);
@@ -127,8 +152,6 @@ namespace MapNotePad.ViewModels
                 _mapService.SetPinsFavouriteAsync(Pins, pinviews);
             }
         }
-        #endregion
-        #region -- Overrides --
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
@@ -155,47 +178,51 @@ namespace MapNotePad.ViewModels
         #region -- Public helpers --
         #endregion
         #region -- Private helpers --
-        private Task OnPinClickedCommandAsync(PinClickedEventArgs args)
+        private async Task OnPinClickedCommandAsync(PinClickedEventArgs args)
         {
             Pin = args.Pin;
             IsViewPin = true;
             IsViewSearch = false;
-            //_dialogs.DisplayAlertAsync("Alert", $"{args.Pin.Position.Latitude}", "Ok");
-            //return await _navigationService.NavigateAsync($"{nameof(Register)}");
-            return Task.CompletedTask;
+            if (ForecastViews != null) ForecastViews.Clear();
+            var forecastData = await _mapService.GetForecast(Pin.Position.Latitude, Pin.Position.Longitude);
+            DateTime data = DateTime.Now;
+            _settings.Language((LangType)_settings.LangSet);
+            for (int i = 0; i < 4; i++)
+            {
+                ForecastViews.Add(new ForecastView
+                {
+                    Day = data.AddDays(i).ToString("ddd"),
+                    Image = $"ic_{forecastData.Daily[i].Weather[0].Icon}.png",
+                    TempMin = $"{(int)forecastData.Daily[i].Temperature.Min}°",
+                    TempMax = $"{(int)forecastData.Daily[i].Temperature.Max}°"
+                });
+            }
         }
         private Task OnMapClickedCommandAsync(MapClickedEventArgs args)
         {
-            //await _dialogs.DisplayAlertAsync("Alert", $"{args.Point.Latitude}", "Ok");
             IsViewPin = false;
             IsViewSearch = false;
-            //return await _navigationService.NavigateAsync($"{nameof(Register)}");
             return Task.CompletedTask;
         }
-        private Task OnGeoLocCommandAsync()
+        private async Task OnGeoLocCommandAsync()
         {
-            Task.Run(async () =>
+            PinClicked = new GridLength(0);
+            try
             {
-                PinClicked = new GridLength(0);
-                IsViewPin = true;
-                try
-                {
-                    var locator = CrossGeolocator.Current;
-                    locator.DesiredAccuracy = 10000;
-                    var position = await locator.GetPositionAsync(new TimeSpan(0, 0, 5));
-                    Region = MapSpan.FromCenterAndRadius(
-                                 new Position(position.Latitude, position.Longitude),
-                                 Distance.FromKilometers(500));
-                }
-                catch (Exception ex)
-                {
-                    await _dialogs.DisplayAlertAsync("Alert", $"{ex}", "Ok");
-                }
-            });
-            return Task.CompletedTask;
+                var locator = CrossGeolocator.Current;
+                locator.DesiredAccuracy = 10000;
+                var position = await locator.GetPositionAsync(new TimeSpan(0, 0, 5));
+                Region = MapSpan.FromCenterAndRadius(
+                             new Position(position.Latitude, position.Longitude),
+                             Distance.FromKilometers(100));
+            }
+            catch (Exception ex)
+            {
+                await _dialogs.DisplayAlertAsync("Alert", $"{ex}", "Ok");
+            }
         }
 
-        private Task OnSearchTextCommandAsync()
+        private void OnSearchTextCommandAsync()
         {
             SearchPins = new ObservableCollection<SearchView>();
             if (!string.IsNullOrEmpty(SearchText))
@@ -215,21 +242,52 @@ namespace MapNotePad.ViewModels
                     SearchPins.Add(search);
                 }
 
-                if (SearchPins.Count == 0 && SearchText.Length > 0) _dialogs.DisplayAlertAsync("Alert", $"Not Found \"{SearchText}\"", "Ok");
+                if (SearchPins.Count == 0 && SearchText.Length > 0)
+                {
+                    _dialogs.DisplayAlertAsync("Alert", $"Not Found \"{SearchText}\"", "Ok");
+                    ListViewHeight = new GridLength(0);
+                    IsViewSearch = false;
+                }
+                else
+                {
+                    ListViewHeight = new GridLength(SearchPins.Count * 70);
+                }
             }
-            else IsViewSearch = false;
-            //ListViewGrid = new GridLength(SearchPins.Count, GridUnitType.Star);
-            return Task.CompletedTask;
+            else
+            {
+                IsViewSearch = false;
+                ListViewHeight = new GridLength(0);
+            }
         }
 
         private Task OnTapShowCommandAsync(SearchView pin)
         {
-            //Pin = args.Pin;
-            //IsViewPin = true;
-            //await _dialogs.DisplayAlertAsync("Alert", $"{pin.Name}", "Ok");
             Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
-            //return await _navigationService.NavigateAsync($"{nameof(Register)}");
             return Task.CompletedTask;
+        }
+
+        private async Task OnSettingsCommandAsync()
+        {
+            
+                await _navigationService.NavigateAsync($"{nameof(SettingsPage)}");
+            
+        }
+        private async Task OnExitCommandAsync()
+        {
+            var confirmConfig = new ConfirmConfig()
+            {
+                Message = Resources.Resource.ExitUser,
+                OkText = Resources.Resource.Exit,
+                CancelText = Resources.Resource.Cancel
+            };
+            var confirm = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
+            if (confirm)
+            {
+                _authentication.UserId = 0;
+                await _navigationService.NavigateAsync($"{nameof(StartPage)}");
+            }
+
+
         }
 
         #endregion

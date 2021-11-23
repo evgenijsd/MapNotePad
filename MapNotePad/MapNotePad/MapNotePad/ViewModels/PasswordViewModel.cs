@@ -6,11 +6,12 @@ using Prism.Navigation;
 using Prism.Services;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Forms;
 using static MapNotePad.Enum.CheckType;
 
 namespace MapNotePad.ViewModels
 {
-    public class PasswordViewModel : BaseContentPage, INavigationAware, IInitialize
+    public class PasswordViewModel : BaseViewModel
     {
         private IPageDialogService _dialogs { get; }
         private IRegistration _registration;
@@ -34,6 +35,12 @@ namespace MapNotePad.ViewModels
             get => _confirmPassword;
             set => SetProperty(ref _confirmPassword, value);
         }
+        private bool _isMismatchPassword = false;
+        public bool IsMismatchPassword
+        {
+            get => _isMismatchPassword;
+            set => SetProperty(ref _isMismatchPassword, value);
+        }
         private Users _user;
         public Users User
         {
@@ -41,32 +48,27 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _user, value);
         }
 
+        private ICommand _goBackCommand;
+        public ICommand GoBackCommand => _goBackCommand ??= SingleExecutionCommand.FromFunc(OnGoBackCommandAsync);
         private ICommand _LogInCommand;
         public ICommand LogInCommand => _LogInCommand ??= SingleExecutionCommand.FromFunc(OnLogInCommandAsync);
         private ICommand _GoogleMainCommand;
         public ICommand GoogleMainCommand => _GoogleMainCommand ??= SingleExecutionCommand.FromFunc(OnGoogleMainCommandAsync);
+        public ICommand ErrorCommand => new Command(OnErrorCommandAsync);
         #endregion
         #region -- InterfaceName implementation --
-        public void Initialize(INavigationParameters parameters)
-        {
-            
-        }
-
         #endregion
         #region -- Overrides --
-        #endregion
-        #region -- Public helpers --
-        public void OnNavigatedFrom(INavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.ContainsKey("User"))
             {
                 User = parameters.GetValue<Users>("User");
             }
         }
+        #endregion
+        #region -- Public helpers --
+
         #endregion
         #region -- Private helpers --
         private async Task OnLogInCommandAsync()
@@ -102,8 +104,14 @@ namespace MapNotePad.ViewModels
             _navigationService.NavigateAsync("StartPage");
             return Task.CompletedTask;
         }
-
-
+        private async Task OnGoBackCommandAsync()
+        {
+            await _navigationService.GoBackAsync();
+        }
+        private void OnErrorCommandAsync()
+        {
+            IsMismatchPassword = !string.IsNullOrEmpty(Password) && _registration.CheckTheCorrectPassword(Password, ConfirmPassword) == (int)CheckEnter.PasswordsNotEqual;
+        }
 
         #endregion
     }

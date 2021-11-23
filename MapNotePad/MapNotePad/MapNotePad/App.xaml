@@ -2,87 +2,155 @@
 <prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
+             xmlns:controls="clr-namespace:MapNotePad.Controls"
              x:Class="MapNotePad.App">
     <prism:PrismApplication.Resources>
 
-        <Color x:Key="PrimaryColor">#495CDD</Color>
+        <Color x:Key="PrimaryColor">#596EFB</Color>
         <Color x:Key="AccentColor">#E65B30</Color>
         <Color x:Key="TextColor">White</Color>
         <Color x:Key="ButtonTextColor">Black</Color>
         <Color x:Key="ContentPrimaryColor">White</Color>
-        <Color x:Key="ContentTextColor">Black</Color>
-        <Color x:Key="ContentPlaceholderColor">LightGray</Color>
+        <Color x:Key="ContentTextColor">#D7DDE8</Color>
+        <Color x:Key="LineColor">#D7DDE8</Color>
 
         <Color x:Key="TransparentColor">Transparent</Color>
 
         <!-- Light colors -->
+        <Color x:Key="LightPrimaryColor">#495CDD</Color>
         <Color x:Key="LightPageBackgroundColor">White</Color>
-        <Color x:Key="LightNavigationBarColor">WhiteSmoke</Color>
-        <Color x:Key="LightPrimaryColor">WhiteSmoke</Color>
-        <Color x:Key="LightSecondaryColor">Black</Color>
-        <Color x:Key="LightPrimaryTextColor">Black</Color>
-        <Color x:Key="LightSecondaryTextColor">White</Color>
-        <Color x:Key="LightTertiaryTextColor">Gray</Color>
+        <Color x:Key="LightDisabledColor">#C7CDF5</Color>
+        <Color x:Key="LightFocusedColor">#273BC6</Color>
+        <Color x:Key="LightPressedColor">#192680</Color>
+        <Color x:Key="LightVariantColor">#F1F3FD</Color>
+        <Color x:Key="LightErrorColor">#F24545</Color>
+        <Color x:Key="LightConfirmColor">#F6EA62</Color>
+        <Color x:Key="LightSuccesColor">#32D27F</Color>
+        <Color x:Key="LightTextPrimaryColor">#1E242B</Color>
+        <Color x:Key="LightTextSecondaryColor">DarkGray</Color>
+        <Color x:Key="LightPlaceholderColor">#858E9E</Color>
+        <Color x:Key="LightLineColor">#D7DDE8</Color>
 
         <!-- Dark colors -->
+        <Color x:Key="DarkPrimaryColor">#7485FB</Color>
         <Color x:Key="DarkPageBackgroundColor">Black</Color>
-        <Color x:Key="DarkNavigationBarColor">Teal</Color>
-        <Color x:Key="DarkPrimaryColor">Teal</Color>
-        <Color x:Key="DarkSecondaryColor">White</Color>
-        <Color x:Key="DarkPrimaryTextColor">White</Color>
-        <Color x:Key="DarkSecondaryTextColor">White</Color>
-        <Color x:Key="DarkTertiaryTextColor">Gray</Color>
+        <Color x:Key="DarkDisabledColor">#3D4475</Color>
+        <Color x:Key="DarkFocusedColor">#5F73FA</Color>
+        <Color x:Key="DarkPressedColor">#3953FE</Color>
+        <Color x:Key="DarkVariantColor">#33374E</Color>
+        <Color x:Key="DarkErrorColor">#FA545F</Color>
+        <Color x:Key="DarkConfirmColor">#F8FD4D</Color>
+        <Color x:Key="DarkSuccesColor">#00FFB1</Color>
+        <Color x:Key="DarkTextPrimaryColor">White</Color>
+        <Color x:Key="DarkTextSecondaryColor">White</Color>
+        <Color x:Key="DarkPlaceholderColor">#858E9E</Color>
+        <Color x:Key="DarkLineColor">#858E9E</Color>
 
-        <Style TargetType="NavigationPage">
-            <Setter Property="BarBackgroundColor" 
-                    Value="{AppThemeBinding Light={StaticResource TransparentColor}, Dark={StaticResource DarkNavigationBarColor}}" />
-            <Setter Property="BarTextColor"
-                    Value="{AppThemeBinding Light={StaticResource PrimaryColor}, Dark={StaticResource DarkSecondaryColor}}" />
-            <Setter Property="MinimumHeightRequest" Value="150"/>
+        <Style x:Key="baseLabel" TargetType="Label">
+            <Setter Property="TextColor" 
+                    Value="{AppThemeBinding Light={StaticResource LightTextPrimaryColor}, Dark={StaticResource DarkTextPrimaryColor}}" />
+            <Setter Property="FontFamily" Value="Monserrat"/>
         </Style>
 
-        <Style x:Key="LabelStyle"
-               TargetType="Label">
-            <Setter Property="TextColor"
-                    Value="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}" />
+        <Style x:Key="secondLabel" TargetType="Label">
+            <Setter Property="TextColor" 
+                    Value="{AppThemeBinding Light={StaticResource LightTextSecondaryColor}, Dark={StaticResource DarkTextSecondaryColor}}" />
+            <Setter Property="FontFamily" Value="Monserrat"/>
+        </Style>
+        <Style x:Key="errorLabel" TargetType="Label">
+            <Setter Property="TextColor" 
+                    Value="{AppThemeBinding Light={StaticResource LightErrorColor}, Dark={StaticResource DarkErrorColor}}" />
+            <Setter Property="FontFamily" Value="Monserrat"/>
+        </Style>
+        <Style x:Key="lineLabel" TargetType="Label">
+            <Setter Property="TextColor" 
+                    Value="{AppThemeBinding Light={StaticResource LightLineColor}, Dark={StaticResource DarkLineColor}}" />
+            <Setter Property="FontFamily" Value="Monserrat"/>
+        </Style>
+        <Style x:Key="lineBox" TargetType="BoxView">
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightLineColor}, Dark={StaticResource DarkLineColor}}" />
+            <Setter Property="HeightRequest" Value="1"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            <Setter Property="Margin" Value="0,2,0,0"/>
         </Style>
 
-        <Style x:Key="PickerStyle"
-               TargetType="Picker">
-            <Setter Property="TextColor"
-                    Value="{AppThemeBinding Light={StaticResource LightTertiaryTextColor}, Dark={StaticResource DarkTertiaryTextColor}}" />
-            <Setter Property="TitleColor"
-                    Value="{AppThemeBinding Light={StaticResource LightTertiaryTextColor}, Dark={StaticResource DarkTertiaryTextColor}}" />
+        <Style x:Key="baseMapLabel" TargetType="Label">
+            <Setter Property="TextColor" 
+                    Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}" />
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="FontFamily" Value="Monserrat"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="FontSize" Value="27"/>
         </Style>
 
-        <Style x:Key="EntryStyle"
-               TargetType="Entry">
+        <Style x:Key="baseEntry" TargetType="Entry">
             <Setter Property="TextColor"
-                    Value="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}" />
+                    Value="{AppThemeBinding Light={StaticResource LightTextPrimaryColor}, Dark={StaticResource DarkTextPrimaryColor}}" />
             <Setter Property="PlaceholderColor"
-                    Value="{AppThemeBinding Light={StaticResource LightTertiaryTextColor}, Dark={StaticResource DarkTertiaryTextColor}}" />
+                    Value="{AppThemeBinding Light={StaticResource LightPlaceholderColor}, Dark={StaticResource DarkPlaceholderColor}}" />
         </Style>
 
-        <Style x:Key="RadioStyle"
-               TargetType="RadioButton">
-            <Setter Property="TextColor"
-                    Value="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}" />
-            <Setter Property="BackgroundColor"
-                    Value="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPrimaryColor}}" />
 
-        </Style>
-
-        <Style TargetType="Button">
-            <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
+        <Style x:Key="baseButton" TargetType="Button">
+            <Setter Property="BackgroundColor" 
+                    Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"/>
             <Setter Property="TextColor" Value="{StaticResource TextColor}" />
-            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Monserrat"/>
         </Style>
-        <Style x:Key="buttonStyle" TargetType="Button">
-            <Setter Property="TextColor" Value="{StaticResource PrimaryColor}" />
+        
+        <Style x:Key="inverseButtonStyle" TargetType="Button">
+            <Setter Property="TextColor" 
+                    Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"/>
             <Setter Property="BackgroundColor" Value="{StaticResource TransparentColor}" />
-            <Setter Property="BorderWidth" Value="2"/>
-            <Setter Property="BorderColor" Value="{StaticResource PrimaryColor}"/>
-            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="BorderWidth" Value="1"/>
+            <Setter Property="BorderColor" 
+                    Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Monserrat"/>
         </Style>
+        <Style x:Key="gButton" TargetType="ImageButton">
+            <Setter Property="BackgroundColor" Value="Transparent"/>
+            <Setter Property="HeightRequest" Value="50"/>
+            <Setter Property="WidthRequest" Value="50"/>
+            <Setter Property="Aspect" Value="AspectFit"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderWidth" Value="1"/>
+            <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource LightLineColor}, Dark={StaticResource DarkLineColor}}"/>
+        </Style>
+
+        <Style TargetType="controls:CustomEntry">
+            <Setter Property="ClearImageSource" Value="ic_clear.png" />
+            <Setter Property="EyeOnImageSource" Value="ic_eye.png" />
+            <Setter Property="EyeOffImageSource" Value="ic_eye_off.png" />
+            <Setter Property="HasShadow" Value="False" />
+            <Setter Property="FontFamily" Value="Montserrat" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightTextPrimaryColor}, Dark={StaticResource DarkTextPrimaryColor}}" />
+            <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource LightPlaceholderColor}, Dark={StaticResource DarkPlaceholderColor}}" />
+            <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource LightLineColor}, Dark={StaticResource DarkLineColor}}" />
+            <Setter Property="BackgroundColor" Value="{StaticResource TransparentColor}" />
+            <Setter Property="Padding" Value="10,0,10,0"/>
+            <Setter Property="HeightRequest" Value="45" />
+        </Style>
+        
+        <Style TargetType="controls:CustomSearchBar">
+            <Setter Property="LeftImageSource" Value="ic_settings.png" />
+            <Setter Property="RightImageSource" Value="ic_exid.png" />
+            <Setter Property="GoBackImageSource" Value="ic_left_blue.png" />
+            <Setter Property="ClearImageSource" Value="ic_clear.png" />
+            <Setter Property="FontFamily" Value="Montserrat" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightTextPrimaryColor}, Dark={StaticResource DarkTextPrimaryColor}}" />
+            <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource LightPlaceholderColor}, Dark={StaticResource DarkPlaceholderColor}}" />
+            <Setter Property="EntryBackgroundColor" Value="{AppThemeBinding Light={StaticResource LightVariantColor}, Dark={StaticResource DarkVariantColor}}" />
+            <Setter Property="BackgroundColor" Value="{StaticResource TransparentColor}" />
+        </Style>
+        <Style TargetType="controls:CustomToolBar">
+            <Setter Property="FontFamily" Value="Montserrat" />
+            <Setter Property="TitleColor" Value="{AppThemeBinding Light={StaticResource LightTextPrimaryColor}, Dark={StaticResource DarkTextPrimaryColor}}" />
+        </Style>
+
     </prism:PrismApplication.Resources>
 </prism:PrismApplication>

@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:local="clr-namespace:MapNotePad.Controls" 
+             xmlns:Behaviors="http://prismlibrary.com"
+             x:Class="MapNotePad.Controls.CustomSearchBar"
+             x:Name="customSearchBar">
+  <ContentView.Content>
+        <StackLayout Spacing="0">
+            <StackLayout Orientation="Horizontal"
+                         Spacing="0"
+                         Padding="5, 0, 5, 0"
+                         Margin="11">
+                
+                <ImageButton HorizontalOptions="Start"
+                             WidthRequest="30"
+                             HeightRequest="30"
+                             BackgroundColor="Transparent"
+                             Source="{Binding LeftImageSource, Source={x:Reference customSearchBar}}"
+                             Command="{Binding LeftButtonCommand, Source={x:Reference customSearchBar}}">
+                    <ImageButton.Triggers>
+                        <DataTrigger TargetType="ImageButton"
+                                     Binding="{Binding IsShowList, Source={x:Reference customSearchBar}}"
+                                     Value="True">
+                            <Setter Property="IsVisible"
+                                    Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="ImageButton"
+                                     Binding="{Binding IsShowList, Source={x:Reference customSearchBar}}"
+                                     Value="False">
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </DataTrigger>
+                    </ImageButton.Triggers>
+                </ImageButton>
+                
+                <ImageButton HorizontalOptions="Start"
+                             WidthRequest="30"
+                             HeightRequest="30"
+                             BackgroundColor="Transparent"
+                             Source="{Binding GoBackImageSource, Source={x:Reference customSearchBar}}"
+                             Command="{Binding GoBackButtonCommand, Source={x:Reference customSearchBar}}">
+                    <ImageButton.Triggers>
+                        <DataTrigger TargetType="ImageButton"
+                                     Binding="{Binding IsShowList, Source={x:Reference customSearchBar}}"
+                                     Value="True">
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="ImageButton"
+                                     Binding="{Binding IsShowList, Source={x:Reference customSearchBar}}"
+                                     Value="False">
+                            <Setter Property="IsVisible"
+                                    Value="False"/>
+                        </DataTrigger>
+                    </ImageButton.Triggers>
+                </ImageButton>
+
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="FillAndExpand"
+                             Margin="12, 0, 12, 0"
+                             Padding="11, 0, 11, 0"
+                             BackgroundColor="{Binding EntryBackgroundColor, Source={x:Reference customSearchBar}}">
+                    <local:CustomNoBorderEntry Text="{Binding Text, Source={x:Reference customSearchBar}}"
+                                               TextColor="{Binding TextColor, Source={x:Reference customSearchBar}}"
+                                               Placeholder="{Binding Placeholder, Source={x:Reference customSearchBar}}" 
+                                               PlaceholderColor="{Binding PlaceholderColor, Source={x:Reference customSearchBar}}" 
+                                               BackgroundColor="{Binding EntryBackgroundColor, Source={x:Reference customSearchBar}}"
+                                               HorizontalOptions="FillAndExpand">
+                        <local:CustomNoBorderEntry.Behaviors>
+                            <Behaviors:EventToCommandBehavior Command="{Binding TextChangedCommand, Source={x:Reference customSearchBar}}" EventName="TextChanged"/>
+                            <Behaviors:EventToCommandBehavior Command="{Binding FocusedCommand, Source={x:Reference customSearchBar}}" EventName="Focused"/>
+                        </local:CustomNoBorderEntry.Behaviors>
+                    </local:CustomNoBorderEntry>
+
+                    <ImageButton Source="{Binding ClearImageSource, Source={x:Reference customSearchBar}}"
+                                 Command="{Binding ClearButtonCommand, Source={x:Reference customSearchBar}}"
+                                 HeightRequest="24"
+                                 WidthRequest="24"
+                                 Aspect="Fill"
+                                 HorizontalOptions="End"
+                                 BackgroundColor="Transparent"
+                                 Margin="0,9,0,9">
+                        <ImageButton.Triggers>
+                            <DataTrigger TargetType="ImageButton" 
+                                         Binding="{Binding IsShowList, Source={x:Reference customSearchBar}}"
+                                         Value="True">
+                                <Setter Property="IsVisible"
+                                        Value="True"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="ImageButton" 
+                                         Binding="{Binding IsShowList, Source={x:Reference customSearchBar}}"
+                                         Value="False">
+                                <Setter Property="IsVisible" 
+                                        Value="False"/>
+                            </DataTrigger>
+                        </ImageButton.Triggers>
+                    </ImageButton>
+                </StackLayout>
+
+                <ImageButton Source="{Binding RightImageSource, Source={x:Reference customSearchBar}}"
+                             Command="{Binding RightButtonCommand, Source={x:Reference customSearchBar}}"
+                             HorizontalOptions="End"
+                             WidthRequest="30"
+                             HeightRequest="30"
+                             BackgroundColor="Transparent">
+                    <ImageButton.Triggers>
+                        <DataTrigger TargetType="ImageButton" 
+                                     Binding="{Binding IsShowList, Source={x:Reference customSearchBar}}"
+                                     Value="True">
+                            <Setter Property="IsVisible" 
+                                    Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="ImageButton" 
+                                     Binding="{Binding IsShowList, Source={x:Reference customSearchBar}}"
+                                     Value="False">
+                            <Setter Property="IsVisible" 
+                                    Value="True"/>
+                        </DataTrigger>
+                    </ImageButton.Triggers>
+                </ImageButton>
+            </StackLayout>
+            <BoxView BackgroundColor="{Binding LineColor, Source={x:Reference customSearchBar}}"
+                     HeightRequest="1"/>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

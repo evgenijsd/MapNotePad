@@ -1,4 +1,5 @@
 ﻿using MapNotePad.Enum;
+using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
 using MapNotePad.Services.Repository;
@@ -16,10 +17,12 @@ namespace MapNotePad.Services
     public class MapService : IMapService
     {
         private IRepository _repository { get; }
+        RestService _restService { get; }
 
-        public MapService(IRepository repository)
+        public MapService(IRepository repository, RestService restService)
         {
             _repository = repository;
+            _restService = restService;
         }
 
         public async Task DeletePinAsync(ObservableCollection<PinView> collectPin, object pintObj)
@@ -91,7 +94,31 @@ namespace MapNotePad.Services
             return result;
         }
 
+        //api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
+        public async Task<ForecastData> GetForecast(double latitude, double longitude)
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            string requestUri = AppConstants.OpenWeatherMapEndpoint;
+            requestUri += $"?lat={latitude}";
+            requestUri += $"&lon={longitude}";
+            requestUri += "&exclude=minutely,hourly,alerts,current";
+            requestUri += "&units=metric"; 
+            requestUri += $"&appid={AppConstants.OpenWeatherMapAPIKey}";
+            ForecastData forecastData = await _restService.GetForecastData(requestUri);//https://api.openweathermap.org/data/2.5/onecall?lat=12&lon=12&exclude=minutely,hourly,alerts,current&units=metric&appid=6a13cd8fbbd77a77ff4666d8b6ac1336
+            return forecastData;
+        }
 
+        public async Task<WeatherData> GetWeather(double latitude, double longitude)
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            string requestUri = AppConstants.OpenWeatherMapEndpoint;
+            requestUri += $"?lat={latitude}";
+            requestUri += $"&lon={longitude}";
+            requestUri += "&units=metric";
+            requestUri += $"&appid={AppConstants.OpenWeatherMapAPIKey}";
+            WeatherData weatherData = await _restService.GetWeatherData(requestUri);//https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&units=metric&appid=6a13cd8fbbd77a77ff4666d8b6ac1336"
+            return weatherData;
+        }
 
         #region -- Public properties --
         #endregion

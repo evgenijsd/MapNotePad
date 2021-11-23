@@ -12,28 +12,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace MapNotePad.ViewModels
 {
-    public class PinsPageViewModel : BaseContentPage, INavigationAware, IInitialize
+    public class PinsPageViewModel : BaseViewModel
     {
         private IMapService _mapService { get; set; }
+        private IAuthentication _authentication { get; }
 
         private IPageDialogService _dialogs { get; }
 
-        public PinsPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService) : base(navigationService)
+        public PinsPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService, IAuthentication authentication) : base(navigationService)
         {
             _dialogs = dialogs;
             _mapService = mapService;
-        }
-
-        public void Initialize(INavigationParameters parameters)
-        {
-            //await Task.Delay(TimeSpan.FromSeconds(0.1));
-            //await _dialogs.DisplayAlertAsync("Alert", $"{UserId}", "Ok");
-            
-            //var pins = await _mapService.GetPinsModelAsync();
-            //await _dialogs.DisplayAlertAsync("Alert", $"{pins.Count}", "Ok");
+            _authentication = authentication;
         }
 
         #region -- Public properties --
@@ -63,30 +57,35 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref this._userId, value);
         }
 
+        private ICommand _settingsCommand;
+        public ICommand SettingsCommand => _settingsCommand ??= SingleExecutionCommand.FromFunc(OnSettingsCommandAsync);
         private ICommand _AddPinCommand;
         public ICommand AddPinCommand => _AddPinCommand ??= SingleExecutionCommand.FromFunc(OnAddPinCommandAsync);
+        private ICommand _exitCommand;
+        public ICommand ExitCommand => _exitCommand ??= SingleExecutionCommand.FromFunc(OnExitCommandAsync);
         private ICommand _EditCommand;
         public ICommand EditCommand => _EditCommand ??= SingleExecutionCommand.FromFunc<object>(OnEditCommandAsync);
         private ICommand _DeleteCommand;
         public ICommand DeleteCommand => _DeleteCommand ??= SingleExecutionCommand.FromFunc<object>(OnDeleteCommandAsync);
-        private ICommand _SearchTextCommand;
-        public ICommand SearchTextCommand => _SearchTextCommand ??= SingleExecutionCommand.FromFunc(OnSearchTextCommandAsync);
+        public ICommand SearchTextCommand => new Command(OnSearchTextCommandAsync);
         private ICommand _FavouriteCommand;
         public ICommand FavouriteCommand => _FavouriteCommand ??= SingleExecutionCommand.FromFunc<object>(OnFavouriteCommandAsync);
         #endregion
         #region -- InterfaceName implementation --
-        public void OnNavigatedFrom(INavigationParameters parameters)
+        #endregion
+        #region -- Overrides --
+        public override void OnNavigatedFrom(INavigationParameters parameters)
         {
             parameters.Add(nameof(this.UserId), this.UserId);
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.ContainsKey("UserId"))
             {
                 int id = parameters.GetValue<int>("UserId");
                 UserId = id;
-                PinViews = await _mapService.GetPinsViewAsync(UserId); 
+                PinViews = await _mapService.GetPinsViewAsync(UserId);
                 foreach (PinView pin in PinViews)
                 {
                     pin.EditCommand = EditCommand;
@@ -95,8 +94,6 @@ namespace MapNotePad.ViewModels
                 PinSearch = PinViews;
             }
         }
-        #endregion
-        #region -- Overrides --
         #endregion
         #region -- Public helpers --
         #endregion
@@ -139,7 +136,7 @@ namespace MapNotePad.ViewModels
             //return Task.CompletedTask;
         }
 
-        private Task OnSearchTextCommandAsync()
+        private void OnSearchTextCommandAsync()
         {
             if (!string.IsNullOrEmpty(SearchText))
             {
@@ -149,7 +146,6 @@ namespace MapNotePad.ViewModels
             else
                 PinSearch = PinViews;
             //ListViewGrid = new GridLength(SearchPins.Count, GridUnitType.Star);
-            return Task.CompletedTask;
         }
 
         private async Task OnFavouriteCommandAsync(object args)
@@ -182,6 +178,30 @@ namespace MapNotePad.ViewModels
             }
         }
 
+        private async Task OnSettingsCommandAsync()
+        {
+
+            await _navigationService.NavigateAsync($"{nameof(SettingsPage)}");
+
+        }
+
+        private async Task OnExitCommandAsync()
+        {
+            var confirmConfig = new ConfirmConfig()
+            {
+                Message = Resources.Resource.ExitUser,
+                OkText = Resources.Resource.Exit,
+                CancelText = Resources.Resource.Cancel
+            };
+            var confirm = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
+            if (confirm)
+            {
+                _authentication.UserId = 0;
+                await _navigationService.NavigateAsync($"{nameof(StartPage)}");
+            }
+
+
+        }
         #endregion
     }
 }

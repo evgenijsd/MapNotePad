@@ -1,71 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<view:BaseContentPage  xmlns:view="clr-namespace:MapNotePad.Views" 
+                       xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:prism="http://prismlibrary.com"
+                       xmlns:controls="clr-namespace:MapNotePad.Controls"
+                       xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad"
+             prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MapNotePad.Views.PinsPage"
-             Title="Pins" IconImageSource="ic_pin.png">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Icon="ic_exid.png" Command="{prism:NavigateTo '/NavigationPage/StartPage'}" />
-    </ContentPage.ToolbarItems>
-    <ContentPage.Content>
-        <Grid>
+             Title="Pins" IconImageSource="ic_pin.png"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+
+    <view:BaseContentPage.Content>
+        <Grid RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
-            <StackLayout Grid.Row="0">
-                <SearchBar Placeholder="Search" Text="{Binding SearchText}" >
-                    <SearchBar.Behaviors>
-                        <prism:EventToCommandBehavior EventName="TextChanged" Command="{Binding SearchTextCommand}"/>
-                    </SearchBar.Behaviors>
-                </SearchBar>
-            </StackLayout>
-            
-            <ScrollView Grid.Row="1">
-                <StackLayout>
-                    <ListView x:Name="pinList" 
+
+            <controls:CustomSearchBar Grid.Row="0" LeftImageSource="ic_settings.png" RightImageSource="ic_exid.png"
+                                          Text="{Binding SearchText}"
+                                          Placeholder="Search"
+                                          LeftButtonCommand="{Binding SettingsCommand}"
+                                          RightButtonCommand="{Binding ExitCommand}"
+                                          LineColor="{StaticResource LineColor}"
+                                      TextChangedCommand="{Binding SearchTextCommand}"/>
+
+            <ScrollView Grid.Row="1" BackgroundColor="{StaticResource TransparentColor}">
+                    <ListView x:Name="pinList" BackgroundColor="{StaticResource TransparentColor}"
                           HasUnevenRows="True" 
                           ItemsSource="{Binding PinSearch}" >
-                        <ListView.Behaviors>
-                            <prism:EventToCommandBehavior EventName="ItemTapped" Command="{Binding PopUpCommand}" EventArgsParameterPath="Item"/>
-                        </ListView.Behaviors>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <ViewCell.ContextActions>
-                                        <MenuItem Text="Edit" Command="{Binding Path=EditCommand}" CommandParameter="{Binding}" />
-                                        <MenuItem Text="Del" Command="{Binding Path=DeleteCommand}" CommandParameter="{Binding}" />
-                                    </ViewCell.ContextActions>
-                                    <ViewCell.View>
-                                        <Grid>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                    <SwipeView>
+                                        <SwipeView.RightItems>
+                                            <SwipeItem IconImageSource="ic_delete.png" BackgroundColor="{StaticResource TransparentColor}"
+                                                           Command="{Binding Path=DeleteCommand}" CommandParameter="{Binding}" />
+                                            <SwipeItem IconImageSource="ic_edit.png" BackgroundColor="{StaticResource TransparentColor}"
+                                                           Command="{Binding Path=EditCommand}" CommandParameter="{Binding}" />
+                                        </SwipeView.RightItems>
+                                        <Grid BackgroundColor="{StaticResource TransparentColor}">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="2*" />
                                                 <ColumnDefinition Width="8*" />
                                             </Grid.ColumnDefinitions>
-                                            <StackLayout HeightRequest="80" HorizontalOptions="Fill">
-                                                <ImageButton Source="{Binding Image}" Command="{Binding Source={x:Reference pinList}, Path=BindingContext.FavouriteCommand}" CommandParameter="{Binding .}" HeightRequest="60" WidthRequest="60" HorizontalOptions="Center" Margin="10,15,0,0" Padding="12" CornerRadius="25"/>
+                                            <StackLayout HeightRequest="80" HorizontalOptions="Fill" BackgroundColor="{StaticResource TransparentColor}">
+                                                <ImageButton Source="{Binding Image}" BackgroundColor="Gray" Command="{Binding Source={x:Reference pinList}, Path=BindingContext.FavouriteCommand}" CommandParameter="{Binding .}" HeightRequest="60" WidthRequest="60" HorizontalOptions="Center" Margin="10,15,0,0" Padding="12" CornerRadius="5"/>
                                             </StackLayout>
-                                            <StackLayout Grid.Column="1" Margin="0,20,10,20">
-                                                <Label Text="{Binding Name}" FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelStyle}"/>
+                                            <StackLayout Grid.Column="1" Margin="0,20,10,20" BackgroundColor="{StaticResource TransparentColor}">
+                                                <Label Text="{Binding Name}" FontSize="21" FontAttributes="Bold" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
                                                 <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Latitude}" FontSize="Small" Style="{StaticResource LabelStyle}"/>
-                                                <Label Text=", " FontSize="Small" Style="{StaticResource LabelStyle}"/>
-                                                <Label Text="{Binding Longitude}" FontSize="Small" Style="{StaticResource LabelStyle}"/>
+                                                    <Label Text="{Binding Latitude}" FontSize="18" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
+                                                    <Label Text=", " FontSize="18" Style="{StaticResource baseLabel}"/>
+                                                    <Label Text="{Binding Longitude}" FontSize="18" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
                                                 </StackLayout>
                                             </StackLayout>
                                         </Grid>
-                                    </ViewCell.View>
+                                    </SwipeView>
                                 </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </StackLayout>
-            </ScrollView>
-            
-            <Frame Grid.Row="1" BackgroundColor="Blue"  CornerRadius="40" HorizontalOptions="End" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" VerticalOptions="End" >
-                <ImageButton Source="ic_plus"  Command="{Binding AddPinCommand}" BackgroundColor="Transparent" VerticalOptions="Fill" HorizontalOptions="Fill"/>
-            </Frame>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                </ScrollView>
+
+
+                <Frame Grid.Row="1" BackgroundColor="Blue"  CornerRadius="40" HorizontalOptions="End" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" VerticalOptions="End" >
+                    <ImageButton Source="ic_plus"  Command="{Binding AddPinCommand}" BackgroundColor="Transparent" VerticalOptions="Fill" HorizontalOptions="Fill"/>
+                </Frame>
         </Grid>
-    </ContentPage.Content>
-</ContentPage>
+    </view:BaseContentPage.Content>
+</view:BaseContentPage>

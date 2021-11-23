@@ -14,7 +14,8 @@ namespace MapNotePad.Models
                 Type = PinType.Place,
                 Label = pin.Name,
                 Address = pin.Description,
-                Position = new Position(pin.Latitude, pin.Longitude)
+                Position = new Position(pin.Latitude, pin.Longitude),
+                Icon = BitmapDescriptorFactory.FromBundle("ic_placeholder.png")
             };
             return n;
         }
@@ -25,7 +26,8 @@ namespace MapNotePad.Models
                 Type = PinType.Place,
                 Label = pin.Name,
                 Address = pin.Description,
-                Position = new Position(pin.Latitude, pin.Longitude)
+                Position = new Position(pin.Latitude, pin.Longitude),
+                Icon = BitmapDescriptorFactory.FromBundle("ic_placeholder.png")
             };
             return n;
         }

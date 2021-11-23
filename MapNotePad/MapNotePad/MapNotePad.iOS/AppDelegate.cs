@@ -3,6 +3,7 @@ using Foundation;
 using Prism;
 using Prism.Ioc;
 using UIKit;
+using ContextMenu.iOS;
 
 namespace MapNotePad.iOS
 {
@@ -23,6 +24,7 @@ namespace MapNotePad.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             Xamarin.FormsGoogleMaps.Init(AppConstants.GOOGLE_API_ACCESS_KEY);
+            ContextMenuViewRenderer.Preserve();
             LoadApplication(new App(new iOSInitializer()));
 
             return base.FinishedLaunching(app, options);

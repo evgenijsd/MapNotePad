@@ -1,7 +1,9 @@
 ﻿using MapNotePad.Enum;
+using MapNotePad.Helpers.ProcessHelpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
 using MapNotePad.Services.Repository;
+using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -17,16 +19,30 @@ namespace MapNotePad.Services
             _repository = repository;
         }
 
-        public async Task<int> CheckTheCorrectEmailAsync(string name, string email)
+        public async Task<AOResult<int>> CheckTheCorrectEmailAsync(string name, string email)
         {
-            var user = await _repository.FindAsync<Users>(x => x.Email == email);
-            CheckEnter check = CheckEnter.ChecksArePassed;
+            var result = new AOResult<int>();
+            try
+            {
+                var user = await _repository.FindAsync<Users>(x => x.Email == email);
+                CheckEnter check = CheckEnter.ChecksArePassed;
 
-            int s = email.IndexOf('@');
-            if (user != null) check = CheckEnter.LoginExist;
-            if (s > MaxLengthEmail || (email.Length - s) > MaxLengthEmail) check = CheckEnter.EmailLengthNotValid;
-            if (s == -1) check = CheckEnter.EmailANotVaid;
-            return (int)check;
+                int s = email.IndexOf('@');
+                if (user != null && name != string.Empty) check = CheckEnter.LoginExist;
+                if (s > MaxLengthEmail || (email.Length - s) > MaxLengthEmail || email.Length - 1 == s || s == 0) check = CheckEnter.EmailLengthNotValid;
+                if (s == -1) check = CheckEnter.EmailANotVaid;
+
+                if (user != null)
+                {
+                    result.SetSuccess((int)check);
+                }
+                else result.SetFailure();
+            }
+            catch (Exception ex)
+            {
+                result.SetError($"Exception: {nameof(CheckTheCorrectEmailAsync)}", "Wrong result", ex);
+            }
+            return result;
         }
 
         public int CheckTheCorrectPassword(string password, string confirmPassword)
