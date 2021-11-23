@@ -38,15 +38,15 @@ namespace MapNotePad.Services
         }
 
 
-        public async Task<int> AddEditExecute(AddEditType choise, PinModel pin)
+        public async Task<int> AddEditExecute(EAddEditType choise, PinModel pin)
         {
             int result = 0;
             switch (choise)
             {
-                case AddEditType.Add:
+                case EAddEditType.Add:
                     result = await _repository.AddAsync(pin);
                     break;
-                case AddEditType.Edit:
+                case EAddEditType.Edit:
                     result = await _repository.UpdateAsync(pin);
                     break;
                 default:
@@ -161,12 +161,12 @@ namespace MapNotePad.Services
             var result = new AOResult<ForecastData>();
             try
             {
-                string requestUri = AppConstants.OpenWeatherMapEndpoint;
+                string requestUri = AppConstants.OPEN_WEATHER_MAP_ENDPOINT;
                 requestUri += $"?lat={latitude}";
                 requestUri += $"&lon={longitude}";
                 requestUri += "&exclude=minutely,hourly,alerts,current";
                 requestUri += "&units=metric";
-                requestUri += $"&appid={AppConstants.OpenWeatherMapAPIKey}";
+                requestUri += $"&appid={AppConstants.OPEN_WEATHER_MAP_API_KEY}";
                 ForecastData forecastData = await _restService.GetForecastData(requestUri);//https://api.openweathermap.org/data/2.5/onecall?lat=12&lon=12&exclude=minutely,hourly,alerts,current&units=metric&appid=6a13cd8fbbd77a77ff4666d8b6ac1336
                 if (forecastData != null)
                     result.SetSuccess(forecastData);
@@ -185,11 +185,11 @@ namespace MapNotePad.Services
             var result = new AOResult<WeatherData>();
             try
             {
-                string requestUri = AppConstants.OpenWeatherMapEndpoint;
+                string requestUri = AppConstants.OPEN_WEATHER_MAP_ENDPOINT;
                 requestUri += $"?lat={latitude}";
                 requestUri += $"&lon={longitude}";
                 requestUri += "&units=metric";
-                requestUri += $"&appid={AppConstants.OpenWeatherMapAPIKey}";
+                requestUri += $"&appid={AppConstants.OPEN_WEATHER_MAP_API_KEY}";
                 WeatherData weatherData = await _restService.GetWeatherData(requestUri);//https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&units=metric&appid=6a13cd8fbbd77a77ff4666d8b6ac1336"
                 if (weatherData != null)
                     result.SetSuccess(weatherData);

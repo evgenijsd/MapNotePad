@@ -1,10 +1,7 @@
-﻿using MapNotePad.Helpers.ProcessHelpers;
+﻿using System.Threading.Tasks;
+using MapNotePad.Enum;
+using MapNotePad.Helpers.ProcessHelpers;
 using MapNotePad.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using static MapNotePad.Enum.CheckType;
 
 namespace MapNotePad.Services.Interface
 {
@@ -13,6 +10,6 @@ namespace MapNotePad.Services.Interface
         Task<int> UserAddAsync(Users user);
         Task<AOResult<int>> CheckTheCorrectEmailAsync(string name, string email);
         int CheckTheCorrectPassword(string password, string confirmPassword);
-        CheckEnter CheckCorrectEmail(string email);
+        ECheckEnter CheckCorrectEmail(string email);
     }
 }

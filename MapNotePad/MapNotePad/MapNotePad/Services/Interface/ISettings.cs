@@ -11,7 +11,7 @@ namespace MapNotePad.Services.Interface
         int ThemeSet { get; set; }
         int LangSet { get; set; }
         int ChangeTheme(bool theme);
-        string Language(LangType language);
+        string Language(ELangType language);
         ObservableCollection<LangModel> GetLanguages();
     }
 

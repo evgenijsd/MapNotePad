@@ -15,8 +15,8 @@ namespace MapNotePad.ViewModels
         public StartPageViewModel(INavigationService navigationService, ISettings settings) : base(navigationService)
         {
             _settings = settings;
-            _settings.ChangeTheme(_settings.ThemeSet == (int)ThemeType.LightTheme ? false : true);
-            _settings.Language((LangType)_settings.LangSet);
+            _settings.ChangeTheme(_settings.ThemeSet == (int)EThemeType.LightTheme ? false : true);
+            _settings.Language((ELangType)_settings.LangSet);
         }
 
 

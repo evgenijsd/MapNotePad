@@ -9,7 +9,8 @@
              xmlns:controls="clr-namespace:MapNotePad.Controls"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MapNotePad.Views.AddPins"
-             BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+             BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor},
+                                Dark={StaticResource DarkPageBackgroundColor}}">
     <view:BaseContentPage.Content>
 
     <Grid RowSpacing="0">

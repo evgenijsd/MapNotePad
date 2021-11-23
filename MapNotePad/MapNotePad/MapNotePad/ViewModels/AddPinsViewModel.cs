@@ -81,8 +81,8 @@ namespace MapNotePad.ViewModels
             get => _date;
             set => SetProperty(ref _date, value);
         }
-        private AddEditType _choise = AddEditType.Add;
-        public AddEditType Choise
+        private EAddEditType _choise = EAddEditType.Add;
+        public EAddEditType Choise
         {
             get => _choise;
             set => SetProperty(ref _choise, value);
@@ -137,7 +137,7 @@ namespace MapNotePad.ViewModels
             if (parameters.ContainsKey(parameterName))
             {
                 Title = "Edit";
-                Choise = AddEditType.Edit;
+                Choise = EAddEditType.Edit;
                 var pin = parameters.GetValue<PinModel>(parameterName);
                 {
                     Id = pin.Id;
@@ -204,7 +204,7 @@ namespace MapNotePad.ViewModels
                             Date = DateTime.Now
                         };
                         await _mapService.AddEditExecute(Choise, pin);
-                        if (Choise == AddEditType.Add) Pins?.Add(pin.ToPin());
+                        if (Choise == EAddEditType.Add) Pins?.Add(pin.ToPin());
                         else await _mapService.SetPinsAsync(Pins, UserId);
                         Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
 

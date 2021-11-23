@@ -14,13 +14,13 @@ namespace MapNotePad.Helpers
     public class TranslateExtension : IMarkupExtension
     {
         private readonly CultureInfo ci;
-        const string ResourceId = "MapNotePad.Resources.Resource";
+        const string RECOURCE_ID = "MapNotePad.Resources.Resource";
         private ISettings _settings { get; set; }
 
         public TranslateExtension()
         {
             _settings = new Settings();
-            ci = new CultureInfo(_settings.Language((LangType)_settings.LangSet));
+            ci = new CultureInfo(_settings.Language((ELangType)_settings.LangSet));
         }
 
         public string Text { get; set; }
@@ -30,7 +30,7 @@ namespace MapNotePad.Helpers
             if (Text == null)
                 return "";
 
-            ResourceManager resmgr = new ResourceManager(ResourceId,
+            ResourceManager resmgr = new ResourceManager(RECOURCE_ID,
                         typeof(TranslateExtension).GetTypeInfo().Assembly);
 
             var translation = resmgr.GetString(Text, ci);

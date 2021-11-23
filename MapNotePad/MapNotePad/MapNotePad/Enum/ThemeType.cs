@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MapNotePad.Enum
 {
-    public enum ThemeType
+    public enum EThemeType
     {
         LightTheme,
         DarkTheme

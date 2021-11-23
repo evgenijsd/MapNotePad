@@ -19,7 +19,7 @@ namespace MapNotePad.ViewModels
         {
             _dialogs = dialogs;
             _settings = settings;
-            Theme = _settings.ThemeSet == (int)ThemeType.LightTheme ? false : true;
+            Theme = _settings.ThemeSet == (int)EThemeType.LightTheme ? false : true;
         }
 
         #region -- Public properties --

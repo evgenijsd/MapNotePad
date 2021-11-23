@@ -1,13 +1,13 @@
-﻿using MapNotePad.Helpers;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using MapNotePad.Enum;
+using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
 using MapNotePad.Views;
 using Prism.Navigation;
 using Prism.Services;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
-using static MapNotePad.Enum.CheckType;
 
 namespace MapNotePad.ViewModels
 {
@@ -73,16 +73,16 @@ namespace MapNotePad.ViewModels
         #region -- Private helpers --
         private async Task OnLogInCommandAsync()
         {
-            var check = (CheckEnter)_registration.CheckTheCorrectPassword(Password, ConfirmPassword);
+            var check = (ECheckEnter)_registration.CheckTheCorrectPassword(Password, ConfirmPassword);
             switch (check)
             {
-                case CheckEnter.PasswordBigLetterAndDigit:
+                case ECheckEnter.PasswordBigLetterAndDigit:
                     await _dialogs.DisplayAlertAsync("Alert", "The password must contain a big letter and digit", "Ok");
                     break;
-                case CheckEnter.PasswordLengthNotValid:
+                case ECheckEnter.PasswordLengthNotValid:
                     await _dialogs.DisplayAlertAsync("Alert", "Login less than 6 characters", "Ok");
                     break;
-                case CheckEnter.PasswordsNotEqual:
+                case ECheckEnter.PasswordsNotEqual:
                     await _dialogs.DisplayAlertAsync("Alert", "Password and confirm password do not coincide", "Ok");
                     break;
                 default:
@@ -110,7 +110,7 @@ namespace MapNotePad.ViewModels
         }
         private void OnErrorCommandAsync()
         {
-            IsMismatchPassword = !string.IsNullOrEmpty(Password) && _registration.CheckTheCorrectPassword(Password, ConfirmPassword) == (int)CheckEnter.PasswordsNotEqual;
+            IsMismatchPassword = !string.IsNullOrEmpty(Password) && _registration.CheckTheCorrectPassword(Password, ConfirmPassword) == (int)ECheckEnter.PasswordsNotEqual;
         }
 
         #endregion

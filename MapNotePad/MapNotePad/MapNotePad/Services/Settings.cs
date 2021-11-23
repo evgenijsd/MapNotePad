@@ -17,23 +17,23 @@ namespace MapNotePad.Services
         #region -- Public properties --
         public int ThemeSet
         {
-            get => Preferences.Get(nameof(ThemeSet), (int)ThemeType.LightTheme);
+            get => Preferences.Get(nameof(ThemeSet), (int)EThemeType.LightTheme);
             set => Preferences.Set(nameof(ThemeSet), value);
         }
 
         public int LangSet
         {
-            get => Preferences.Get(nameof(LangSet), (int)LangType.English);
+            get => Preferences.Get(nameof(LangSet), (int)ELangType.English);
             set => Preferences.Set(nameof(LangSet), value);
         }
 
         public int ChangeTheme(bool theme)
         {
-            int result = (int)ThemeType.LightTheme;
+            int result = (int)EThemeType.LightTheme;
             if (theme)
             {
                 App.Current.UserAppTheme = OSAppTheme.Dark;
-                result = (int)ThemeType.DarkTheme;
+                result = (int)EThemeType.DarkTheme;
             }
             else
             {
@@ -43,17 +43,17 @@ namespace MapNotePad.Services
         }
         #endregion
 
-        public string Language(LangType language)
+        public string Language(ELangType language)
         {
             string result = "en-US";
             switch (language)
             {
-                case LangType.English:
+                case ELangType.English:
                     result = "en-US";
                     Thread.CurrentThread.CurrentCulture = new CultureInfo(result);
                     Thread.CurrentThread.CurrentUICulture = new CultureInfo(result);
                     break;
-                case LangType.Russian:
+                case ELangType.Russian:
                     result = "ru-RU";
                     Thread.CurrentThread.CurrentCulture = new CultureInfo(result);
                     Thread.CurrentThread.CurrentUICulture = new CultureInfo(result);
@@ -66,8 +66,8 @@ namespace MapNotePad.Services
         {
             var Lang = new ObservableCollection<LangModel>()
             {
-                new LangModel {Key=(int)LangType.English, Lang=Resources.Resource.LangEng},
-                new LangModel {Key=(int)LangType.Russian, Lang=Resources.Resource.LangRus}
+                new LangModel {Key=(int)ELangType.English, Lang=Resources.Resource.LangEng},
+                new LangModel {Key=(int)ELangType.Russian, Lang=Resources.Resource.LangRus}
             };
             return Lang;
         }

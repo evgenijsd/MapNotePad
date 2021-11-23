@@ -1,12 +1,12 @@
-﻿using MapNotePad.Helpers;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using MapNotePad.Enum;
+using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
 using MapNotePad.Views;
 using Prism.Navigation;
 using Prism.Services;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using static MapNotePad.Enum.CheckType;
 
 namespace MapNotePad.ViewModels
 {
@@ -53,18 +53,18 @@ namespace MapNotePad.ViewModels
         private async Task OnPasswordCommandAsync()
         {
             var result = await _registration.CheckTheCorrectEmailAsync(Name, Email);
-            var check = (CheckEnter)result.Result;
+            var check = (ECheckEnter)result.Result;
             if (result.IsSuccess)
             {
                 switch (check)
                 {
-                    case CheckEnter.LoginExist:
+                    case ECheckEnter.LoginExist:
                         await _dialogs.DisplayAlertAsync("Alert", "This login is already taken", "Ok");
                         break;
-                    case CheckEnter.EmailANotVaid:
+                    case ECheckEnter.EmailANotVaid:
                         await _dialogs.DisplayAlertAsync("Alert", "In Email there is no symbol @", "Ok");
                         break;
-                    case CheckEnter.EmailLengthNotValid:
+                    case ECheckEnter.EmailLengthNotValid:
                         await _dialogs.DisplayAlertAsync("Alert", "In email name and domain no more than 64 characters", "Ok");
                         break;
 

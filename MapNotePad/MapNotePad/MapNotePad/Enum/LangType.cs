@@ -1,6 +1,6 @@
 ﻿namespace MapNotePad.Enum
 {
-    public enum LangType
+    public enum ELangType
     {
         English,
         Russian

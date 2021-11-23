@@ -31,7 +31,7 @@ namespace MapNotePad.ViewModels
             _mapService = mapService;
             _authentication = authentication;
             _settings = settings;
-            _settings.Language((LangType)_settings.LangSet);
+            _settings.Language((ELangType)_settings.LangSet);
         }
 
 
@@ -184,7 +184,7 @@ namespace MapNotePad.ViewModels
             if (result.IsSuccess)
             {
                 DateTime data = DateTime.Now;
-                _settings.Language((LangType)_settings.LangSet);
+                _settings.Language((ELangType)_settings.LangSet);
                 for (int i = 0; i < 4; i++)
                 {
                     ForecastViews.Add(new ForecastView

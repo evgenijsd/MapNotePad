@@ -1,16 +1,13 @@
 ﻿namespace MapNotePad.Enum
 {
-    public class CheckType
+    public enum ECheckEnter
     {
-        public enum CheckEnter
-        {
-            ChecksArePassed,
-            EmailLengthNotValid,
-            EmailANotVaid,
-            LoginExist,
-            PasswordLengthNotValid,
-            PasswordsNotEqual,
-            PasswordBigLetterAndDigit
-        }
+        ChecksArePassed,
+        EmailLengthNotValid,
+        EmailANotVaid,
+        LoginExist,
+        PasswordLengthNotValid,
+        PasswordsNotEqual,
+        PasswordBigLetterAndDigit
     }
 }

@@ -12,7 +12,7 @@ namespace MapNotePad.Services.Interface
 {
     public interface IMapService
     {
-        Task<int> AddEditExecute(AddEditType choise, PinModel pin);
+        Task<int> AddEditExecute(EAddEditType choise, PinModel pin);
         Task DeletePinAsync(ObservableCollection<PinView> collectPin, object contactObj);
         Task<ObservableCollection<PinView>> GetPinsViewAsync(int userId);
         void SetPinsFavouriteAsync(ObservableCollection<Pin> pins, ObservableCollection<PinView> pinviews);

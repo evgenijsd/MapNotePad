@@ -1,14 +1,14 @@
-﻿using MapNotePad.Helpers;
+﻿using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using MapNotePad.Enum;
+using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
 using Prism.Navigation;
 using Prism.Services;
-using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
-using static MapNotePad.Enum.CheckType;
 
 namespace MapNotePad.ViewModels
 {
@@ -135,9 +135,26 @@ namespace MapNotePad.ViewModels
 
         private void OnErrorCommand()
         {
-            
-            IsIncorrectPassword = !string.IsNullOrEmpty(Password) && _registration.CheckTheCorrectPassword(Password, Password) > (int)CheckEnter.ChecksArePassed;
-            IsWrongEmail = _registration.CheckCorrectEmail(Email) > (int)CheckEnter.ChecksArePassed;
+            switch ((ECheckEnter)_registration.CheckTheCorrectPassword(Password, Password))
+            {
+                case ECheckEnter.PasswordBigLetterAndDigit:
+                case ECheckEnter.PasswordLengthNotValid:
+                    IsIncorrectPassword = !string.IsNullOrEmpty(Password);
+                    break;
+                default:
+                    IsIncorrectPassword = false;
+                    break;
+            }
+            switch ((ECheckEnter)_registration.CheckCorrectEmail(Email))
+            {
+                case ECheckEnter.EmailANotVaid:
+                case ECheckEnter.EmailLengthNotValid:
+                    IsWrongEmail = !string.IsNullOrEmpty(Email);
+                    break;
+                default:
+                    IsWrongEmail = false;
+                    break;
+            }
         }
         #endregion
     }
