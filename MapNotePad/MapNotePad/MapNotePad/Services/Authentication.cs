@@ -1,6 +1,8 @@
-﻿using MapNotePad.Models;
+﻿using MapNotePad.Helpers.ProcessHelpers;
+using MapNotePad.Models;
 using MapNotePad.Services.Interface;
 using MapNotePad.Services.Repository;
+using System;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
@@ -21,19 +23,24 @@ namespace MapNotePad.Services
             _repository = repository;
         }
 
-        public async Task<int> CheckAsync(string email, string password)
+        public async Task<AOResult<int>> CheckUserAsync(string email, string password)
         {
-            var result = 0;
+            var result = new AOResult<int>();
+
             try
             {
                 var user = await _repository.FindAsync<Users>(x => x.Email == email);
                 if (user != null && user.Email == email && user.Password == password)
                 {
-                    return user.Id;
+                    result.SetSuccess(user.Id);
                 }
+                else
+                    result.SetFailure();
             }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                result.SetError($"Exception: {nameof(CheckUserAsync)}", "Wrong result", ex);
+            }
 
             return result;
         }

@@ -121,8 +121,8 @@ namespace MapNotePad.ViewModels
             {
                 int id = parameters.GetValue<int>(parameterName);
                 UserId = id;
-                await _mapService.SetPinsAsync(Pins, UserId);
-                if (Pins?.Count > 0) Pins?.Add(Pins[0]);
+                var result = await _mapService.SetPinsAsync(Pins, UserId);
+                if (result.IsSuccess && Pins?.Count > 0) Pins?.Add(Pins[0]);
                 else Pins?.Add(new Pin
                 {
                     Type = PinType.Place,
@@ -178,59 +178,59 @@ namespace MapNotePad.ViewModels
         }
         private async Task OnSaveClickedCommandAsync()
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-            Longitude = Longitude.Replace(",", ".");
-            Latitude = Latitude.Replace(",", ".");
-            double latitude;
-            double longitude;
-            var blon = double.TryParse(Longitude, out longitude);
-            var blat = double.TryParse(Latitude, out latitude);
-            if (blon)
+            if (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Description) && !string.IsNullOrEmpty(Latitude) && !string.IsNullOrEmpty(Longitude))
             {
-                if (blat)
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+                Longitude = Longitude.Replace(",", ".");
+                Latitude = Latitude.Replace(",", ".");
+                double latitude;
+                double longitude;
+                var blon = double.TryParse(Longitude, out longitude);
+                var blat = double.TryParse(Latitude, out latitude);
+                if (blon)
                 {
-                    PinModel pin = new PinModel
+                    if (blat)
                     {
-                        Id = Id,
-                        Name = Name,
-                        Description = Description,
-                        Latitude = Convert.ToDouble(Latitude),
-                        Longitude = Convert.ToDouble(Longitude),
-                        User = UserId,
-                        Favourite = true,
-                        Date = DateTime.Now
-                    };
-                    await _mapService.AddEditExecute(Choise, pin);
-                    if (Choise == AddEditType.Add) Pins?.Add(pin.ToPin());
-                    else await _mapService.SetPinsAsync(Pins, UserId);
-                    Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
+
+                        PinModel pin = new PinModel
+                        {
+                            Id = Id,
+                            Name = Name,
+                            Description = Description,
+                            Latitude = Convert.ToDouble(Latitude),
+                            Longitude = Convert.ToDouble(Longitude),
+                            User = UserId,
+                            Favourite = true,
+                            Date = DateTime.Now
+                        };
+                        await _mapService.AddEditExecute(Choise, pin);
+                        if (Choise == AddEditType.Add) Pins?.Add(pin.ToPin());
+                        else await _mapService.SetPinsAsync(Pins, UserId);
+                        Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
+
+
+                    }
+                    else
+                    {
+                        await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, Resources.Resource.IncorrectLatitude, Resources.Resource.Ok);
+                    }
                 }
                 else
                 {
-                    await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, Resources.Resource.IncorrectLatitude, Resources.Resource.Ok);
+                    await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, Resources.Resource.IncorrectLongitude, Resources.Resource.Ok);
                 }
             }
             else
             {
-                await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, Resources.Resource.IncorrectLongitude, Resources.Resource.Ok);
+               await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, "Fill in all fields with values", Resources.Resource.Ok);
             }
         }
 
         private async Task OnGeoLocCommandAsync()
         {
-            try
-            {
-                var locator = CrossGeolocator.Current;
-                locator.DesiredAccuracy = 10000;
-                var position = await locator.GetPositionAsync(new TimeSpan(0, 0, 5));
-                Region = MapSpan.FromCenterAndRadius(
-                             new Position(position.Latitude, position.Longitude),
-                             Distance.FromKilometers(500));
-            }
-            catch (Exception ex)
-            {
-                await _dialogs.DisplayAlertAsync("Alert", $"{ex}", "Ok");
-            }
+            var result = await _mapService.CurrentLocation(Region);
+            Region = result.Result;
+            if (!result.IsSuccess) await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, "The location denied", "Ok");
         }
 
 

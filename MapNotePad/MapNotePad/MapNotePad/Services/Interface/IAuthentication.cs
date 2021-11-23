@@ -7,6 +7,6 @@ namespace MapNotePad.Services.Interface
     {
         int UserId { get; set; }
 
-        Task<int> CheckAsync(string Login, string Password);
+        Task<AOResult<int>> CheckUserAsync(string Login, string Password);
     }
 }

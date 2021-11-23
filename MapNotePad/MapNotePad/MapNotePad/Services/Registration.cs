@@ -26,22 +26,26 @@ namespace MapNotePad.Services
             {
                 var user = await _repository.FindAsync<Users>(x => x.Email == email);
                 CheckEnter check = CheckEnter.ChecksArePassed;
-
-                int s = email.IndexOf('@');
-                if (user != null && name != string.Empty) check = CheckEnter.LoginExist;
-                if (s > MaxLengthEmail || (email.Length - s) > MaxLengthEmail || email.Length - 1 == s || s == 0) check = CheckEnter.EmailLengthNotValid;
-                if (s == -1) check = CheckEnter.EmailANotVaid;
-
+                check = CheckCorrectEmail(email);
                 if (user != null)
                 {
-                    result.SetSuccess((int)check);
+                    check = CheckEnter.LoginExist;
                 }
-                else result.SetFailure();
+                result.SetSuccess((int)check);
             }
             catch (Exception ex)
             {
                 result.SetError($"Exception: {nameof(CheckTheCorrectEmailAsync)}", "Wrong result", ex);
             }
+            return result;
+        }
+
+        public CheckEnter CheckCorrectEmail(string email)
+        {
+            CheckEnter result = CheckEnter.ChecksArePassed;
+            int s =  email.IndexOf('@');
+            if (s > MaxLengthEmail || (email.Length - s) > MaxLengthEmail || email.Length - 1 == s || s == 0) result = CheckEnter.EmailLengthNotValid;
+            if (s == -1) result = CheckEnter.EmailANotVaid;
             return result;
         }
 

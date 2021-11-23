@@ -1,4 +1,5 @@
 ﻿using MapNotePad.Enum;
+using MapNotePad.Helpers.ProcessHelpers;
 using MapNotePad.Models;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,10 @@ namespace MapNotePad.Services.Interface
         Task DeletePinAsync(ObservableCollection<PinView> collectPin, object contactObj);
         Task<ObservableCollection<PinView>> GetPinsViewAsync(int userId);
         void SetPinsFavouriteAsync(ObservableCollection<Pin> pins, ObservableCollection<PinView> pinviews);
-        Task SetPinsAsync(ObservableCollection<Pin> pins, int userId);
-        Task<int> SetPinsFavourite(PinModel pin);
-        Task<WeatherData> GetWeather(double latitude, double longitude);
-        Task<ForecastData> GetForecast(double latitude, double longitude);
-        Task<MapSpan> CurrentLocation(MapSpan region);
+        Task<AOResult> SetPinsAsync(ObservableCollection<Pin> pins, int userId);
+        Task<AOResult<int>> SetPinsFavourite(PinModel pin);
+        Task<AOResult<WeatherData>> GetWeather(double latitude, double longitude);
+        Task<AOResult<ForecastData>> GetForecast(double latitude, double longitude);
+        Task<AOResult<MapSpan>> CurrentLocation(MapSpan region);
     }
 }

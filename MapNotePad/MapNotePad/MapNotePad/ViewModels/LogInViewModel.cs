@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using static MapNotePad.Enum.CheckType;
 
 namespace MapNotePad.ViewModels
 {
@@ -67,7 +68,7 @@ namespace MapNotePad.ViewModels
         public ICommand MainTabPageCommand => _MainTabPageCommand ??= SingleExecutionCommand.FromFunc(OnMainTabPageCommandAsync);
         private ICommand _GoogleMainCommand;
         public ICommand GoogleMainCommand => _GoogleMainCommand ??= SingleExecutionCommand.FromFunc(OnGoogleMainCommandAsync);
-        public ICommand ErrorCommand => new Command(OnErrorCommandAsync);
+        public ICommand ErrorCommand => new Command(OnErrorCommand);
         #endregion
 
         #region -- InterfaceName implementation --
@@ -113,39 +114,30 @@ namespace MapNotePad.ViewModels
         }
         private async Task OnMainTabPageCommandAsync()
         {
-                try
-                {
-                    int id = await _authentication.CheckAsync(Email, Password);
-                    if (id != 0)
-                    {
-                        UserId = id;
-                        _authentication.UserId = id;
-                        var p = new NavigationParameters { { "UserId", id } };
-                        await _navigationService.NavigateAsync("/MainTabPage", p);
-                    }
-                    else
-                    {
-                        await _dialogs.DisplayAlertAsync("Alert", "Invalid login or password!", "Ok");
-                        Password = string.Empty;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    await _dialogs.DisplayAlertAsync("Alert", $"{ex}", "Ok");
-                }
+            var result = await _authentication.CheckUserAsync(Email, Password);
+            if (result.IsSuccess)
+            {
+                UserId = result.Result;
+                _authentication.UserId = UserId;
+                var p = new NavigationParameters { { "UserId", UserId } };
+                await _navigationService.NavigateAsync("/MainTabPage", p);
+            }
+            else
+            {
+                await _dialogs.DisplayAlertAsync("Alert", "Invalid login or password!", "Ok");
+                Password = string.Empty;
+            }
         }
         private async Task OnGoogleMainCommandAsync()
         {
             await _navigationService.NavigateAsync("/StartPage");
         }
 
-        private async void OnErrorCommandAsync()
+        private void OnErrorCommand()
         {
             
-            IsIncorrectPassword = !string.IsNullOrEmpty(Password) && _registration.CheckTheCorrectPassword(Password, Password) > 0;
-            var result = await _registration.CheckTheCorrectEmailAsync(string.Empty, Email);
-            if (result.IsSuccess)
-            IsWrongEmail = !string.IsNullOrEmpty(Email) && result.Result > 0;
+            IsIncorrectPassword = !string.IsNullOrEmpty(Password) && _registration.CheckTheCorrectPassword(Password, Password) > (int)CheckEnter.ChecksArePassed;
+            IsWrongEmail = _registration.CheckCorrectEmail(Email) > (int)CheckEnter.ChecksArePassed;
         }
         #endregion
     }

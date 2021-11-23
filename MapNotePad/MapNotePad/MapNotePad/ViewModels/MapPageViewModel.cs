@@ -179,18 +179,22 @@ namespace MapNotePad.ViewModels
             IsViewPin = true;
             IsViewSearch = false;
             if (ForecastViews != null) ForecastViews.Clear();
-            var forecastData = await _mapService.GetForecast(Pin.Position.Latitude, Pin.Position.Longitude);
-            DateTime data = DateTime.Now;
-            _settings.Language((LangType)_settings.LangSet);
-            for (int i = 0; i < 4; i++)
+            var result = await _mapService.GetForecast(Pin.Position.Latitude, Pin.Position.Longitude);
+            var forecastData = result.Result;
+            if (result.IsSuccess)
             {
-                ForecastViews.Add(new ForecastView
+                DateTime data = DateTime.Now;
+                _settings.Language((LangType)_settings.LangSet);
+                for (int i = 0; i < 4; i++)
                 {
-                    Day = data.AddDays(i).ToString("ddd"),
-                    Image = $"ic_{forecastData.Daily[i].Weather[0].Icon}.png",
-                    TempMin = $"{(int)forecastData.Daily[i].Temperature.Min}°",
-                    TempMax = $"{(int)forecastData.Daily[i].Temperature.Max}°"
-                });
+                    ForecastViews.Add(new ForecastView
+                    {
+                        Day = data.AddDays(i).ToString("ddd"),
+                        Image = $"ic_{forecastData.Daily[i].Weather[0].Icon}.png",
+                        TempMin = $"{(int)forecastData.Daily[i].Temperature.Min}°",
+                        TempMax = $"{(int)forecastData.Daily[i].Temperature.Max}°"
+                    });
+                }
             }
         }
         private Task OnMapClickedCommandAsync(MapClickedEventArgs args)
@@ -201,7 +205,9 @@ namespace MapNotePad.ViewModels
         }
         private async Task OnGeoLocCommandAsync()
         {
-            Region = await _mapService.CurrentLocation(Region);
+            var result = await _mapService.CurrentLocation(Region);
+            Region = result.Result;
+            if (!result.IsSuccess) await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, "The location denied", "Ok");
         }
 
         private void OnSearchTextCommandAsync()

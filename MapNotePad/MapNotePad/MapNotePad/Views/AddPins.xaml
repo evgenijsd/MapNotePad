@@ -26,15 +26,15 @@
                                         RightButtonCommand="{Binding SaveClickedCommand}"/>
         <StackLayout Grid.Row="1">
                 <StackLayout Margin="20">
-                    <Label Text="{res:Translate Label}" FontSize="18"  />
+                    <Label Text="{res:Translate Label}" Margin="10,0,0,0" FontSize="18"  Style="{StaticResource baseLabel}"/>
                     <controls:CustomEntry Text="{Binding Name}" Placeholder="{res:Translate EnterLabel}" MaxLength="15"/>
                 </StackLayout>
                 <StackLayout Margin="20, 0, 20, 0">
-                    <Label Text="{res:Translate Description}" FontSize="18"  />
+                    <Label Text="{res:Translate Description}" Margin="10,0,0,0" FontSize="18"  Style="{StaticResource baseLabel}" />
                     <controls:CustomEntry Text="{Binding Description}" Placeholder="{res:Translate Description}" MaxLength="60" />
                 </StackLayout>
                 <StackLayout Margin="20">
-                    <Label Text="Coordinates" FontSize="18"/>
+                    <Label Text="{res:Translate Cordinates}" Margin="10,0,0,0" FontSize="18" Style="{StaticResource baseLabel}" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>

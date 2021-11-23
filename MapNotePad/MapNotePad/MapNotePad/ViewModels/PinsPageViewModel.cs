@@ -145,16 +145,10 @@ namespace MapNotePad.ViewModels
             }
             else
                 PinSearch = PinViews;
-            //ListViewGrid = new GridLength(SearchPins.Count, GridUnitType.Star);
         }
 
         private async Task OnFavouriteCommandAsync(object args)
         {
-            //Pin = args.Pin;
-            //IsViewPin = true;
-            //await _dialogs.DisplayAlertAsync("Alert", $"{pin.Name}", "Ok");
-            //Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
-            //return await _navigationService.NavigateAsync($"{nameof(Register)}");
             if (args != null)
             {
                 PinView pin = args as PinView;
@@ -168,12 +162,15 @@ namespace MapNotePad.ViewModels
                     pin.Favourite = !pin.Favourite;
                     pin.Image = "ic_like_blue.png";
                 }
-                await _mapService.SetPinsFavourite(pin.ToPinModel());
-                PinViews = await _mapService.GetPinsViewAsync(UserId);
-                foreach (PinView pinv in PinViews)
+                var result = await _mapService.SetPinsFavourite(pin.ToPinModel());
+                if (result.IsSuccess)
                 {
-                    pinv.EditCommand = EditCommand;
-                    pinv.DeleteCommand = DeleteCommand;
+                    PinViews = await _mapService.GetPinsViewAsync(UserId);
+                    foreach (PinView pinv in PinViews)
+                    {
+                        pinv.EditCommand = EditCommand;
+                        pinv.DeleteCommand = DeleteCommand;
+                    }
                 }
             }
         }
