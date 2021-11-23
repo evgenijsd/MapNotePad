@@ -37,6 +37,13 @@ namespace MapNotePad.ViewModels
 
 
         #region -- Public properties --
+        private MapStyle _mapDarkSryle;
+        public MapStyle MapDarkStyle
+        {
+            get => _mapDarkSryle;
+            set => SetProperty(ref _mapDarkSryle, value);
+        }
+
         private ObservableCollection<SearchView> _searchPins;
         public ObservableCollection<SearchView> SearchPins
         {

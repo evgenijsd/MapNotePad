@@ -6,14 +6,15 @@
              xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad"
              x:Class="MapNotePad.Views.LogIn"
              BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor},
-    Dark={StaticResource DarkPageBackgroundColor}}">
+                                               Dark={StaticResource DarkPageBackgroundColor}}">
     <view:BaseContentPage.Content>
         <StackLayout>
             <controls:CustomToolBar Title="{res:Translate LogIn}" LeftImageSource="ic_left_blue.png"
-                                    LeftButtonCommand="{Binding GoBackCommand}"/>
+                                    LeftButtonCommand="{Binding GoBackCommand}"
+                                    LineColor="{StaticResource TransparentColor}"/>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="130"/>
+                    <RowDefinition Height="110"/>
                     <RowDefinition Height="130"/>
                     <RowDefinition Height="90"/>
                     <RowDefinition Height="auto"/>
@@ -30,7 +31,7 @@
                                           TextChangedCommand="{Binding ErrorCommand}"/>
                 </StackLayout>
                      <Label Grid.Row="0" Text="{res:Translate WrongEmail}" FontSize="15"
-                            Margin="40,100,0,0" Style="{StaticResource errorLabel}"
+                            Margin="40,90,0,0" Style="{StaticResource errorLabel}"
                             IsVisible="{Binding IsWrongEmail}"/>
 
                 <StackLayout Grid.Row="1" Padding="20,0,20,20"

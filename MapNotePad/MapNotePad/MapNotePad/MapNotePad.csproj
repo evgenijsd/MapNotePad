@@ -92,6 +92,6 @@
     <None Remove="XamTop.ContextMenu" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\MapStyle.json" />
+    <EmbeddedResource Include="Resources\jsonMapStyle.json" />
   </ItemGroup>
 </Project>
