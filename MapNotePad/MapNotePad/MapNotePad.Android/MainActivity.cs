@@ -4,6 +4,7 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Plugin.Permissions;
 using Prism;
 using Prism.Ioc;
 using Xamarin.Forms;

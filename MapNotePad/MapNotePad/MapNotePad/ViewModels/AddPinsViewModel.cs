@@ -27,6 +27,13 @@ namespace MapNotePad.ViewModels
 
 
         #region -- Public properties --
+        private MapStyle _mapThemeStyle;
+        public MapStyle MapThemeStyle
+        {
+            get => _mapThemeStyle;
+            set => SetProperty(ref _mapThemeStyle, value);
+        }
+
         private string _title = "Add";
         public string Title
         {

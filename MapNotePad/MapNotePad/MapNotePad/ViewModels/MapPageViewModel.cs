@@ -37,11 +37,11 @@ namespace MapNotePad.ViewModels
 
 
         #region -- Public properties --
-        private MapStyle _mapDarkSryle;
-        public MapStyle MapDarkStyle
+        private MapStyle _mapThemeStyle;
+        public MapStyle MapThemeStyle
         {
-            get => _mapDarkSryle;
-            set => SetProperty(ref _mapDarkSryle, value);
+            get => _mapThemeStyle;
+            set => SetProperty(ref _mapThemeStyle, value);
         }
 
         private ObservableCollection<SearchView> _searchPins;
@@ -152,6 +152,7 @@ namespace MapNotePad.ViewModels
                 var pinviews = await _mapService.GetPinsViewAsync(UserId);
                 Pins.Clear();
                 _mapService.SetPinsFavouriteAsync(Pins, pinviews);
+                MapThemeStyle = _mapService.GetMapStyle(_settings.ThemeSet == (int)EThemeType.LightTheme);
             }
         }
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
@@ -258,6 +259,8 @@ namespace MapNotePad.ViewModels
         private Task OnTapShowCommandAsync(SearchView pin)
         {
             Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
+            IsViewSearch = false;
+            ListViewHeight = new GridLength(0);
             return Task.CompletedTask;
         }
 

@@ -88,10 +88,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Naxam.BottomTabbedPage" />
+    <None Remove="Resources\MapDarkStyle.json" />
+    <None Remove="Resources\MapLightStyle.json" />
     <None Remove="Resources\MapStyle.json" />
     <None Remove="XamTop.ContextMenu" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\jsonMapStyle.json" />
+    <EmbeddedResource Include="Resources\MapDarkStyle.json" />
+    <EmbeddedResource Include="Resources\MapLightStyle.json" />
   </ItemGroup>
 </Project>

@@ -21,5 +21,6 @@ namespace MapNotePad.Services.Interface
         Task<AOResult<WeatherData>> GetWeather(double latitude, double longitude);
         Task<AOResult<ForecastData>> GetForecast(double latitude, double longitude);
         Task<AOResult<MapSpan>> CurrentLocation(MapSpan region);
+        MapStyle GetMapStyle(bool theme);
     }
 }

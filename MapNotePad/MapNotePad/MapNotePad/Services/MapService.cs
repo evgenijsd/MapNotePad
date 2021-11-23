@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using MapNotePad.Enum;
 using MapNotePad.Helpers;
@@ -203,7 +205,24 @@ namespace MapNotePad.Services
             return result;
         }
 
+        public MapStyle GetMapStyle(bool theme)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            string resourceName;
+            if (theme) 
+                resourceName = "MapNotePad.Resources.MapLightStyle.json";
+            else
+                resourceName = "MapNotePad.Resources.MapDarkStyle.json";
 
+            string styleFile;
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using (StreamReader reader = new(stream))
+            {
+                styleFile = reader.ReadToEnd();
+            }
+
+            return MapStyle.FromJson(styleFile);
+        }
 
         #region -- Public properties --
         #endregion
