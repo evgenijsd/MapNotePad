@@ -17,11 +17,15 @@ namespace MapNotePad.ViewModels
     {
         private IPageDialogService _dialogs { get; }
         private IMapService _mapService { get; set; }
+        private ISettings _settings;
 
-        public AddPinsViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService) : base(navigationService)
+        public AddPinsViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService, ISettings settings) : base(navigationService)
         {
             _dialogs = dialogs;
             _mapService = mapService;
+            _settings = settings;
+            _settings.Language((ELangType)_settings.LangSet);
+            MapThemeStyle = _mapService.GetMapStyle(_settings.ThemeSet != (int)EThemeType.LightTheme);
         }
 
 

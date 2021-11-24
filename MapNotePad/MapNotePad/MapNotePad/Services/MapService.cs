@@ -210,9 +210,9 @@ namespace MapNotePad.Services
             var assembly = Assembly.GetExecutingAssembly();
             string resourceName;
             if (theme) 
-                resourceName = "MapNotePad.Resources.MapLightStyle.json";
-            else
                 resourceName = "MapNotePad.Resources.MapDarkStyle.json";
+            else
+                resourceName = "MapNotePad.Resources.MapLightStyle.json";
 
             string styleFile;
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))

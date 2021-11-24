@@ -19,7 +19,7 @@ namespace MapNotePad.ViewModels
         {
             _dialogs = dialogs;
             _settings = settings;
-            Theme = _settings.ThemeSet == (int)EThemeType.LightTheme ? false : true;
+            Theme = _settings.ThemeSet != (int)EThemeType.LightTheme;
         }
 
         #region -- Public properties --
@@ -51,7 +51,8 @@ namespace MapNotePad.ViewModels
         #region -- Private helpers --
         private async Task OnGoBackCommandAsync()
         {
-            await _navigationService.GoBackAsync();
+            var p = new NavigationParameters { { "Theme", Theme } };
+            await _navigationService.GoBackAsync(p);
         }
 
         private Task OnThemeiOSCommandAsync()

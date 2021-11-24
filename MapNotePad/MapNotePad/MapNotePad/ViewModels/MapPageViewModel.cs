@@ -32,6 +32,7 @@ namespace MapNotePad.ViewModels
             _authentication = authentication;
             _settings = settings;
             _settings.Language((ELangType)_settings.LangSet);
+            MapThemeStyle = _mapService.GetMapStyle(_settings.ThemeSet != (int)EThemeType.LightTheme);
         }
 
 
@@ -152,7 +153,11 @@ namespace MapNotePad.ViewModels
                 var pinviews = await _mapService.GetPinsViewAsync(UserId);
                 Pins.Clear();
                 _mapService.SetPinsFavouriteAsync(Pins, pinviews);
-                MapThemeStyle = _mapService.GetMapStyle(_settings.ThemeSet == (int)EThemeType.LightTheme);
+            }
+            if (parameters.ContainsKey("Theme"))
+            {
+                var theme = parameters.GetValue<bool>("Theme");
+                MapThemeStyle = _mapService.GetMapStyle(theme);
             }
         }
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)

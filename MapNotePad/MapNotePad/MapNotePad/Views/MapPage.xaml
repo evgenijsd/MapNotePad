@@ -67,16 +67,15 @@
                 <StackLayout Grid.Row="1">
                     <clusteredMap:ClusteredMap x:Name="myMap" IsShowingUser="True" WidthRequest="960" HeightRequest="200" MapStyle="{Binding MapThemeStyle}"
                                                BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
-                    <clusteredMap:ClusteredMap.Behaviors>
-                        <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
-                        <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
-                        <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}" />
-                        <bindings:PinClickedToCommandBehavior Command="{Binding PinClickedCommand}"/>
-                        <bindings:SelectedPinChangedToCommandBehavior Command="{Binding SelectedPinChangedCommand}"/>
-                        <bindings:InfoWindowClickedToCommandBehavior Command="{Binding InfoWindowClickedCommand}"/>
-                    </clusteredMap:ClusteredMap.Behaviors>
-                </clusteredMap:ClusteredMap>
-                    <Button Clicked="Button_Clicked" />
+                        <clusteredMap:ClusteredMap.Behaviors>
+                            <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
+                            <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
+                            <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}" />
+                            <bindings:PinClickedToCommandBehavior Command="{Binding PinClickedCommand}"/>
+                            <bindings:SelectedPinChangedToCommandBehavior Command="{Binding SelectedPinChangedCommand}"/>
+                            <bindings:InfoWindowClickedToCommandBehavior Command="{Binding InfoWindowClickedCommand}"/>
+                        </clusteredMap:ClusteredMap.Behaviors>
+                    </clusteredMap:ClusteredMap>
                 </StackLayout>
 
                 <Frame Grid.Row="1"   CornerRadius="40" HorizontalOptions="End" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" VerticalOptions="End" IsVisible="{Binding IsViewButton}" 

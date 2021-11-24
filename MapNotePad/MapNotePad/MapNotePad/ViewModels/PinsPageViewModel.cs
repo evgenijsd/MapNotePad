@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using MapNotePad.Enum;
 using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
@@ -20,14 +21,17 @@ namespace MapNotePad.ViewModels
     {
         private IMapService _mapService { get; set; }
         private IAuthentication _authentication { get; }
+        private ISettings _settings;
 
         private IPageDialogService _dialogs { get; }
 
-        public PinsPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService, IAuthentication authentication) : base(navigationService)
+        public PinsPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService, IAuthentication authentication, ISettings settings) : base(navigationService)
         {
             _dialogs = dialogs;
             _mapService = mapService;
             _authentication = authentication;
+            _settings = settings;
+            _settings.Language((ELangType)_settings.LangSet);
         }
 
         #region -- Public properties --
