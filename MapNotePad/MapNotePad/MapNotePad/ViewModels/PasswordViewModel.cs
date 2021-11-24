@@ -54,7 +54,7 @@ namespace MapNotePad.ViewModels
         public ICommand LogInCommand => _LogInCommand ??= SingleExecutionCommand.FromFunc(OnLogInCommandAsync);
         private ICommand _GoogleMainCommand;
         public ICommand GoogleMainCommand => _GoogleMainCommand ??= SingleExecutionCommand.FromFunc(OnGoogleMainCommandAsync);
-        public ICommand ErrorCommand => new Command(OnErrorCommandAsync);
+        public ICommand ErrorCommand => new Command(OnErrorCommand);
         #endregion
         #region -- InterfaceName implementation --
         #endregion
@@ -108,7 +108,7 @@ namespace MapNotePad.ViewModels
         {
             await _navigationService.GoBackAsync();
         }
-        private void OnErrorCommandAsync()
+        private void OnErrorCommand()
         {
             IsMismatchPassword = !string.IsNullOrEmpty(Password) && _registration.CheckTheCorrectPassword(Password, ConfirmPassword) == (int)ECheckEnter.PasswordsNotEqual;
         }

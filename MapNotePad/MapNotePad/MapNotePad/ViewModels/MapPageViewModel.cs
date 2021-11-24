@@ -153,9 +153,10 @@ namespace MapNotePad.ViewModels
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.ContainsKey("UserId"))
+            string parameterName = "UserId";
+            if (parameters.ContainsKey(parameterName))
             {
-                int id = parameters.GetValue<int>("UserId");
+                int id = parameters.GetValue<int>(parameterName);
                 UserId = id;
                 IsViewPin = false;
                 var pinviews = await _mapService.GetPinsViewAsync(UserId);
@@ -163,12 +164,22 @@ namespace MapNotePad.ViewModels
                 _mapService.SetPinsFavouriteAsync(Pins, pinviews);
                 MapThemeStyle = _mapService.GetMapStyle(Theme);
             }
-            if (parameters.ContainsKey("Theme"))
+
+            parameterName = "Theme";
+            if (parameters.ContainsKey(parameterName))
             {
-                bool theme = parameters.GetValue<bool>("Theme");
+                bool theme = parameters.GetValue<bool>(parameterName);
                 Theme = theme;
                 MapThemeStyle = _mapService.GetMapStyle(Theme);
             }
+
+            parameterName = "Pin";
+            if (parameters.ContainsKey(parameterName))
+            {
+                var pin = parameters.GetValue<PinView>(parameterName);
+                Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(10));
+            }
+            
         }
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
@@ -239,7 +250,9 @@ namespace MapNotePad.ViewModels
             if (!string.IsNullOrEmpty(SearchText))
             {
                 IsViewSearch = true;
-                var pins = new ObservableCollection<Pin>(Pins.Where(x => x.Label.Contains(SearchText) || x.Address.Contains(SearchText) || x.Position.Latitude.ToString().Contains(SearchText) || x.Position.Longitude.ToString().Contains(SearchText)));
+                var pins = new ObservableCollection<Pin>(Pins.Where(x => x.Label.Contains(SearchText)
+                || x.Address.Contains(SearchText) || x.Position.Latitude.ToString().Contains(SearchText)
+                || x.Position.Longitude.ToString().Contains(SearchText)));
                 foreach (Pin pin in pins)
                 {
                     var search = new SearchView
@@ -273,7 +286,7 @@ namespace MapNotePad.ViewModels
 
         private Task OnTapShowCommandAsync(SearchView pin)
         {
-            Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
+            Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(10));
             IsViewSearch = false;
             ListViewHeight = new GridLength(0);
             return Task.CompletedTask;

@@ -158,6 +158,7 @@ namespace MapNotePad.ViewModels
                     Latitude = pin.Latitude.ToString();
                     Longitude = pin.Longitude.ToString();
                     Date = pin.Date;
+                    Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(10));
                 }
             }
         }
@@ -218,7 +219,7 @@ namespace MapNotePad.ViewModels
                         if (Choise == EAddEditType.Add) Pins?.Add(pin.ToPin());
                         else await _mapService.SetPinsAsync(Pins, UserId);
                         Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
-
+                        await _navigationService.GoBackAsync();
 
                     }
                     else

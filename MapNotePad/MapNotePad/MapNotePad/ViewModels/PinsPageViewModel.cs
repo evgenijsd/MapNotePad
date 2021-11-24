@@ -1,4 +1,8 @@
-﻿using Acr.UserDialogs;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Acr.UserDialogs;
 using MapNotePad.Enum;
 using MapNotePad.Helpers;
 using MapNotePad.Models;
@@ -6,13 +10,6 @@ using MapNotePad.Services.Interface;
 using MapNotePad.Views;
 using Prism.Navigation;
 using Prism.Services;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace MapNotePad.ViewModels
@@ -81,6 +78,8 @@ namespace MapNotePad.ViewModels
         public ICommand SearchTextCommand => new Command(OnSearchTextCommandAsync);
         private ICommand _FavouriteCommand;
         public ICommand FavouriteCommand => _FavouriteCommand ??= SingleExecutionCommand.FromFunc<object>(OnFavouriteCommandAsync);
+        private ICommand _TapShowCommand;
+        public ICommand TapShowCommand => _TapShowCommand ??= SingleExecutionCommand.FromFunc<PinView>(OnTapShowCommandAsync);
         #endregion
         #region -- InterfaceName implementation --
         #endregion
@@ -216,6 +215,12 @@ namespace MapNotePad.ViewModels
             }
 
 
+        }
+
+        private async Task OnTapShowCommandAsync(PinView pin)
+        {
+            var p = new NavigationParameters { { "Pin", pin } };
+            await _navigationService.NavigateAsync($"{nameof(MainTabPage)}?selectedTab={nameof(MapPage)}", p);
         }
         #endregion
     }

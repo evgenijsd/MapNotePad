@@ -1,4 +1,5 @@
-﻿using MapNotePad.Models;
+﻿using MapNotePad.Helpers.ProcessHelpers;
+using MapNotePad.Models;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
@@ -16,44 +17,48 @@ namespace MapNotePad.Helpers
             _client = new HttpClient();
         }
 
-        public async Task<WeatherData> GetWeatherData(string query)
+        public async Task<AOResult<WeatherData>> GetWeatherData(string query)
         {
-            WeatherData weatherData = null;
+            var result = new AOResult<WeatherData>();
             try
             {
                 var response = await _client.GetAsync(query);
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    weatherData = JsonConvert.DeserializeObject<WeatherData>(content);
+                    var weatherData = JsonConvert.DeserializeObject<WeatherData>(content);
+                    result.SetSuccess(weatherData);
                 }
+                else
+                    result.SetFailure();
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("\t\tERROR {0}", ex.Message);
+                result.SetError($"Exception: {nameof(GetWeatherData)}", "Wrong result", ex);
             }
 
-            return weatherData;
+            return result;
         }
 
-        public async Task<ForecastData> GetForecastData(string query)
+        public async Task<AOResult<ForecastData>> GetForecastData(string query)
         {
-            ForecastData forecastData = null;
+            var result = new AOResult<ForecastData>();
             try
             {
                 var response = await _client.GetAsync(query);
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    forecastData = JsonConvert.DeserializeObject<ForecastData>(content);
+                    var forecastData = JsonConvert.DeserializeObject<ForecastData>(content);
+                    result.SetSuccess(forecastData);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("\t\tERROR {0}", ex.Message);
+                result.SetError($"Exception: {nameof(GetForecastData)}", "Wrong result", ex);
             }
 
-            return forecastData;
+            return result;
         }
     }
 }

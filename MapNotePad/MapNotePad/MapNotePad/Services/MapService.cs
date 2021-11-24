@@ -172,8 +172,9 @@ namespace MapNotePad.Services
                 requestUri += "&exclude=minutely,hourly,alerts,current";
                 requestUri += "&units=metric";
                 requestUri += $"&appid={AppConstants.OPEN_WEATHER_MAP_API_KEY}";
-                ForecastData forecastData = await _restService.GetForecastData(requestUri);//https://api.openweathermap.org/data/2.5/onecall?lat=12&lon=12&exclude=minutely,hourly,alerts,current&units=metric&appid=6a13cd8fbbd77a77ff4666d8b6ac1336
-                if (forecastData != null)
+                var resultRequest = await _restService.GetForecastData(requestUri);//https://api.openweathermap.org/data/2.5/onecall?lat=12&lon=12&exclude=minutely,hourly,alerts,current&units=metric&appid=6a13cd8fbbd77a77ff4666d8b6ac1336
+                ForecastData forecastData = resultRequest.Result;
+                if (resultRequest.IsSuccess)
                     result.SetSuccess(forecastData);
                 else
                     result.SetFailure();
@@ -195,8 +196,9 @@ namespace MapNotePad.Services
                 requestUri += $"&lon={longitude}";
                 requestUri += "&units=metric";
                 requestUri += $"&appid={AppConstants.OPEN_WEATHER_MAP_API_KEY}";
-                WeatherData weatherData = await _restService.GetWeatherData(requestUri);//https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&units=metric&appid=6a13cd8fbbd77a77ff4666d8b6ac1336"
-                if (weatherData != null)
+                var resultRequest = await _restService.GetWeatherData(requestUri);//https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&units=metric&appid=6a13cd8fbbd77a77ff4666d8b6ac1336"
+                WeatherData weatherData = resultRequest.Result;
+                if (resultRequest.IsSuccess)
                     result.SetSuccess(weatherData);
                 else
                     result.SetFailure();
