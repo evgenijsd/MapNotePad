@@ -32,12 +32,19 @@ namespace MapNotePad.ViewModels
             _authentication = authentication;
             _settings = settings;
             _settings.Language((ELangType)_settings.LangSet);
-            MapThemeStyle = _mapService.GetMapStyle(_settings.ThemeSet != (int)EThemeType.LightTheme);
+            Theme = _settings.ThemeSet != (int)EThemeType.LightTheme;
+            MapThemeStyle = _mapService.GetMapStyle(Theme);
         }
 
 
 
         #region -- Public properties --
+        private bool _theme;
+        public bool Theme
+        {
+            get => _theme;
+            set => SetProperty(ref _theme, value);
+        }
         private MapStyle _mapThemeStyle;
         public MapStyle MapThemeStyle
         {
@@ -153,11 +160,12 @@ namespace MapNotePad.ViewModels
                 var pinviews = await _mapService.GetPinsViewAsync(UserId);
                 Pins.Clear();
                 _mapService.SetPinsFavouriteAsync(Pins, pinviews);
+                MapThemeStyle = _mapService.GetMapStyle(Theme);
             }
             if (parameters.ContainsKey("Theme"))
             {
-                var theme = parameters.GetValue<bool>("Theme");
-                MapThemeStyle = _mapService.GetMapStyle(theme);
+                Theme = parameters.GetValue<bool>("Theme");
+                MapThemeStyle = _mapService.GetMapStyle(Theme);
             }
         }
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
