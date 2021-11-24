@@ -80,7 +80,7 @@
                                             </StackLayout>
                                         </StackLayout>
                                         <Frame Grid.Column="2" BorderColor="Transparent"  WidthRequest="30" HeightRequest="30" 
-                                               VerticalOptions="Center" HorizontalOptions="Start"
+                                               VerticalOptions="Center" HorizontalOptions="Start" HasShadow="False"
                                                BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor},
                                             Dark={StaticResource DarkPageBackgroundColor}}">
                                             <ImageButton  Source="{Binding ImageLeft}" Aspect="AspectFill"  BackgroundColor="Transparent"/>

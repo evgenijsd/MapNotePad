@@ -140,8 +140,8 @@ namespace MapNotePad.Services
                 if (status == PermissionStatus.Granted)
                 {
                     var locator = CrossGeolocator.Current;
-                    locator.DesiredAccuracy = 10000;
-                    var position = await locator.GetPositionAsync(new TimeSpan(0, 0, 5));
+                    locator.DesiredAccuracy = 1000;
+                    var position = await locator.GetPositionAsync(new TimeSpan(0, 0, 10));
                     region = MapSpan.FromCenterAndRadius(
                                  new Position(position.Latitude, position.Longitude),
                                  Distance.FromKilometers(100));

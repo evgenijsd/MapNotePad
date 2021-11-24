@@ -57,6 +57,6 @@
 		<string>location</string>
 	</array>
 	<key>NSLocationUsageDescription</key>
-	<string>Can we use your location?</string>
+	<string>New Entry</string>
 </dict>
 </plist>
