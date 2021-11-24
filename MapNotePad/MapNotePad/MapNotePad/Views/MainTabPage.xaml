@@ -8,13 +8,14 @@
             android:TabbedPage.ToolbarPlacement="Bottom"
             x:Class="MapNotePad.Views.MainTabPage"
             prism:ViewModelLocator.AutowireViewModel="True"
+                           BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, 
+                                                             Dark={StaticResource DarkPageBackgroundColor}}"
                            BarTextColor="{AppThemeBinding Light={StaticResource LightPrimaryColor},
                                                           Dark={StaticResource DarkPrimaryColor}}"
                            SelectedTabColor="{AppThemeBinding Light={StaticResource LightPrimaryColor},
                                                               Dark={StaticResource DarkPrimaryColor}}"
                            UnselectedTabColor="{AppThemeBinding Light={StaticResource LightPrimaryColor},
                                                                 Dark={StaticResource DarkPrimaryColor}}">
-  <!--Pages can be added as references or inline-->
 
     <controls:CustomTabbedPage.Behaviors>
         <controls:TabbedPageNavigationBehavior />
