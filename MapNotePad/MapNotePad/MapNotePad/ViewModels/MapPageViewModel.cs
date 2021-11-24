@@ -148,6 +148,7 @@ namespace MapNotePad.ViewModels
         public override void OnNavigatedFrom(INavigationParameters parameters)
         {
             parameters.Add(nameof(this.UserId), this.UserId);
+            parameters.Add(nameof(this.Theme), this.Theme);
         }
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
@@ -164,7 +165,8 @@ namespace MapNotePad.ViewModels
             }
             if (parameters.ContainsKey("Theme"))
             {
-                Theme = parameters.GetValue<bool>("Theme");
+                bool theme = parameters.GetValue<bool>("Theme");
+                Theme = theme;
                 MapThemeStyle = _mapService.GetMapStyle(Theme);
             }
         }

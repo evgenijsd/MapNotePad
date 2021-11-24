@@ -22,7 +22,8 @@
         <controls:CustomToolBar Title="{Binding Title}" 
                                 LeftImageSource="ic_left_blue.png"
                                         RightImageSource="ic_save.png"
-                                        LineColor="{AppThemeBinding Light={StaticResource LightLineColor}, Dark={StaticResource DarkLineColor}}"
+                                        LineColor="{AppThemeBinding Light={StaticResource LightVariantColor},
+                                        Dark={StaticResource DarkVariantColor}}"
                                         LeftButtonCommand="{Binding GoBackCommand}"
                                         RightButtonCommand="{Binding SaveClickedCommand}"/>
         <StackLayout Grid.Row="1">

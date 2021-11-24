@@ -60,8 +60,11 @@ namespace MapNotePad.Services
         public async Task<ObservableCollection<PinView>> GetPinsViewAsync(int userId) { 
             var pv = new ObservableCollection<PinView>((await _repository.GetAsync<PinModel>(x => x.User == userId)).Select(x => x.ToPinView()));
             foreach (PinView pin in pv)
+            {
                 if (pin.Favourite) pin.Image = "ic_like_blue.png";
                 else pin.Image = "ic_like_gray.png";
+                pin.ImageLeft = "ic_left_gray.png";
+            }
             return pv;
         }
 

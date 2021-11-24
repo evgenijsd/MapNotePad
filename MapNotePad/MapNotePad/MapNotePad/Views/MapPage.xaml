@@ -25,7 +25,8 @@
                                           Placeholder="Search"
                                           LeftButtonCommand="{Binding SettingsCommand}"
                                           RightButtonCommand="{Binding ExitCommand}"
-                                          LineColor="{StaticResource LineColor}"
+                                          LineColor="{AppThemeBinding Light={StaticResource LightVariantColor},
+                                        Dark={StaticResource DarkVariantColor}}"
                                       TextChangedCommand="{Binding SearchTextCommand}"/>
 
             <Grid Grid.Row="1" RowSpacing="0">

@@ -32,9 +32,16 @@ namespace MapNotePad.ViewModels
             _authentication = authentication;
             _settings = settings;
             _settings.Language((ELangType)_settings.LangSet);
+            Theme = _settings.ThemeSet != (int)EThemeType.LightTheme;
         }
 
         #region -- Public properties --
+        private bool _theme;
+        public bool Theme
+        {
+            get => _theme;
+            set => SetProperty(ref _theme, value);
+        }
         private ObservableCollection<PinView> _pinViews;
         public ObservableCollection<PinView> PinViews
         {
@@ -81,6 +88,7 @@ namespace MapNotePad.ViewModels
         public override void OnNavigatedFrom(INavigationParameters parameters)
         {
             parameters.Add(nameof(this.UserId), this.UserId);
+            parameters.Add(nameof(this.Theme), this.Theme);
         }
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
@@ -96,6 +104,11 @@ namespace MapNotePad.ViewModels
                     pin.DeleteCommand = DeleteCommand;
                 }
                 PinSearch = PinViews;
+            }
+            if (parameters.ContainsKey("Theme"))
+            {
+                bool theme = parameters.GetValue<bool>("Theme");
+                Theme = theme;
             }
         }
         #endregion
@@ -134,18 +147,17 @@ namespace MapNotePad.ViewModels
             }
             PinView pinv = args as PinView;
             PinModel pindel = pinv.ToPinModel();
-            //_dialogs.DisplayAlertAsync("Alert", $"{pinv.Id}", "Ok");
-            
-            //return await _navigationService.NavigateAsync($"{nameof(Register)}");
-            //return Task.CompletedTask;
         }
 
         private void OnSearchTextCommandAsync()
         {
             if (!string.IsNullOrEmpty(SearchText))
             {
-                PinSearch = new ObservableCollection<PinView>(PinViews.Where(x => x.Name.Contains(SearchText) || x.Description.Contains(SearchText) || x.Latitude.ToString().Contains(SearchText) || x.Longitude.ToString().Contains(SearchText)));
-                if (PinSearch.Count == 0 && SearchText.Length > 0) _dialogs.DisplayAlertAsync("Alert", $"Not Found \"{SearchText}\"", "Ok");
+                PinSearch = new ObservableCollection<PinView>(PinViews.Where(x => x.Name.Contains(SearchText)
+                || x.Description.Contains(SearchText) || x.Latitude.ToString().Contains(SearchText)
+                || x.Longitude.ToString().Contains(SearchText)));
+                if (PinSearch.Count == 0 && SearchText.Length > 0)
+                    _dialogs.DisplayAlertAsync("Alert", $"Not Found \"{SearchText}\"", "Ok");
             }
             else
                 PinSearch = PinViews;
@@ -160,11 +172,13 @@ namespace MapNotePad.ViewModels
                 {
                     pin.Favourite = !pin.Favourite;
                     pin.Image = "ic_like_gray.png";
+                    pin.ImageLeft = "ic_left_gray.png";
                 }
                 else
                 {
                     pin.Favourite = !pin.Favourite;
                     pin.Image = "ic_like_blue.png";
+                    pin.ImageLeft = "ic_left_gray.png";
                 }
                 var result = await _mapService.SetPinsFavourite(pin.ToPinModel());
                 if (result.IsSuccess)

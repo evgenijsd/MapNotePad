@@ -28,6 +28,7 @@
     <PackageReference Include="Xamarin.Forms.GoogleMaps" Version="3.3.0" />
     <PackageReference Include="Xamarin.Forms.GoogleMaps.Bindings" Version="3.0.0" />
     <PackageReference Include="Xamarin.Forms.GoogleMaps.Clustering" Version="1.1.0" />
+    <PackageReference Include="ContextViewCell" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -92,6 +93,7 @@
     <None Remove="Resources\MapLightStyle.json" />
     <None Remove="Resources\MapStyle.json" />
     <None Remove="XamTop.ContextMenu" />
+    <None Remove="ContextViewCell" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\MapDarkStyle.json" />
