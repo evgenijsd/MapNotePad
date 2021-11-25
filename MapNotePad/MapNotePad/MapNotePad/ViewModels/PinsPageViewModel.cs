@@ -79,7 +79,7 @@ namespace MapNotePad.ViewModels
         private ICommand _FavouriteCommand;
         public ICommand FavouriteCommand => _FavouriteCommand ??= SingleExecutionCommand.FromFunc<object>(OnFavouriteCommandAsync);
         private ICommand _TapShowCommand;
-        public ICommand TapShowCommand => _TapShowCommand ??= SingleExecutionCommand.FromFunc<PinView>(OnTapShowCommandAsync);
+        public ICommand TapShowCommand => _TapShowCommand ??= SingleExecutionCommand.FromFunc<object>(OnTapShowCommandAsync);
         #endregion
         #region -- InterfaceName implementation --
         #endregion
@@ -101,6 +101,7 @@ namespace MapNotePad.ViewModels
                 {
                     pin.EditCommand = EditCommand;
                     pin.DeleteCommand = DeleteCommand;
+                    pin.TapCommand = TapShowCommand;
                 }
                 PinSearch = PinViews;
             }
@@ -217,10 +218,14 @@ namespace MapNotePad.ViewModels
 
         }
 
-        private async Task OnTapShowCommandAsync(PinView pin)
+        private async Task OnTapShowCommandAsync(object args)
         {
-            var p = new NavigationParameters { { "Pin", pin } };
-            await _navigationService.NavigateAsync($"{nameof(MainTabPage)}?selectedTab={nameof(MapPage)}", p);
+            if (args != null)
+            {
+                PinView pin = args as PinView;
+                var p = new NavigationParameters { { "Pin", pin } };
+                await _navigationService.NavigateAsync($"{nameof(MainTabPage)}?selectedTab={nameof(MapPage)}", p);
+            }
         }
         #endregion
     }

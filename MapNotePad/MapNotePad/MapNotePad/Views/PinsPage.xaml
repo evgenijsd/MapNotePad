@@ -31,9 +31,9 @@
                 <ListView x:Name="pinList" BackgroundColor="{StaticResource TransparentColor}"
                           HasUnevenRows="True" 
                           ItemsSource="{Binding PinSearch}">
-                        <ListView.Behaviors>
+                        <!--ListView.Behaviors>
                             <prism:EventToCommandBehavior EventName="ItemTapped" Command="{Binding TapShowCommand}" EventArgsParameterPath="Item"/>
-                        </ListView.Behaviors>
+                        </ListView.Behaviors-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -54,7 +54,6 @@
                                                     <Image Source="ic_delete" Aspect="AspectFill" HeightRequest="30" WidthRequest="30"  HorizontalOptions="Center" />
                                                 </StackLayout>
                                             </SwipeItemView>
-
                                         </SwipeItems>
                                     </SwipeView.RightItems>
                                     <Grid ColumnSpacing="0"
@@ -79,11 +78,13 @@
                                                 <Label Text="{Binding Longitude}" FontSize="18" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
                                             </StackLayout>
                                         </StackLayout>
-                                        <Frame Grid.Column="2" BorderColor="Transparent"  WidthRequest="30" HeightRequest="30" 
+                                        <Button Grid.Column="1" BackgroundColor="{StaticResource TransparentColor}"
+                                                Command="{Binding Source={x:Reference pinList}, Path=BindingContext.TapShowCommand}" CommandParameter="{Binding .}"/>
+                                        <Frame Grid.Column="2" BorderColor="{StaticResource TransparentColor}"  WidthRequest="30" HeightRequest="30" 
                                                VerticalOptions="Center" HorizontalOptions="Start"
                                                BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor},
                                             Dark={StaticResource DarkPageBackgroundColor}}">
-                                            <ImageButton  Source="{Binding ImageLeft}" Aspect="AspectFill"  BackgroundColor="Transparent"/>
+                                            <ImageButton  Source="{Binding ImageLeft}" Aspect="AspectFill"  BackgroundColor="{StaticResource TransparentColor}"/>
                                         </Frame>
                                     </Grid>
                                 </SwipeView>

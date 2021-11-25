@@ -66,7 +66,7 @@
                 </StackLayout>
 
                 <StackLayout Grid.Row="1">
-                    <clusteredMap:ClusteredMap x:Name="myMap" IsShowingUser="True" WidthRequest="960" HeightRequest="200" MapStyle="{Binding MapThemeStyle}"
+                    <clusteredMap:ClusteredMap x:Name="myMap" IsShowingUser="True" WidthRequest="960" HeightRequest="200" MapStyle="{Binding MapThemeStyle}" SelectedPin="{Binding PinSelected}"
                                                BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
                         <clusteredMap:ClusteredMap.Behaviors>
                             <bindings:BindingPinsBehavior Value="{Binding Pins}"/>

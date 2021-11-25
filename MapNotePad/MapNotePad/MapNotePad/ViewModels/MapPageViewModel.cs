@@ -70,6 +70,12 @@ namespace MapNotePad.ViewModels
             get => _pin;
             set => SetProperty(ref _pin, value);
         }
+        private Pin _pinSelected;
+        public Pin PinSelected
+        {
+            get => _pinSelected;
+            set => SetProperty(ref _pinSelected, value);
+        }
         private string _searchText = string.Empty;
         public string SearchText
         {
@@ -176,8 +182,11 @@ namespace MapNotePad.ViewModels
             parameterName = "Pin";
             if (parameters.ContainsKey(parameterName))
             {
-                var pin = parameters.GetValue<PinView>(parameterName);
-                Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(10));
+                //var pin = parameters.GetValue<PinView>(parameterName);
+                var pin = Pins[0];
+                Region = MapSpan.FromCenterAndRadius(new Position(pin.Position.Latitude, pin.Position.Longitude), Distance.FromKilometers(10));
+                PinSelected = pin;
+                //PinSelected.InfoWindowAnchor();
             }
             
         }

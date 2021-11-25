@@ -93,5 +93,12 @@ namespace MapNotePad.Models
             get => _EditCommand;
             set => SetProperty(ref _EditCommand, value);
         }
+
+        private ICommand _TapCommand;
+        public ICommand TapCommand
+        {
+            get => _TapCommand;
+            set => SetProperty(ref _TapCommand, value);
+        }
     }
 }
