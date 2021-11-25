@@ -81,10 +81,11 @@
                                         <Button Grid.Column="1" BackgroundColor="{StaticResource TransparentColor}"
                                                 Command="{Binding Source={x:Reference pinList}, Path=BindingContext.TapShowCommand}" CommandParameter="{Binding .}"/>
                                         <Frame Grid.Column="2" BorderColor="{StaticResource TransparentColor}"  WidthRequest="30" HeightRequest="30" 
-                                               VerticalOptions="Center" HorizontalOptions="Start"
+                                               VerticalOptions="Center" HorizontalOptions="Start" HasShadow="False"
                                                BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor},
                                             Dark={StaticResource DarkPageBackgroundColor}}">
-                                            <ImageButton  Source="{Binding ImageLeft}" Aspect="AspectFill"  BackgroundColor="{StaticResource TransparentColor}"/>
+                                            <ImageButton  Source="{Binding ImageLeft}" Aspect="AspectFill"  BackgroundColor="{StaticResource TransparentColor}"
+                                                  Command="{Binding Source={x:Reference pinList}, Path=BindingContext.TapShowCommand}" CommandParameter="{Binding .}" />
                                         </Frame>
                                     </Grid>
                                 </SwipeView>

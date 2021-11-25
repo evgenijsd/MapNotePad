@@ -182,11 +182,8 @@ namespace MapNotePad.ViewModels
             parameterName = "Pin";
             if (parameters.ContainsKey(parameterName))
             {
-                //var pin = parameters.GetValue<PinView>(parameterName);
-                var pin = Pins[0];
-                Region = MapSpan.FromCenterAndRadius(new Position(pin.Position.Latitude, pin.Position.Longitude), Distance.FromKilometers(10));
-                PinSelected = pin;
-                //PinSelected.InfoWindowAnchor();
+                var pin = parameters.GetValue<PinView>(parameterName);
+                Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(10));
             }
             
         }
