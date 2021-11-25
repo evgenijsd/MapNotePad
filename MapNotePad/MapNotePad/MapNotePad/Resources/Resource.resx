@@ -138,6 +138,9 @@
   <data name="CreateAnAccount" xml:space="preserve">
     <value>Create an account</value>
   </data>
+  <data name="CreatePassword" xml:space="preserve">
+    <value>Create password</value>
+  </data>
   <data name="DarkTheme" xml:space="preserve">
     <value>Dark theme</value>
   </data>

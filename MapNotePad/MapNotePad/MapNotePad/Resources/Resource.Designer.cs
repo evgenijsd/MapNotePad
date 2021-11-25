@@ -124,6 +124,15 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Create password.
+        /// </summary>
+        internal static string CreatePassword {
+            get {
+                return ResourceManager.GetString("CreatePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Dark theme.
         /// </summary>
         internal static string DarkTheme {
