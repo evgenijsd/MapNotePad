@@ -7,6 +7,7 @@ using MapNotePad.Services.Interface;
 using MapNotePad.Views;
 using Prism.Navigation;
 using Prism.Services;
+using Xamarin.Forms;
 
 namespace MapNotePad.ViewModels
 {
@@ -28,6 +29,12 @@ namespace MapNotePad.ViewModels
             get => _name;
             set => SetProperty(ref _name, value);
         }
+        private bool _isWrongEmail = false;
+        public bool IsWrongEmail
+        {
+            get => _isWrongEmail;
+            set => SetProperty(ref _isWrongEmail, value);
+        }
         private string _email = string.Empty;
         public string Email
         {
@@ -41,6 +48,7 @@ namespace MapNotePad.ViewModels
         public ICommand PasswordCommand => _PasswordCommand ??= SingleExecutionCommand.FromFunc(OnPasswordCommandAsync);
         private ICommand _GoogleMainCommand;
         public ICommand GoogleMainCommand => _GoogleMainCommand ??= SingleExecutionCommand.FromFunc(OnGoogleMainCommandAsync);
+        public ICommand ErrorCommand => new Command(OnErrorCommand);
         #endregion
         #region -- InterfaceName implementation --
         #endregion
@@ -88,6 +96,19 @@ namespace MapNotePad.ViewModels
         private async Task OnGoBackCommandAsync()
         {
             await _navigationService.GoBackAsync();
+        }
+        private void OnErrorCommand()
+        {
+            switch ((ECheckEnter)_registration.CheckCorrectEmail(Email))
+            {
+                case ECheckEnter.EmailANotVaid:
+                case ECheckEnter.EmailLengthNotValid:
+                    IsWrongEmail = !string.IsNullOrEmpty(Email);
+                    break;
+                default:
+                    IsWrongEmail = false;
+                    break;
+            }
         }
 
         #endregion

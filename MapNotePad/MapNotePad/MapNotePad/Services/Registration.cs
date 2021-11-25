@@ -44,7 +44,8 @@ namespace MapNotePad.Services
         {
             ECheckEnter result = ECheckEnter.ChecksArePassed;
             int s =  email.IndexOf('@');
-            if (s > MAX_LENGTH_EMAIL || (email.Length - s) > MAX_LENGTH_EMAIL || email.Length - 1 == s || s == 0) result = ECheckEnter.EmailLengthNotValid;
+            if (s > MAX_LENGTH_EMAIL || (email.Length - s) > MAX_LENGTH_EMAIL
+                || email.Length - 1 == s || s == 0) result = ECheckEnter.EmailLengthNotValid;
             if (s == -1) result = ECheckEnter.EmailANotVaid;
             return result;
         }
@@ -54,8 +55,8 @@ namespace MapNotePad.Services
             const string validPassword = @"^(?=.*[A-ZА-ЯЁҐЄЇІ])(?=.*\d)[\d\D]+$";
             ECheckEnter check = ECheckEnter.ChecksArePassed;
 
-            if (!Regex.IsMatch(password, validPassword)) check = ECheckEnter.PasswordBigLetterAndDigit;
             if (password != confirmPassword) check = ECheckEnter.PasswordsNotEqual;
+            if (!Regex.IsMatch(password, validPassword)) check = ECheckEnter.PasswordBigLetterAndDigit;
             if (password.Length < MIN_PASSWORD_LENGTH) check = ECheckEnter.PasswordLengthNotValid;
             return (int)check;
         }

@@ -16,7 +16,8 @@ namespace MapNotePad.ViewModels
         private IPageDialogService _dialogs { get; }
         private IRegistration _registration;
 
-        public PasswordViewModel(INavigationService navigationService, IRegistration registration, IPageDialogService dialogs) : base(navigationService)
+        public PasswordViewModel(INavigationService navigationService, IRegistration registration,
+            IPageDialogService dialogs) : base(navigationService)
         {
             _registration = registration;
             _dialogs = dialogs;
@@ -28,6 +29,12 @@ namespace MapNotePad.ViewModels
         {
             get => _password;
             set => SetProperty(ref _password, value);
+        }
+        private bool _isIncorrectPassword = false;
+        public bool IsIncorrectPassword
+        {
+            get => _isIncorrectPassword;
+            set => SetProperty(ref _isIncorrectPassword, value);
         }
         private string _confirmPassword = string.Empty;
         public string ConfirmPassword
@@ -110,7 +117,26 @@ namespace MapNotePad.ViewModels
         }
         private void OnErrorCommand()
         {
-            IsMismatchPassword = !string.IsNullOrEmpty(Password) && _registration.CheckTheCorrectPassword(Password, ConfirmPassword) == (int)ECheckEnter.PasswordsNotEqual;
+            var error = (ECheckEnter)_registration.CheckTheCorrectPassword(Password, ConfirmPassword);
+            switch (error)
+            {
+                case ECheckEnter.PasswordBigLetterAndDigit:
+                case ECheckEnter.PasswordLengthNotValid:
+                    IsIncorrectPassword = !string.IsNullOrEmpty(Password);
+                    break;
+                default:
+                    IsIncorrectPassword = false;
+                    break;
+            }
+            switch (error)
+            {
+                case ECheckEnter.PasswordsNotEqual:
+                    IsMismatchPassword = !string.IsNullOrEmpty(ConfirmPassword);
+                    break;
+                default:
+                    IsMismatchPassword = false;
+                    break;
+            }
         }
 
         #endregion

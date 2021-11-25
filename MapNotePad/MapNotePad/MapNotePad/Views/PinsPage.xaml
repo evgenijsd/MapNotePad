@@ -71,15 +71,19 @@
                                                          HeightRequest="55" WidthRequest="55" HorizontalOptions="Center" Margin="10,15,0,0" Padding="12" CornerRadius="5"/>
                                         </StackLayout>
                                         <StackLayout Grid.Column="1" Margin="10,20,10,20">
-                                            <Label Text="{Binding Name}" FontSize="21" FontAttributes="Bold" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"  />
+                                            <StackLayout.GestureRecognizers>
+                                               <TapGestureRecognizer Command="{Binding Source={x:Reference pinList}, Path=BindingContext.TapShowCommand}" CommandParameter="{Binding .}"/>
+                                            </StackLayout.GestureRecognizers>
+                                            <Label Text="{Binding Name}" FontSize="21" FontAttributes="Bold" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation">
+                                            </Label>  
                                             <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Latitude}" FontSize="18" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation" />
+                                                <Label Text="{Binding Latitude}" FontSize="18" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation" >
+                                                </Label>
                                                 <Label Text=", " FontSize="18" Style="{StaticResource baseLabel}"/>
-                                                <Label Text="{Binding Longitude}" FontSize="18" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
+                                                <Label Text="{Binding Longitude}" FontSize="18" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation">
+                                                </Label>
                                             </StackLayout>
                                         </StackLayout>
-                                        <Button Grid.Column="1" BackgroundColor="{StaticResource TransparentColor}"
-                                                Command="{Binding Source={x:Reference pinList}, Path=BindingContext.TapShowCommand}" CommandParameter="{Binding .}"/>
                                         <Frame Grid.Column="2" BorderColor="{StaticResource TransparentColor}"  WidthRequest="30" HeightRequest="30" 
                                                VerticalOptions="Center" HorizontalOptions="Start" HasShadow="False"
                                                BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor},
@@ -94,6 +98,8 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </ScrollView>
+            <Label Text="{res:Translate NotFoundPins}" Grid.Row="1" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"
+                   IsVisible="{Binding IsNotFound}" Style="{StaticResource baseLabel}"/>
             <Frame Grid.Row="1"   CornerRadius="40" HorizontalOptions="End" 
                    WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" VerticalOptions="End" 
                    BackgroundColor="{AppThemeBinding Light={StaticResource LightPrimaryColor},

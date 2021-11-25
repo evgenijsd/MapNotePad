@@ -1,4 +1,5 @@
-﻿using MapNotePad.Enum;
+﻿using Acr.UserDialogs;
+using MapNotePad.Enum;
 using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
@@ -18,8 +19,10 @@ namespace MapNotePad.ViewModels
         private IPageDialogService _dialogs { get; }
         private IMapService _mapService { get; set; }
         private ISettings _settings;
+        private PinModel _pinModel;
 
-        public AddPinsViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService, ISettings settings) : base(navigationService)
+        public AddPinsViewModel(INavigationService navigationService, IPageDialogService dialogs,
+            IMapService mapService, ISettings settings) : base(navigationService)
         {
             _dialogs = dialogs;
             _mapService = mapService;
@@ -159,6 +162,7 @@ namespace MapNotePad.ViewModels
                     Longitude = pin.Longitude.ToString();
                     Date = pin.Date;
                     Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(10));
+                    _pinModel = pin;
                 }
             }
         }
@@ -170,6 +174,20 @@ namespace MapNotePad.ViewModels
         #region -- Private helpers --
         private async Task OnGoBackCommandAsync()
         {
+            if (Choise == EAddEditType.Edit)
+                if (Name != _pinModel.Name || Description != _pinModel.Description ||
+                    Latitude != _pinModel.Latitude.ToString() || Longitude != _pinModel.Longitude.ToString())
+                {
+                    var confirmConfig = new ConfirmConfig()
+                    {
+                        Message = "Do not save change?",
+                        OkText = "Yes",
+                        CancelText = "Cancel"
+                    };
+                    var confirm = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
+                    if (!confirm) return;
+                }
+
             await _navigationService.GoBackAsync();
         }
 
@@ -203,7 +221,6 @@ namespace MapNotePad.ViewModels
                 {
                     if (blat)
                     {
-
                         PinModel pin = new PinModel
                         {
                             Id = Id,

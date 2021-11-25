@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -22,7 +23,8 @@ namespace MapNotePad.ViewModels
 
         private IPageDialogService _dialogs { get; }
 
-        public PinsPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService, IAuthentication authentication, ISettings settings) : base(navigationService)
+        public PinsPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService,
+            IAuthentication authentication, ISettings settings) : base(navigationService)
         {
             _dialogs = dialogs;
             _mapService = mapService;
@@ -38,6 +40,12 @@ namespace MapNotePad.ViewModels
         {
             get => _theme;
             set => SetProperty(ref _theme, value);
+        }
+        private bool _isNotFound;
+        public bool IsNotFound
+        {
+            get => _isNotFound;
+            set => SetProperty(ref _isNotFound, value);
         }
         private ObservableCollection<PinView> _pinViews;
         public ObservableCollection<PinView> PinViews
@@ -104,11 +112,21 @@ namespace MapNotePad.ViewModels
                     pin.TapCommand = TapShowCommand;
                 }
                 PinSearch = PinViews;
+                IsNotFound = PinSearch == null || PinSearch.Count == 0;
             }
             if (parameters.ContainsKey("Theme"))
             {
                 bool theme = parameters.GetValue<bool>("Theme");
                 Theme = theme;
+            }
+        }
+        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
+        {
+            base.OnPropertyChanged(args);
+
+            if (args.PropertyName == nameof(PinSearch))
+            {
+                IsNotFound = PinSearch == null || PinSearch.Count == 0;
             }
         }
         #endregion
@@ -154,8 +172,8 @@ namespace MapNotePad.ViewModels
             if (!string.IsNullOrEmpty(SearchText))
             {
                 PinSearch = new ObservableCollection<PinView>(PinViews.Where(x => x.Name.Contains(SearchText)
-                || x.Description.Contains(SearchText) || x.Latitude.ToString().Contains(SearchText)
-                || x.Longitude.ToString().Contains(SearchText)));
+                          || x.Description.Contains(SearchText) || x.Latitude.ToString().Contains(SearchText)
+                          || x.Longitude.ToString().Contains(SearchText)));
                 if (PinSearch.Count == 0 && SearchText.Length > 0)
                     _dialogs.DisplayAlertAsync("Alert", $"Not Found \"{SearchText}\"", "Ok");
             }

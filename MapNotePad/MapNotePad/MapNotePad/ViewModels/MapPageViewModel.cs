@@ -25,7 +25,8 @@ namespace MapNotePad.ViewModels
         private IAuthentication _authentication { get; }
         private ISettings _settings;
 
-        public MapPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService, IAuthentication authentication, ISettings settings) : base(navigationService)
+        public MapPageViewModel(INavigationService navigationService, IPageDialogService dialogs,
+            IMapService mapService, IAuthentication authentication, ISettings settings) : base(navigationService)
         {
             _dialogs = dialogs;
             _mapService = mapService;
@@ -183,7 +184,7 @@ namespace MapNotePad.ViewModels
             if (parameters.ContainsKey(parameterName))
             {
                 var pin = parameters.GetValue<PinView>(parameterName);
-                Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(10));
+                Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
             }
             
         }

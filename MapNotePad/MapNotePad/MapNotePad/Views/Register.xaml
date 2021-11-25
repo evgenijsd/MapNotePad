@@ -15,7 +15,7 @@
                                     LineColor="{StaticResource TransparentColor}"/>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="110"/>
                     <RowDefinition Height="130"/>
                     <RowDefinition Height="90"/>
                     <RowDefinition Height="auto"/>
@@ -23,16 +23,22 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackLayout Grid.Row="0" Padding="20,0,20,20" VerticalOptions="Center" Margin="0,10,0,0">
-                    <Label Text="{res:Translate Name}" FontSize="18" Style="{StaticResource secondLabel}"
-                           Margin="20,0,0,0"/>
-                    <controls:CustomEntry Text="{Binding Name}" Placeholder="{res:Translate EnterName}" />
+                <StackLayout Grid.Row="0" Padding="20,0,20,20"
+                             VerticalOptions="Center" Margin="0,10,0,0">
+                    <Label Text="{res:Translate Name}" FontSize="18"
+                           Style="{StaticResource secondLabel}" Margin="20,0,0,0"/>
+                    <controls:CustomEntry Text="{Binding Name}"
+                                          Placeholder="{res:Translate EnterName}"/>
                 </StackLayout>
                 <StackLayout Grid.Row="1" Padding="20,10,20,20" VerticalOptions="Center" Margin="0,10,0,0">
                     <Label Text="{res:Translate Email}" FontSize="18" Style="{StaticResource secondLabel}"
-                           Margin="20,0,0,0"/>
-                    <controls:CustomEntry Text="{Binding Email}" Placeholder="{res:Translate EnterEmail}"/>
+                           Margin="20,10,0,0" />
+                    <controls:CustomEntry Text="{Binding Email}" Placeholder="{res:Translate EnterEmail}"
+                                          TextChangedCommand="{Binding ErrorCommand}"/>
                 </StackLayout>
+                <Label Grid.Row="1" Text="{res:Translate WrongEmail}" FontSize="15"
+                            Margin="40,110,0,0" Style="{StaticResource errorLabel}"
+                            IsVisible="{Binding IsWrongEmail}"/>
                 <StackLayout Grid.Row="2" Padding="20,20,20,0">
                     <Button Text="{res:Translate Next}" Command="{Binding PasswordCommand}"
                             Style="{StaticResource baseButton}"/>

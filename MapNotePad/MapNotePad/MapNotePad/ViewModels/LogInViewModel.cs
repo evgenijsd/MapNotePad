@@ -83,17 +83,6 @@ namespace MapNotePad.ViewModels
                 Email = user.Email;
             }
         }
-        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
-        {
-            base.OnPropertyChanged(args);
-
-            switch (args.PropertyName)
-            {
-                case nameof(Email):
-                case nameof(Password):
-                    break;
-            }
-        }
         public override async void Initialize(INavigationParameters parameters)
         {
             await Task.Delay(TimeSpan.FromSeconds(0.1));
