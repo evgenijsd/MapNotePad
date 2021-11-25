@@ -207,6 +207,9 @@
   <data name="NotFound" xml:space="preserve">
     <value>Not found</value>
   </data>
+  <data name="NotFoundPins" xml:space="preserve">
+    <value>Not found pins</value>
+  </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
