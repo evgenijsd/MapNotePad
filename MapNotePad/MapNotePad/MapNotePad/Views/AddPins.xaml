@@ -2,54 +2,71 @@
 <view:BaseContentPage  xmlns:view="clr-namespace:MapNotePad.Views" 
                        xmlns="http://xamarin.com/schemas/2014/forms"
                        xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:clusteredMap="clr-namespace:Xamarin.Forms.GoogleMaps.Clustering;assembly=Xamarin.Forms.GoogleMaps.Clustering"
-             xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
-             xmlns:prism="http://prismlibrary.com"
-             xmlns:controls="clr-namespace:MapNotePad.Controls"
-             prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="MapNotePad.Views.AddPins"
-             BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor},
-                                Dark={StaticResource DarkPageBackgroundColor}}">
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:clusteredMap="clr-namespace:Xamarin.Forms.GoogleMaps.Clustering;assembly=Xamarin.Forms.GoogleMaps.Clustering"
+                       xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
+                       xmlns:prism="http://prismlibrary.com"
+                       xmlns:controls="clr-namespace:MapNotePad.Controls"
+                       prism:ViewModelLocator.AutowireViewModel="True"
+                       x:Class="MapNotePad.Views.AddPins"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor},
+                                                         Dark={StaticResource DarkPageBackgroundColor}}">
     <view:BaseContentPage.Content>
-
-    <Grid RowSpacing="0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <controls:CustomToolBar Title="{Binding Title}" 
-                                LeftImageSource="ic_left_blue.png"
-                                        RightImageSource="ic_save.png"
-                                        LineColor="{AppThemeBinding Light={StaticResource LightVariantColor},
-                                        Dark={StaticResource DarkVariantColor}}"
-                                        LeftButtonCommand="{Binding GoBackCommand}"
-                                        RightButtonCommand="{Binding SaveClickedCommand}"/>
-        <StackLayout Grid.Row="1">
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <controls:CustomToolBar Title="{Binding Title}"
+                                    LeftImageSource="ic_left_blue.png"
+                                    RightImageSource="ic_save.png"
+                                    LineColor="{AppThemeBinding Light={StaticResource LightVariantColor},
+                                                                Dark={StaticResource DarkVariantColor}}"
+                                    LeftButtonCommand="{Binding GoBackCommand}"
+                                    RightButtonCommand="{Binding SaveClickedCommand}"/>
+            <StackLayout Grid.Row="1">
                 <StackLayout Margin="20">
-                    <Label Text="{res:Translate Label}" Margin="10,0,0,0" FontSize="18"  Style="{StaticResource baseLabel}"/>
-                    <controls:CustomEntry Text="{Binding Name}" Placeholder="{res:Translate EnterLabel}" MaxLength="15"/>
+                    <Label Text="{res:Translate Label}" 
+                           Margin="10,0,0,0" FontSize="18"  
+                           Style="{StaticResource baseLabel}"/>
+                    <controls:CustomEntry Text="{Binding Name}" 
+                                          Placeholder="{res:Translate EnterLabel}" 
+                                          MaxLength="15"/>
                 </StackLayout>
                 <StackLayout Margin="20, 0, 20, 0">
-                    <Label Text="{res:Translate Description}" Margin="10,0,0,0" FontSize="18"  Style="{StaticResource baseLabel}" />
-                    <controls:CustomEntry Text="{Binding Description}" Placeholder="{res:Translate Description}" MaxLength="60" />
+                    <Label Text="{res:Translate Description}" 
+                           Margin="10,0,0,0" FontSize="18"  
+                           Style="{StaticResource baseLabel}" />
+                    <controls:CustomEntry Text="{Binding Description}" 
+                                          Placeholder="{res:Translate Description}" 
+                                          MaxLength="60" />
                 </StackLayout>
                 <StackLayout Margin="20">
-                    <Label Text="{res:Translate Cordinates}" Margin="10,0,0,0" FontSize="18" Style="{StaticResource baseLabel}" />
+                    <Label Text="{res:Translate Cordinates}" 
+                           Margin="10,0,0,0" FontSize="18" 
+                           Style="{StaticResource baseLabel}" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <controls:CustomEntry Grid.Column="1" Text="{Binding Latitude}" Placeholder="{res:Translate Latitude}" TextChangedCommand="{Binding LatitudeCommand}" />
-                        <controls:CustomEntry Grid.Column="0" Text="{Binding Longitude}" Placeholder="{res:Translate Longitude}" TextChangedCommand="{Binding LongitudeCommand}" />
+                        <controls:CustomEntry Grid.Column="1" 
+                                              Text="{Binding Latitude}" 
+                                              Placeholder="{res:Translate Latitude}" 
+                                              TextChangedCommand="{Binding LatitudeCommand}" />
+                        <controls:CustomEntry Grid.Column="0" 
+                                              Text="{Binding Longitude}" 
+                                              Placeholder="{res:Translate Longitude}" 
+                                              TextChangedCommand="{Binding LongitudeCommand}" />
                     </Grid>
                 </StackLayout>
                 <AbsoluteLayout VerticalOptions="FillAndExpand">
-                    <clusteredMap:ClusteredMap IsShowingUser="True" AbsoluteLayout.LayoutBounds="0,0,1,1"
-                                               AbsoluteLayout.LayoutFlags="All" HorizontalOptions="FillAndExpand"
-                                               VerticalOptions="FillAndExpand" MapStyle="{Binding MapThemeStyle}">
+                    <clusteredMap:ClusteredMap IsShowingUser="True" 
+                                               AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                               AbsoluteLayout.LayoutFlags="All" 
+                                               HorizontalOptions="FillAndExpand"
+                                               VerticalOptions="FillAndExpand" 
+                                               MapStyle="{Binding MapThemeStyle}">
                         <clusteredMap:ClusteredMap.Behaviors>
                             <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
                             <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
@@ -57,13 +74,19 @@
                         </clusteredMap:ClusteredMap.Behaviors>
                     </clusteredMap:ClusteredMap>
 
-                    <Frame CornerRadius="40" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" AbsoluteLayout.LayoutFlags="PositionProportional" 
+                    <Frame CornerRadius="40" 
+                           WidthRequest="40" HeightRequest="40" 
+                           Margin="0,0,20,20" AbsoluteLayout.LayoutFlags="PositionProportional" 
                            AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
-                    <ImageButton Source="ic_location"  Command="{Binding GeoLocCommand}" BackgroundColor="Transparent" VerticalOptions="Fill" HorizontalOptions="Fill"/>
-                </Frame>
-            </AbsoluteLayout>
-        </StackLayout>
-    </Grid>
+                           BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, 
+                                                             Dark={StaticResource DarkPageBackgroundColor}}">
+                        <ImageButton Source="ic_location"  
+                                     Command="{Binding GeoLocCommand}" 
+                                     BackgroundColor="Transparent" 
+                                     VerticalOptions="Fill" HorizontalOptions="Fill"/>
+                    </Frame>
+                </AbsoluteLayout>
+            </StackLayout>
+        </Grid>
     </view:BaseContentPage.Content>
 </view:BaseContentPage>

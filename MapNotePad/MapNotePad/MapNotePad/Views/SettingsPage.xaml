@@ -6,14 +6,15 @@
                        xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad" 
                        xmlns:controls="clr-namespace:MapNotePad.Controls"
                        x:Class="MapNotePad.Views.SettingsPage"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+                       BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, 
+                                                         Dark={StaticResource DarkPageBackgroundColor}}">
     <view:BaseContentPage.Content>
         <StackLayout>
             <controls:CustomToolBar Title="{res:Translate Settings}" 
-                                LeftImageSource="ic_left_blue.png"
-                                        LineColor="{AppThemeBinding Light={StaticResource LightVariantColor},
-                                        Dark={StaticResource DarkVariantColor}}"
-                                        LeftButtonCommand="{Binding GoBackCommand}"/>
+                                    LeftImageSource="ic_left_blue.png"
+                                    LineColor="{AppThemeBinding Light={StaticResource LightVariantColor},
+                                                                Dark={StaticResource DarkVariantColor}}"
+                                    LeftButtonCommand="{Binding GoBackCommand}"/>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="10"/>
@@ -21,9 +22,12 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackLayout Grid.Row="1" Padding="30,0,20,0" Orientation="Horizontal">
-                    <Label Text="{res:Translate DarkTheme}" VerticalOptions="Start"  FontSize="21" Style="{StaticResource baseLabel}" />
+                    <Label Text="{res:Translate DarkTheme}" 
+                           VerticalOptions="Start"  FontSize="21" 
+                           Style="{StaticResource baseLabel}" />
                 </StackLayout>
-                <StackLayout Grid.Row="1" VerticalOptions="Start"  HorizontalOptions="End" Padding="20,5,30,0">
+                <StackLayout Grid.Row="1" VerticalOptions="Start"  
+                             HorizontalOptions="End" Padding="20,5,30,0">
                     <OnPlatform x:TypeArguments="View">
                         <On Platform="Android">
                             <controls:CustomSwitch Scale="1.5" IsInit="{Binding Theme}">

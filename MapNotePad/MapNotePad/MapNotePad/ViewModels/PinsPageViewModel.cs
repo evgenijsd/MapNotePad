@@ -89,8 +89,7 @@ namespace MapNotePad.ViewModels
         private ICommand _TapShowCommand;
         public ICommand TapShowCommand => _TapShowCommand ??= SingleExecutionCommand.FromFunc<object>(OnTapShowCommandAsync);
         #endregion
-        #region -- InterfaceName implementation --
-        #endregion
+
         #region -- Overrides --
         public override void OnNavigatedFrom(INavigationParameters parameters)
         {
@@ -120,6 +119,7 @@ namespace MapNotePad.ViewModels
                 Theme = theme;
             }
         }
+
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
@@ -130,8 +130,7 @@ namespace MapNotePad.ViewModels
             }
         }
         #endregion
-        #region -- Public helpers --
-        #endregion
+
         #region -- Private helpers --
         private async Task OnAddPinCommandAsync()
         {
@@ -147,6 +146,7 @@ namespace MapNotePad.ViewModels
                 await _navigationService.NavigateAsync($"{nameof(AddPins)}", p);
             }
         }
+
         private async Task OnDeleteCommandAsync(object args)
         {
             if (args != null)
@@ -171,8 +171,8 @@ namespace MapNotePad.ViewModels
         {
             if (!string.IsNullOrEmpty(SearchText))
             {
-                PinSearch = new ObservableCollection<PinView>(PinViews.Where(x => x.Name.Contains(SearchText)
-                          || x.Description.Contains(SearchText) || x.Latitude.ToString().Contains(SearchText)
+                PinSearch = new ObservableCollection<PinView>(PinViews.Where(x => x.Name.ToLower().Contains(SearchText.ToLower())
+                          || x.Description.ToLower().Contains(SearchText.ToLower()) || x.Latitude.ToString().Contains(SearchText)
                           || x.Longitude.ToString().Contains(SearchText)));
                 if (PinSearch.Count == 0 && SearchText.Length > 0)
                     _dialogs.DisplayAlertAsync("Alert", $"Not Found \"{SearchText}\"", "Ok");
@@ -213,9 +213,7 @@ namespace MapNotePad.ViewModels
 
         private async Task OnSettingsCommandAsync()
         {
-
             await _navigationService.NavigateAsync($"{nameof(SettingsPage)}");
-
         }
 
         private async Task OnExitCommandAsync()

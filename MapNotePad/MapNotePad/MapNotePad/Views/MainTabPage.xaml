@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <controls:CustomTabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
-            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:local="clr-namespace:MapNotePad.Views;assembly=MapNotePad"
-            xmlns:prism="http://prismlibrary.com"
-            xmlns:controls="clr-namespace:MapNotePad.Controls"
-            xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-            android:TabbedPage.ToolbarPlacement="Bottom"
-            x:Class="MapNotePad.Views.MainTabPage"
-            prism:ViewModelLocator.AutowireViewModel="True"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                           xmlns:local="clr-namespace:MapNotePad.Views;assembly=MapNotePad"
+                           xmlns:prism="http://prismlibrary.com"
+                           xmlns:controls="clr-namespace:MapNotePad.Controls"
+                           xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+                           android:TabbedPage.ToolbarPlacement="Bottom"
+                           x:Class="MapNotePad.Views.MainTabPage"
+                           prism:ViewModelLocator.AutowireViewModel="True"
                            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, 
                                                              Dark={StaticResource DarkPageBackgroundColor}}"
                            BarTextColor="{AppThemeBinding Light={StaticResource LightPrimaryColor},

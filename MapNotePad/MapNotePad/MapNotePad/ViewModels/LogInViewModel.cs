@@ -71,9 +71,6 @@ namespace MapNotePad.ViewModels
         public ICommand ErrorCommand => new Command(OnErrorCommand);
         #endregion
 
-        #region -- InterfaceName implementation --
-
-        #endregion
         #region -- Overrides --
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
@@ -93,14 +90,13 @@ namespace MapNotePad.ViewModels
             }
         }
         #endregion
-        #region -- Public helpers --
 
-        #endregion
         #region -- Private helpers --
         private async Task OnGoBackCommandAsync()
         {
            await  _navigationService.GoBackAsync();
         }
+
         private async Task OnMainTabPageCommandAsync()
         {
             var result = await _authentication.CheckUserAsync(Email, Password);
@@ -117,6 +113,7 @@ namespace MapNotePad.ViewModels
                 Password = string.Empty;
             }
         }
+
         private async Task OnGoogleMainCommandAsync()
         {
             await _navigationService.NavigateAsync("/StartPage");

@@ -10,19 +10,21 @@ namespace MapNotePad.Services
 {
     public class Authentication : IAuthentication
     {
-        public int UserId
-        {
-            get => Preferences.Get(nameof(UserId), 0);
-            set => Preferences.Set(nameof(UserId), value);
-        }
-
-
         private IRepository _repository { get; }
+
         public Authentication(IRepository repository)
         {
             _repository = repository;
         }
 
+        #region -- Public properties --
+        public int UserId
+        {
+            get => Preferences.Get(nameof(UserId), 0);
+            set => Preferences.Set(nameof(UserId), value);
+        }
+        #endregion
+        #region -- Public helpers --
         public async Task<AOResult<int>> CheckUserAsync(string email, string password)
         {
             var result = new AOResult<int>();
@@ -44,5 +46,7 @@ namespace MapNotePad.Services
 
             return result;
         }
+        #endregion
+
     }
 }

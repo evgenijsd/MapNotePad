@@ -63,8 +63,7 @@ namespace MapNotePad.ViewModels
         public ICommand GoogleMainCommand => _GoogleMainCommand ??= SingleExecutionCommand.FromFunc(OnGoogleMainCommandAsync);
         public ICommand ErrorCommand => new Command(OnErrorCommand);
         #endregion
-        #region -- InterfaceName implementation --
-        #endregion
+
         #region -- Overrides --
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
@@ -74,9 +73,7 @@ namespace MapNotePad.ViewModels
             }
         }
         #endregion
-        #region -- Public helpers --
 
-        #endregion
         #region -- Private helpers --
         private async Task OnLogInCommandAsync()
         {
@@ -106,15 +103,18 @@ namespace MapNotePad.ViewModels
                     break;
             }
         }
+
         private Task OnGoogleMainCommandAsync()
         {
             _navigationService.NavigateAsync("StartPage");
             return Task.CompletedTask;
         }
+
         private async Task OnGoBackCommandAsync()
         {
             await _navigationService.GoBackAsync();
         }
+
         private void OnErrorCommand()
         {
             var error = (ECheckEnter)_registration.CheckTheCorrectPassword(Password, ConfirmPassword);
@@ -138,7 +138,6 @@ namespace MapNotePad.ViewModels
                     break;
             }
         }
-
         #endregion
     }
 }

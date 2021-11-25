@@ -1,39 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <view:BaseContentPage  xmlns:view="clr-namespace:MapNotePad.Views" 
                        xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:prism="http://prismlibrary.com"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:prism="http://prismlibrary.com"
                        xmlns:controls="clr-namespace:MapNotePad.Controls"
                        xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad"
-             prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="MapNotePad.Views.PinsPage"
-             Title="Pins" IconImageSource="ic_pin.png"
+                       prism:ViewModelLocator.AutowireViewModel="True"
+                       x:Class="MapNotePad.Views.PinsPage"
+                       Title="{res:Translate Pins}" IconImageSource="ic_pin.png"
                        BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor},
-                                            Dark={StaticResource DarkPageBackgroundColor}}">
-
+                                                         Dark={StaticResource DarkPageBackgroundColor}}">
     <view:BaseContentPage.Content>
         <Grid RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
-            <controls:CustomSearchBar Grid.Row="0" LeftImageSource="ic_settings.png" RightImageSource="ic_exid.png"
-                                          Text="{Binding SearchText}"
-                                          Placeholder="Search"
-                                          LeftButtonCommand="{Binding SettingsCommand}"
-                                          RightButtonCommand="{Binding ExitCommand}"
-                                          LineColor="{AppThemeBinding Light={StaticResource LightVariantColor},
-                                        Dark={StaticResource DarkVariantColor}}"
+            <controls:CustomSearchBar Grid.Row="0" 
+                                      LeftImageSource="ic_settings.png" 
+                                      RightImageSource="ic_exid.png"
+                                      Text="{Binding SearchText}"
+                                      Placeholder="Search"
+                                      LeftButtonCommand="{Binding SettingsCommand}"
+                                      RightButtonCommand="{Binding ExitCommand}"
+                                      LineColor="{AppThemeBinding Light={StaticResource LightVariantColor},
+                                                                  Dark={StaticResource DarkVariantColor}}"
                                       TextChangedCommand="{Binding SearchTextCommand}"/>
-
             <ScrollView Grid.Row="1" BackgroundColor="{StaticResource TransparentColor}">
                 <ListView x:Name="pinList" BackgroundColor="{StaticResource TransparentColor}"
                           HasUnevenRows="True" 
                           ItemsSource="{Binding PinSearch}">
-                        <!--ListView.Behaviors>
-                            <prism:EventToCommandBehavior EventName="ItemTapped" Command="{Binding TapShowCommand}" EventArgsParameterPath="Item"/>
-                        </ListView.Behaviors-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -42,54 +38,65 @@
                                         <SwipeItems>
                                             <SwipeItemView Command="{Binding Path=EditCommand}" CommandParameter="{Binding}"
                                                           BackgroundColor="{AppThemeBinding Light={StaticResource LightPrimaryColor},
-                                                                                Dark={StaticResource DarkPrimaryColor}}" >
+                                                                                            Dark={StaticResource DarkPrimaryColor}}" >
                                                 <StackLayout Margin="0,35,0,0" WidthRequest="70" >
-                                                    <Image Source="ic_edit" Aspect="AspectFill" HeightRequest="30" WidthRequest="30"  HorizontalOptions="Center" />
+                                                    <Image Source="ic_edit" Aspect="AspectFill" 
+                                                           HeightRequest="30" WidthRequest="30"  
+                                                           HorizontalOptions="Center" />
                                                 </StackLayout>
                                             </SwipeItemView>
                                             <SwipeItemView Command="{Binding Path=DeleteCommand}" CommandParameter="{Binding}"
                                                           BackgroundColor="{AppThemeBinding Light={StaticResource LightErrorColor},
-                                                                                Dark={StaticResource DarkErrorColor}}" >
+                                                                                            Dark={StaticResource DarkErrorColor}}" >
                                                 <StackLayout Margin="0,35,0,0" WidthRequest="70">
-                                                    <Image Source="ic_delete" Aspect="AspectFill" HeightRequest="30" WidthRequest="30"  HorizontalOptions="Center" />
+                                                    <Image Source="ic_delete" Aspect="AspectFill" 
+                                                           HeightRequest="30" WidthRequest="30"  
+                                                           HorizontalOptions="Center" />
                                                 </StackLayout>
                                             </SwipeItemView>
                                         </SwipeItems>
                                     </SwipeView.RightItems>
                                     <Grid ColumnSpacing="0"
                                         BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor},
-                                        Dark={StaticResource DarkPageBackgroundColor}}">
+                                                                          Dark={StaticResource DarkPageBackgroundColor}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="2*" />
                                             <ColumnDefinition Width="8*" />
                                             <ColumnDefinition Width="50" />
                                         </Grid.ColumnDefinitions>
                                         <StackLayout HeightRequest="80" HorizontalOptions="Fill">
-                                            <ImageButton Source="{Binding Image}" BackgroundColor="{AppThemeBinding Light={StaticResource LightVariantColor},
-                                                                                     Dark={StaticResource DarkVariantColor}}"
+                                            <ImageButton Source="{Binding Image}" 
+                                                         BackgroundColor="{AppThemeBinding Light={StaticResource LightVariantColor},
+                                                                                           Dark={StaticResource DarkVariantColor}}"
                                                          Command="{Binding Source={x:Reference pinList}, Path=BindingContext.FavouriteCommand}" CommandParameter="{Binding .}"
-                                                         HeightRequest="55" WidthRequest="55" HorizontalOptions="Center" Margin="10,15,0,0" Padding="12" CornerRadius="5"/>
+                                                         HeightRequest="55" WidthRequest="55" 
+                                                         HorizontalOptions="Center" 
+                                                         Margin="10,15,0,0" Padding="12" CornerRadius="5"/>
                                         </StackLayout>
                                         <StackLayout Grid.Column="1" Margin="10,20,10,20">
                                             <StackLayout.GestureRecognizers>
-                                               <TapGestureRecognizer Command="{Binding Source={x:Reference pinList}, Path=BindingContext.TapShowCommand}" CommandParameter="{Binding .}"/>
+                                                <TapGestureRecognizer Command="{Binding Source={x:Reference pinList}, Path=BindingContext.TapShowCommand}" CommandParameter="{Binding .}"/>
                                             </StackLayout.GestureRecognizers>
-                                            <Label Text="{Binding Name}" FontSize="21" FontAttributes="Bold" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation">
-                                            </Label>  
+                                            <Label Text="{Binding Name}" 
+                                                   FontSize="21" FontAttributes="Bold" 
+                                                   Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
                                             <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Latitude}" FontSize="18" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation" >
-                                                </Label>
+                                                <Label Text="{Binding Latitude}" 
+                                                       FontSize="18" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
                                                 <Label Text=", " FontSize="18" Style="{StaticResource baseLabel}"/>
-                                                <Label Text="{Binding Longitude}" FontSize="18" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation">
-                                                </Label>
+                                                <Label Text="{Binding Longitude}" FontSize="18" 
+                                                       Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
                                             </StackLayout>
                                         </StackLayout>
-                                        <Frame Grid.Column="2" BorderColor="{StaticResource TransparentColor}"  WidthRequest="30" HeightRequest="30" 
-                                               VerticalOptions="Center" HorizontalOptions="Start" HasShadow="False"
+                                        <Frame Grid.Column="2" BorderColor="{StaticResource TransparentColor}"  
+                                               WidthRequest="30" HeightRequest="30" 
+                                               VerticalOptions="Center" HorizontalOptions="Start" 
+                                               HasShadow="False"
                                                BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor},
-                                            Dark={StaticResource DarkPageBackgroundColor}}">
-                                            <ImageButton  Source="{Binding ImageLeft}" Aspect="AspectFill"  BackgroundColor="{StaticResource TransparentColor}"
-                                                  Command="{Binding Source={x:Reference pinList}, Path=BindingContext.TapShowCommand}" CommandParameter="{Binding .}" />
+                                                                                 Dark={StaticResource DarkPageBackgroundColor}}">
+                                            <ImageButton  Source="{Binding ImageLeft}" 
+                                                          Aspect="AspectFill"  
+                                                          BackgroundColor="{StaticResource TransparentColor}" />
                                         </Frame>
                                     </Grid>
                                 </SwipeView>
@@ -98,15 +105,18 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </ScrollView>
-            <Label Text="{res:Translate NotFoundPins}" Grid.Row="1" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"
+            <Label Text="{res:Translate NotFoundPins}" Grid.Row="1" 
+                   FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"
                    IsVisible="{Binding IsNotFound}" Style="{StaticResource baseLabel}"/>
             <Frame Grid.Row="1"   CornerRadius="40" HorizontalOptions="End" 
-                   WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" VerticalOptions="End" 
+                   WidthRequest="40" HeightRequest="40" 
+                   Margin="0,0,20,20" VerticalOptions="End" 
                    BackgroundColor="{AppThemeBinding Light={StaticResource LightPrimaryColor},
-                                                                Dark={StaticResource DarkPrimaryColor}}">
-                    <ImageButton Source="ic_plus" Command="{Binding AddPinCommand}" BackgroundColor="Transparent" 
-                                 VerticalOptions="Fill" HorizontalOptions="Fill"/>
-                </Frame>
+                                                     Dark={StaticResource DarkPrimaryColor}}">
+                <ImageButton Source="ic_plus" Command="{Binding AddPinCommand}" 
+                             BackgroundColor="Transparent"
+                             VerticalOptions="Fill" HorizontalOptions="Fill"/>
+            </Frame>
         </Grid>
     </view:BaseContentPage.Content>
 </view:BaseContentPage>

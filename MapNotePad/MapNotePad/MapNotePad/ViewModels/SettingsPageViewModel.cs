@@ -37,8 +37,7 @@ namespace MapNotePad.ViewModels
         private ICommand _ThemeCommand;
         public ICommand ThemeCommand => _ThemeCommand ??= SingleExecutionCommand.FromFunc(OnThemeCommandAsync);
         #endregion
-        #region -- InterfaceName implementation --
-        #endregion
+
         #region -- Overrides --
         public override async void Initialize(INavigationParameters parameters)
         {
@@ -46,8 +45,7 @@ namespace MapNotePad.ViewModels
             isEnable = true;
         }
         #endregion
-        #region -- Public helpers --
-        #endregion
+
         #region -- Private helpers --
         private async Task OnGoBackCommandAsync()
         {
@@ -58,7 +56,6 @@ namespace MapNotePad.ViewModels
         private Task OnThemeiOSCommandAsync()
         {
             _settings.ThemeSet = _settings.ChangeTheme(Theme);
-
             return Task.CompletedTask;
         }
 
@@ -71,7 +68,6 @@ namespace MapNotePad.ViewModels
             }
             return Task.CompletedTask;
         }
-
         #endregion
     }
 }

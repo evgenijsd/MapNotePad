@@ -14,11 +14,13 @@ namespace MapNotePad.Services
         private IRepository _repository;
         const int MAX_LENGTH_EMAIL = 64;
         const int MIN_PASSWORD_LENGTH = 6;
+
         public Registration(IRepository repository)
         {
             _repository = repository;
         }
 
+        #region -- Public helpers --
         public async Task<AOResult<int>> CheckTheCorrectEmailAsync(string name, string email)
         {
             var result = new AOResult<int>();
@@ -43,7 +45,7 @@ namespace MapNotePad.Services
         public ECheckEnter CheckCorrectEmail(string email)
         {
             ECheckEnter result = ECheckEnter.ChecksArePassed;
-            int s =  email.IndexOf('@');
+            int s = email.IndexOf('@');
             if (s > MAX_LENGTH_EMAIL || (email.Length - s) > MAX_LENGTH_EMAIL
                 || email.Length - 1 == s || s == 0) result = ECheckEnter.EmailLengthNotValid;
             if (s == -1) result = ECheckEnter.EmailANotVaid;
@@ -61,7 +63,7 @@ namespace MapNotePad.Services
             return (int)check;
         }
 
-        public async  Task<int> UserAddAsync(Users user)
+        public async Task<int> UserAddAsync(Users user)
         {
             int result = 0;
             try
@@ -71,5 +73,6 @@ namespace MapNotePad.Services
             catch { }
             return result;
         }
+        #endregion
     }
 }

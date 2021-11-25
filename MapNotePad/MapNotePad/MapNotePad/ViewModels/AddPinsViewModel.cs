@@ -41,7 +41,7 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _mapThemeStyle, value);
         }
 
-        private string _title = "Add";
+        private string _title = Resources.Resource.AddPin;
         public string Title
         {
             get => _title;
@@ -108,8 +108,8 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _region, value);
         }
 
-        private ICommand _goBackCommand;
-        public ICommand GoBackCommand => _goBackCommand ??= SingleExecutionCommand.FromFunc(OnGoBackCommandAsync);
+        private ICommand _GoBackCommand;
+        public ICommand GoBackCommand => _GoBackCommand ??= SingleExecutionCommand.FromFunc(OnGoBackCommandAsync);
         private ICommand _GeoLocCommand;
         public ICommand GeoLocCommand => _GeoLocCommand ??= SingleExecutionCommand.FromFunc(OnGeoLocCommandAsync);
         private ICommand _MapClickedCommand;
@@ -117,8 +117,8 @@ namespace MapNotePad.ViewModels
         private ICommand _SaveClickedCommand;
         public ICommand SaveClickedCommand => _SaveClickedCommand ??= SingleExecutionCommand.FromFunc(OnSaveClickedCommandAsync);
         #endregion
-        #region -- InterfaceName implementation --
 
+        #region -- Overrides --
         public override async void Initialize(INavigationParameters parameters)
         {
             await Task.Delay(TimeSpan.FromSeconds(0.1));
@@ -140,17 +140,17 @@ namespace MapNotePad.ViewModels
                 else Pins?.Add(new Pin
                 {
                     Type = PinType.Place,
-                    Position = new Position(0,0),
+                    Position = new Position(0, 0),
                     Label = "Add Name",
                     Address = "Add Discription",
                     Icon = BitmapDescriptorFactory.FromBundle("ic_placeholder.png")
-            });
+                });
             }
 
             parameterName = "Pin";
             if (parameters.ContainsKey(parameterName))
             {
-                Title = "Edit";
+                Title = Resources.Resource.EditPin;
                 Choise = EAddEditType.Edit;
                 var pin = parameters.GetValue<PinModel>(parameterName);
                 {
@@ -167,14 +167,13 @@ namespace MapNotePad.ViewModels
             }
         }
         #endregion
-        #region -- Overrides --
-        #endregion
-        #region -- Public helpers --
-        #endregion
+
         #region -- Private helpers --
         private async Task OnGoBackCommandAsync()
         {
             if (Choise == EAddEditType.Edit)
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
                 if (Name != _pinModel.Name || Description != _pinModel.Description ||
                     Latitude != _pinModel.Latitude.ToString() || Longitude != _pinModel.Longitude.ToString())
                 {
@@ -187,6 +186,7 @@ namespace MapNotePad.ViewModels
                     var confirm = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
                     if (!confirm) return;
                 }
+            }
 
             await _navigationService.GoBackAsync();
         }
@@ -206,9 +206,11 @@ namespace MapNotePad.ViewModels
             });
             return Task.CompletedTask;
         }
+
         private async Task OnSaveClickedCommandAsync()
         {
-            if (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Description) && !string.IsNullOrEmpty(Latitude) && !string.IsNullOrEmpty(Longitude))
+            if (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Description) && 
+                !string.IsNullOrEmpty(Latitude) && !string.IsNullOrEmpty(Longitude))
             {
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
                 Longitude = Longitude.Replace(",", ".");
@@ -261,9 +263,6 @@ namespace MapNotePad.ViewModels
             Region = result.Result;
             if (!result.IsSuccess) await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, "The location denied", "Ok");
         }
-
-
-
         #endregion
     }
 }

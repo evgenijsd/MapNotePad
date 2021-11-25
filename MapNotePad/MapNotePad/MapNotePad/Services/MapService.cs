@@ -31,6 +31,7 @@ namespace MapNotePad.Services
             _dialogs = dialogs;
         }
 
+        #region -- Public helpers --
         public async Task DeletePinAsync(ObservableCollection<PinView> collectPin, object pintObj)
         {
             PinView pin = pintObj as PinView;
@@ -57,7 +58,8 @@ namespace MapNotePad.Services
             return result;
         }
 
-        public async Task<ObservableCollection<PinView>> GetPinsViewAsync(int userId) { 
+        public async Task<ObservableCollection<PinView>> GetPinsViewAsync(int userId)
+        {
             var pv = new ObservableCollection<PinView>((await _repository.GetAsync<PinModel>(x => x.User == userId)).Select(x => x.ToPinView()));
             foreach (PinView pin in pv)
             {
@@ -214,7 +216,7 @@ namespace MapNotePad.Services
         {
             var assembly = Assembly.GetExecutingAssembly();
             string resourceName;
-            if (theme) 
+            if (theme)
                 resourceName = "MapNotePad.Resources.MapDarkStyle.json";
             else
                 resourceName = "MapNotePad.Resources.MapLightStyle.json";
@@ -228,17 +230,6 @@ namespace MapNotePad.Services
 
             return MapStyle.FromJson(styleFile);
         }
-
-        #region -- Public properties --
         #endregion
-        #region -- InterfaceName implementation --
-        #endregion
-        #region -- Overrides --
-        #endregion
-        #region -- Public helpers --
-        #endregion
-        #region -- Private helpers --
-        #endregion
-
     }
 }

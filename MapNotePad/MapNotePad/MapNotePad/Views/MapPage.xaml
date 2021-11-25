@@ -1,32 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <view:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:clusteredMap="clr-namespace:Xamarin.Forms.GoogleMaps.Clustering;assembly=Xamarin.Forms.GoogleMaps.Clustering" 
-             xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
-             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-             xmlns:prism="http://prismlibrary.com"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+                      xmlns:clusteredMap="clr-namespace:Xamarin.Forms.GoogleMaps.Clustering;assembly=Xamarin.Forms.GoogleMaps.Clustering" 
+                      xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
+                      xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+                      xmlns:prism="http://prismlibrary.com"
                       xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad"
-             xmlns:view="clr-namespace:MapNotePad.Views"
-             xmlns:controls="clr-namespace:MapNotePad.Controls"
-             prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="MapNotePad.Views.MapPage"
-             Title="Map" IconImageSource="ic_map.png"
-                      BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
-
+                      xmlns:view="clr-namespace:MapNotePad.Views"
+                      xmlns:controls="clr-namespace:MapNotePad.Controls"
+                      prism:ViewModelLocator.AutowireViewModel="True"
+                      x:Class="MapNotePad.Views.MapPage"
+                      Title="{res:Translate Map}" IconImageSource="ic_map.png"
+                      BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, 
+                                                        Dark={StaticResource DarkPageBackgroundColor}}">
     <view:BaseContentPage.Content>
         <Grid RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
-            <controls:CustomSearchBar Grid.Row="0" LeftImageSource="ic_settings.png" RightImageSource="ic_exid.png"
+            <controls:CustomSearchBar Grid.Row="0" 
+                                      LeftImageSource="ic_settings.png" 
+                                      RightImageSource="ic_exid.png"
                                       Text="{Binding SearchText}"
                                       Placeholder="Search"
                                       LeftButtonCommand="{Binding SettingsCommand}"
                                       RightButtonCommand="{Binding ExitCommand}"
                                       LineColor="{AppThemeBinding Light={StaticResource LightVariantColor},
-                                        Dark={StaticResource DarkVariantColor}}"
+                                                                  Dark={StaticResource DarkVariantColor}}"
                                       TextChangedCommand="{Binding SearchTextCommand}"/>
 
             <Grid Grid.Row="1" RowSpacing="0">
@@ -35,7 +36,6 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-
                 <StackLayout Grid.Row="0" IsVisible="{Binding IsViewSearch}" HeightRequest="300">
                     <ListView HasUnevenRows="True" ItemsSource="{Binding SearchPins}" >
                         <ListView.Behaviors>
@@ -45,19 +45,27 @@
                             <DataTemplate>
                                 <ViewCell>
                                     <ViewCell.View>
-                                        <Grid BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+                                        <Grid BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, 
+                                                                                Dark={StaticResource DarkPageBackgroundColor}}">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="2*" />
                                                 <ColumnDefinition Width="9*" />
                                             </Grid.ColumnDefinitions>
                                             <StackLayout HeightRequest="40" Margin="15,13,0,0"
-                                                         BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
-                                                <Image Source="{Binding Image}" Aspect="AspectFit" HeightRequest="40" WidthRequest="40"/>
+                                                         BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, 
+                                                                                           Dark={StaticResource DarkPageBackgroundColor}}">
+                                                <Image Source="{Binding Image}" Aspect="AspectFit" 
+                                                       HeightRequest="40" WidthRequest="40"/>
                                             </StackLayout>
                                             <StackLayout Grid.Column="1" Margin="10,10,0,10"
-                                                         BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
-                                                <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
-                                                <Label Text="{Binding Description}" FontSize="18" Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
+                                                         BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, 
+                                                                                           Dark={StaticResource DarkPageBackgroundColor}}">
+                                                <Label Text="{Binding Name}" 
+                                                       FontSize="18" FontAttributes="Bold" 
+                                                       Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
+                                                <Label Text="{Binding Description}" 
+                                                       FontSize="18" 
+                                                       Style="{StaticResource baseLabel}" LineBreakMode="TailTruncation"/>
                                             </StackLayout>
                                         </Grid>
                                     </ViewCell.View>
@@ -66,10 +74,13 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </StackLayout>
-
                 <StackLayout Grid.Row="1">
-                    <clusteredMap:ClusteredMap x:Name="myMap" IsShowingUser="True" WidthRequest="960" HeightRequest="200" MapStyle="{Binding MapThemeStyle}" SelectedPin="{Binding PinSelected}"
-                                               BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+                    <clusteredMap:ClusteredMap x:Name="myMap" IsShowingUser="True" 
+                                               WidthRequest="960" HeightRequest="200" 
+                                               MapStyle="{Binding MapThemeStyle}" 
+                                               SelectedPin="{Binding PinSelected}"
+                                               BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, 
+                                                                                 Dark={StaticResource DarkPageBackgroundColor}}">
                         <clusteredMap:ClusteredMap.Behaviors>
                             <bindings:BindingPinsBehavior Value="{Binding Pins}"/>
                             <bindings:UpdateRegionBehavior Region="{Binding Region}" Animated="{Binding Animated}"/>
@@ -80,45 +91,56 @@
                         </clusteredMap:ClusteredMap.Behaviors>
                     </clusteredMap:ClusteredMap>
                 </StackLayout>
-                
-                <Frame Grid.Row="1"   CornerRadius="40" HorizontalOptions="End" WidthRequest="40" HeightRequest="40" Margin="0,0,20,20" VerticalOptions="End" IsVisible="{Binding IsViewButton}" 
-                       BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
-                <ImageButton Source="ic_location"  Command="{Binding GeoLocCommand}" BackgroundColor="Transparent"
-                             VerticalOptions="Fill" HorizontalOptions="Fill"/>
-            </Frame>
-
-            <StackLayout Grid.Row="2" IsVisible="{Binding IsViewPin}" HeightRequest="270">
-                <Label  Text="{Binding Pin.Label}" Margin="20,30,5,10" FontAttributes="Bold" FontSize="Medium" Style="{StaticResource baseLabel}" />
-                <StackLayout Orientation="Horizontal" Margin="20,0,10,0" HeightRequest="20">
-                    <Label  Text="{Binding Pin.Position.Latitude}" FontSize="Medium" Style="{StaticResource baseLabel}" />
-                    <Label  Text=", " FontSize="Medium" Style="{StaticResource baseLabel}" />
-                    <Label  Text="{Binding Pin.Position.Longitude}" FontSize="Medium" Style="{StaticResource baseLabel}" />
-                </StackLayout>
-                <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="10,20,20,0"
-                         Color="{AppThemeBinding Light={StaticResource LightLineColor}, Dark={StaticResource DarkLineColor}}"/>
-                <CollectionView ItemsSource="{Binding ForecastViews}" Margin="10,10,0,0" >
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Horizontal"
+                <Frame Grid.Row="1"  
+                       CornerRadius="40" HorizontalOptions="End" 
+                       WidthRequest="40" HeightRequest="40" 
+                       Margin="0,0,20,20" VerticalOptions="End" 
+                       IsVisible="{Binding IsViewButton}" 
+                       BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, 
+                                                         Dark={StaticResource DarkPageBackgroundColor}}">
+                    <ImageButton Source="ic_location"  
+                                 Command="{Binding GeoLocCommand}" 
+                                 BackgroundColor="Transparent"
+                                 VerticalOptions="Fill" HorizontalOptions="Fill"/>
+                </Frame>
+                <StackLayout Grid.Row="2" IsVisible="{Binding IsViewPin}" HeightRequest="270">
+                    <Label  Text="{Binding Pin.Label}" 
+                            Margin="20,30,5,10" 
+                            FontAttributes="Bold" FontSize="Medium" 
+                            Style="{StaticResource baseLabel}" />
+                    <StackLayout Orientation="Horizontal" 
+                                 Margin="20,0,10,0" HeightRequest="20">
+                        <Label  Text="{Binding Pin.Position.Latitude}" FontSize="Medium" Style="{StaticResource baseLabel}" />
+                        <Label  Text=", " FontSize="Medium" Style="{StaticResource baseLabel}" />
+                        <Label  Text="{Binding Pin.Position.Longitude}" FontSize="Medium" Style="{StaticResource baseLabel}" />
+                    </StackLayout>
+                    <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" 
+                             Margin="10,20,20,0"
+                         Color="{AppThemeBinding Light={StaticResource LightLineColor}, 
+                                                 Dark={StaticResource DarkLineColor}}"/>
+                    <CollectionView ItemsSource="{Binding ForecastViews}" Margin="10,10,0,0" >
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal"
                            SnapPointsType="MandatorySingle"
                            SnapPointsAlignment="Center"/>
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout WidthRequest="95">
-                                <Label Text="{Binding Day}" FontSize="18" Margin="18,0,0,0" Style="{StaticResource baseLabel}" />
-                                <StackLayout>
-                                    <Image Source="{Binding Image}" Margin="0,0,15,0" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout WidthRequest="95">
+                                    <Label Text="{Binding Day}" FontSize="18" Margin="18,0,0,0" Style="{StaticResource baseLabel}" />
+                                    <StackLayout>
+                                        <Image Source="{Binding Image}" Margin="0,0,15,0" />
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding TempMax}" FontSize="18" Margin="10,0,0,0" Style="{StaticResource baseLabel}" />
+                                        <Label Text="{Binding TempMin}" FontSize="18"  Style="{StaticResource baseLabel}"/>
+                                    </StackLayout>
                                 </StackLayout>
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding TempMax}" FontSize="18" Margin="10,0,0,0" Style="{StaticResource baseLabel}" />
-                                    <Label Text="{Binding TempMin}" FontSize="18"  Style="{StaticResource baseLabel}"/>
-                                </StackLayout>
-                            </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </StackLayout>
-        </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </Grid>
         </Grid>
     </view:BaseContentPage.Content>
 </view:BaseContentPage>

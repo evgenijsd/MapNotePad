@@ -216,7 +216,6 @@ namespace MapNotePad.Models
 
         [JsonProperty("icon")]
         public string Icon { get; set; }
-
     }
 
     public class Wind

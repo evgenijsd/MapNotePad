@@ -26,7 +26,10 @@ namespace MapNotePad.Services
             get => Preferences.Get(nameof(LangSet), (int)ELangType.English);
             set => Preferences.Set(nameof(LangSet), value);
         }
+        #endregion
 
+
+        #region -- Public helpers --
         public int ChangeTheme(bool theme)
         {
             int result = (int)EThemeType.LightTheme;
@@ -41,7 +44,6 @@ namespace MapNotePad.Services
             }
             return result;
         }
-        #endregion
 
         public string Language(ELangType language)
         {
@@ -71,6 +73,8 @@ namespace MapNotePad.Services
             };
             return Lang;
         }
+        #endregion
+
     }
 }
 

@@ -37,8 +37,6 @@ namespace MapNotePad.ViewModels
             MapThemeStyle = _mapService.GetMapStyle(Theme);
         }
 
-
-
         #region -- Public properties --
         private bool _theme;
         public bool Theme
@@ -126,7 +124,6 @@ namespace MapNotePad.ViewModels
             get => _listViewHeight;
             set => SetProperty(ref _listViewHeight, value);
         }
-
         private ObservableCollection<ForecastView> _forecastViews = new();
         public ObservableCollection<ForecastView> ForecastViews
         {
@@ -147,10 +144,8 @@ namespace MapNotePad.ViewModels
         public ICommand SearchTextCommand => new Command(OnSearchTextCommandAsync);
         private ICommand _TapShowCommand;
         public ICommand TapShowCommand => _TapShowCommand ??= SingleExecutionCommand.FromFunc<SearchView>(OnTapShowCommandAsync);
+        #endregion
 
-        #endregion
-        #region -- InterfaceName implementation --
-        #endregion
         #region -- Overrides --
         public override void OnNavigatedFrom(INavigationParameters parameters)
         {
@@ -188,6 +183,7 @@ namespace MapNotePad.ViewModels
             }
             
         }
+
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
@@ -211,8 +207,7 @@ namespace MapNotePad.ViewModels
             }
         }
         #endregion
-        #region -- Public helpers --
-        #endregion
+
         #region -- Private helpers --
         private async Task OnPinClickedCommandAsync(PinClickedEventArgs args)
         {
@@ -238,12 +233,14 @@ namespace MapNotePad.ViewModels
                 }
             }
         }
+
         private Task OnMapClickedCommandAsync(MapClickedEventArgs args)
         {
             IsViewPin = false;
             IsViewSearch = false;
             return Task.CompletedTask;
         }
+
         private async Task OnGeoLocCommandAsync()
         {
             var result = await _mapService.CurrentLocation(Region);
@@ -257,9 +254,9 @@ namespace MapNotePad.ViewModels
             if (!string.IsNullOrEmpty(SearchText))
             {
                 IsViewSearch = true;
-                var pins = new ObservableCollection<Pin>(Pins.Where(x => x.Label.Contains(SearchText)
-                || x.Address.Contains(SearchText) || x.Position.Latitude.ToString().Contains(SearchText)
-                || x.Position.Longitude.ToString().Contains(SearchText)));
+                var pins = new ObservableCollection<Pin>(Pins.Where(x => x.Label.ToLower().Contains(SearchText.ToLower())
+                        || x.Address.ToLower().Contains(SearchText.ToLower()) || x.Position.Latitude.ToString().Contains(SearchText)
+                        || x.Position.Longitude.ToString().Contains(SearchText)));
                 foreach (Pin pin in pins)
                 {
                     var search = new SearchView
@@ -301,10 +298,9 @@ namespace MapNotePad.ViewModels
 
         private async Task OnSettingsCommandAsync()
         {
-            
-                await _navigationService.NavigateAsync($"{nameof(SettingsPage)}");
-            
+            await _navigationService.NavigateAsync($"{nameof(SettingsPage)}");
         }
+
         private async Task OnExitCommandAsync()
         {
             var confirmConfig = new ConfirmConfig()
@@ -319,10 +315,7 @@ namespace MapNotePad.ViewModels
                 _authentication.UserId = 0;
                 await _navigationService.NavigateAsync($"{nameof(StartPage)}");
             }
-
-
         }
-
         #endregion
     }
 }

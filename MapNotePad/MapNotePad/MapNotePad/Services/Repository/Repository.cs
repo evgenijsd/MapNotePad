@@ -26,6 +26,7 @@ namespace MapNotePad.Services.Repository
             });
         }
 
+        #region -- Public helpers --
         public async Task<int> AddAsync<T>(T entity) where T : IEntity, new() =>
             await _database.Value.InsertAsync(entity);
 
@@ -46,5 +47,7 @@ namespace MapNotePad.Services.Repository
 
         public async Task<List<T>> GetAsync<T>(Expression<Func<T, bool>> expression) where T : IEntity, new() =>
             await _database.Value.Table<T>().Where(expression).ToListAsync();
+        #endregion
+
     }
 }
