@@ -1,34 +1,55 @@
-﻿using MapNotePad.Helpers;
+﻿using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using MapNotePad.Enum;
+using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
 using Prism.Navigation;
 using Prism.Services;
-using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using Xamarin.Forms;
+using Xamarin.Forms.GoogleMaps;
 
 namespace MapNotePad.ViewModels
 {
-    public class LogInViewModel : BaseContentPage, IInitialize, INavigationAware
+    public class LogInViewModel : BaseViewModel
     {
 
         private IPageDialogService _dialogs { get; }
         private IAuthentication _authentication { get; }
+        private IRegistration _registration { get; }
+        private IMapService _mapService;
 
         public LogInViewModel(INavigationService navigationService, IPageDialogService dialogs,
-                       IAuthentication authentication) : base(navigationService)
+                       IAuthentication authentication, IRegistration registration, IMapService mapService) : base(navigationService)
         {
             _dialogs = dialogs;
             _authentication = authentication;
+            UserId = _authentication.UserId;
+            _registration = registration;
+            _mapService = mapService;
         }
 
         #region -- Public properties --
+        private int _userId;
+        public int UserId
+        {
+            get => _userId;
+            set => SetProperty(ref _userId, value);
+        }
+
         private string _email = string.Empty;
         public string Email
         {
             get => _email;
             set => SetProperty(ref _email, value);
+        }
+        private bool _isWrongEmail = false;
+        public bool IsWrongEmail
+        {
+            get => _isWrongEmail;
+            set => SetProperty(ref _isWrongEmail, value);
         }
         private string _password = string.Empty;
         public string Password
@@ -36,21 +57,25 @@ namespace MapNotePad.ViewModels
             get => _password;
             set => SetProperty(ref _password, value);
         }
+        private bool _isIncorrectPassword = false;
+        public bool IsIncorrectPassword
+        {
+            get => _isIncorrectPassword;
+            set => SetProperty(ref _isIncorrectPassword, value);
+        }
 
 
-
+        private ICommand _goBackCommand;
+        public ICommand GoBackCommand => _goBackCommand ??= SingleExecutionCommand.FromFunc(OnGoBackCommandAsync);
         private ICommand _MainTabPageCommand;
         public ICommand MainTabPageCommand => _MainTabPageCommand ??= SingleExecutionCommand.FromFunc(OnMainTabPageCommandAsync);
         private ICommand _GoogleMainCommand;
         public ICommand GoogleMainCommand => _GoogleMainCommand ??= SingleExecutionCommand.FromFunc(OnGoogleMainCommandAsync);
+        public ICommand ErrorCommand => new Command(OnErrorCommand);
         #endregion
 
-        #region -- InterfaceName implementation --
-        public void OnNavigatedFrom(INavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(INavigationParameters parameters)
+        #region -- Overrides --
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.ContainsKey("User"))
             {
@@ -58,51 +83,72 @@ namespace MapNotePad.ViewModels
                 Email = user.Email;
             }
         }
-        #endregion
-        #region -- Overrides --
-        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
+        public override async void Initialize(INavigationParameters parameters)
         {
-            base.OnPropertyChanged(args);
-
-            switch (args.PropertyName)
+            await Task.Delay(TimeSpan.FromSeconds(0.1));
+            if (UserId > 0)
             {
-                case nameof(Email):
-                case nameof(Password):
-                    break;
+                var p = new NavigationParameters { { "UserId", UserId } };
+                await _navigationService.NavigateAsync("/MainTabPage", p);
             }
         }
         #endregion
-        #region -- Public helpers --
-        public async void Initialize(INavigationParameters parameters)
-        {
-            await Task.Delay(TimeSpan.FromSeconds(0.1));
-        }
-        #endregion
+
         #region -- Private helpers --
+        private async Task OnGoBackCommandAsync()
+        {
+           await  _navigationService.GoBackAsync();
+        }
+
         private async Task OnMainTabPageCommandAsync()
         {
-                try
+            var result = await _authentication.CheckUserAsync(Email, Password);
+            if (result.IsSuccess)
+            {
+                MapSpan region = new MapSpan(new Position(0, 0), 0, 0);
+                var location = await _mapService.CurrentLocation(region);
+                if (location.IsSuccess)
                 {
-                    int id = await _authentication.CheckAsync(Email, Password);
-                    if (id != 0)
-                    {
-                        var p = new NavigationParameters { { "UserId", id } };
-                        await _navigationService.NavigateAsync("MainTabPage", p);
-                    }
-                    else
-                    {
-                        await _dialogs.DisplayAlertAsync("Alert", "Invalid login or password!", "Ok");
-                        Password = string.Empty;
-                    }
+                    UserId = result.Result;
+                    _authentication.UserId = UserId;
+                    var p = new NavigationParameters { { "UserId", UserId } };
+                    await _navigationService.NavigateAsync("/MainTabPage", p);
                 }
-                catch (Exception ex)
-                {
-                    await _dialogs.DisplayAlertAsync("Alert", $"{ex}", "Ok");
-                }
+            }
+            else
+            {
+                await _dialogs.DisplayAlertAsync("Alert", "Invalid login or password!", "Ok");
+                Password = string.Empty;
+            }
         }
+
         private async Task OnGoogleMainCommandAsync()
         {
             await _navigationService.NavigateAsync("/StartPage");
+        }
+
+        private void OnErrorCommand()
+        {
+            switch ((ECheckEnter)_registration.CheckTheCorrectPassword(Password, Password))
+            {
+                case ECheckEnter.PasswordBigLetterAndDigit:
+                case ECheckEnter.PasswordLengthNotValid:
+                    IsIncorrectPassword = !string.IsNullOrEmpty(Password);
+                    break;
+                default:
+                    IsIncorrectPassword = false;
+                    break;
+            }
+            switch ((ECheckEnter)_registration.CheckCorrectEmail(Email))
+            {
+                case ECheckEnter.EmailANotVaid:
+                case ECheckEnter.EmailLengthNotValid:
+                    IsWrongEmail = !string.IsNullOrEmpty(Email);
+                    break;
+                default:
+                    IsWrongEmail = false;
+                    break;
+            }
         }
         #endregion
     }

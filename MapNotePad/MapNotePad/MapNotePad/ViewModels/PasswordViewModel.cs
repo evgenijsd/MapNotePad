@@ -1,21 +1,23 @@
-﻿using MapNotePad.Helpers;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using MapNotePad.Enum;
+using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
 using MapNotePad.Views;
 using Prism.Navigation;
 using Prism.Services;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using static MapNotePad.Enum.CheckType;
+using Xamarin.Forms;
 
 namespace MapNotePad.ViewModels
 {
-    public class PasswordViewModel : BaseContentPage, INavigationAware, IInitialize
+    public class PasswordViewModel : BaseViewModel
     {
         private IPageDialogService _dialogs { get; }
         private IRegistration _registration;
 
-        public PasswordViewModel(INavigationService navigationService, IRegistration registration, IPageDialogService dialogs) : base(navigationService)
+        public PasswordViewModel(INavigationService navigationService, IRegistration registration,
+            IPageDialogService dialogs) : base(navigationService)
         {
             _registration = registration;
             _dialogs = dialogs;
@@ -28,11 +30,23 @@ namespace MapNotePad.ViewModels
             get => _password;
             set => SetProperty(ref _password, value);
         }
+        private bool _isIncorrectPassword = false;
+        public bool IsIncorrectPassword
+        {
+            get => _isIncorrectPassword;
+            set => SetProperty(ref _isIncorrectPassword, value);
+        }
         private string _confirmPassword = string.Empty;
         public string ConfirmPassword
         {
             get => _confirmPassword;
             set => SetProperty(ref _confirmPassword, value);
+        }
+        private bool _isMismatchPassword = false;
+        public bool IsMismatchPassword
+        {
+            get => _isMismatchPassword;
+            set => SetProperty(ref _isMismatchPassword, value);
         }
         private Users _user;
         public Users User
@@ -41,26 +55,17 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _user, value);
         }
 
+        private ICommand _goBackCommand;
+        public ICommand GoBackCommand => _goBackCommand ??= SingleExecutionCommand.FromFunc(OnGoBackCommandAsync);
         private ICommand _LogInCommand;
         public ICommand LogInCommand => _LogInCommand ??= SingleExecutionCommand.FromFunc(OnLogInCommandAsync);
         private ICommand _GoogleMainCommand;
         public ICommand GoogleMainCommand => _GoogleMainCommand ??= SingleExecutionCommand.FromFunc(OnGoogleMainCommandAsync);
+        public ICommand ErrorCommand => new Command(OnErrorCommand);
         #endregion
-        #region -- InterfaceName implementation --
-        public void Initialize(INavigationParameters parameters)
-        {
-            
-        }
 
-        #endregion
         #region -- Overrides --
-        #endregion
-        #region -- Public helpers --
-        public void OnNavigatedFrom(INavigationParameters parameters)
-        {
-        }
-
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.ContainsKey("User"))
             {
@@ -68,19 +73,20 @@ namespace MapNotePad.ViewModels
             }
         }
         #endregion
+
         #region -- Private helpers --
         private async Task OnLogInCommandAsync()
         {
-            var check = (CheckEnter)_registration.CheckTheCorrectPassword(Password, ConfirmPassword);
+            var check = (ECheckEnter)_registration.CheckTheCorrectPassword(Password, ConfirmPassword);
             switch (check)
             {
-                case CheckEnter.PasswordBigLetterAndDigit:
+                case ECheckEnter.PasswordBigLetterAndDigit:
                     await _dialogs.DisplayAlertAsync("Alert", "The password must contain a big letter and digit", "Ok");
                     break;
-                case CheckEnter.PasswordLengthNotValid:
+                case ECheckEnter.PasswordLengthNotValid:
                     await _dialogs.DisplayAlertAsync("Alert", "Login less than 6 characters", "Ok");
                     break;
-                case CheckEnter.PasswordsNotEqual:
+                case ECheckEnter.PasswordsNotEqual:
                     await _dialogs.DisplayAlertAsync("Alert", "Password and confirm password do not coincide", "Ok");
                     break;
                 default:
@@ -97,14 +103,41 @@ namespace MapNotePad.ViewModels
                     break;
             }
         }
+
         private Task OnGoogleMainCommandAsync()
         {
             _navigationService.NavigateAsync("StartPage");
             return Task.CompletedTask;
         }
 
+        private async Task OnGoBackCommandAsync()
+        {
+            await _navigationService.GoBackAsync();
+        }
 
-
+        private void OnErrorCommand()
+        {
+            var error = (ECheckEnter)_registration.CheckTheCorrectPassword(Password, ConfirmPassword);
+            switch (error)
+            {
+                case ECheckEnter.PasswordBigLetterAndDigit:
+                case ECheckEnter.PasswordLengthNotValid:
+                    IsIncorrectPassword = !string.IsNullOrEmpty(Password);
+                    break;
+                default:
+                    IsIncorrectPassword = false;
+                    break;
+            }
+            switch (error)
+            {
+                case ECheckEnter.PasswordsNotEqual:
+                    IsMismatchPassword = !string.IsNullOrEmpty(ConfirmPassword);
+                    break;
+                default:
+                    IsMismatchPassword = false;
+                    break;
+            }
+        }
         #endregion
     }
 }

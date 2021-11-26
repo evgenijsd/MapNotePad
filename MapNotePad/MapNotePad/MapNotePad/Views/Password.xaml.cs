@@ -10,7 +10,7 @@ using Xamarin.Forms.Xaml;
 namespace MapNotePad.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Password : ContentPage
+    public partial class Password : BaseContentPage
     {
         public Password()
         {

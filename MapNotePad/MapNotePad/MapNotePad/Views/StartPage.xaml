@@ -1,20 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MapNotePad.Views.StartPage">
-    <ContentPage.Content>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="8*"/>
-            <RowDefinition Height="3*"/>
-        </Grid.RowDefinitions>
-        <StackLayout Grid.Row="0" VerticalOptions="Center" HorizontalOptions="Center">
-            <Image Source="pic_enter_page.png" HorizontalOptions="Center" VerticalOptions="Center"/>
-        </StackLayout>
-        <StackLayout Grid.Row="1" Padding="20,0">
-            <Button Text="Log in" Margin="0,0,0,20" Command="{Binding LogInCommand}" />
-            <Button Text="Create account" Style="{StaticResource buttonStyle}" Command="{Binding RegisterCommand}" />
-        </StackLayout>
-    </Grid>
-    </ContentPage.Content>
-</ContentPage>
+<view:BaseContentPage  xmlns:view="clr-namespace:MapNotePad.Views" 
+                       xmlns="http://xamarin.com/schemas/2014/forms"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:res="clr-namespace:MapNotePad.Helpers;assembly=MapNotePad"
+                       x:Class="MapNotePad.Views.StartPage"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor},
+                                                         Dark={StaticResource DarkPageBackgroundColor}}">
+    <view:BaseContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="8*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0" 
+                         VerticalOptions="CenterAndExpand"  
+                         HorizontalOptions="FillAndExpand">
+                <Image Source="pic_enter_page.png" 
+                       HeightRequest="190" WidthRequest="200"/>
+                <Label Text="{res:Translate MapNotepad}" 
+                       Style="{StaticResource baseMapLabel}"/>
+            </StackLayout>
+            <StackLayout Grid.Row="1" Padding="20,0">
+                <Button Text="Log in" Margin="0,0,0,20"  
+                        Command="{Binding LogInCommand}" 
+                        Style="{StaticResource baseButton}"/>
+                <Button Text="Create account"  
+                        Command="{Binding RegisterCommand}" 
+                        Style="{StaticResource inverseButtonStyle}"/>
+            </StackLayout>
+        </Grid>
+    </view:BaseContentPage.Content>
+</view:BaseContentPage>

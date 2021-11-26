@@ -1,4 +1,5 @@
-﻿using MapNotePad.Enum;
+﻿using Acr.UserDialogs;
+using MapNotePad.Enum;
 using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
@@ -13,21 +14,34 @@ using Xamarin.Forms.GoogleMaps;
 
 namespace MapNotePad.ViewModels
 {
-    public class AddPinsViewModel : BaseContentPage, IInitialize, INavigationAware
+    public class AddPinsViewModel : BaseViewModel
     {
         private IPageDialogService _dialogs { get; }
         private IMapService _mapService { get; set; }
+        private ISettings _settings;
+        private PinModel _pinModel;
 
-        public AddPinsViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService) : base(navigationService)
+        public AddPinsViewModel(INavigationService navigationService, IPageDialogService dialogs,
+            IMapService mapService, ISettings settings) : base(navigationService)
         {
             _dialogs = dialogs;
             _mapService = mapService;
+            _settings = settings;
+            _settings.Language((ELangType)_settings.LangSet);
+            MapThemeStyle = _mapService.GetMapStyle(_settings.ThemeSet != (int)EThemeType.LightTheme);
         }
 
 
 
         #region -- Public properties --
-        private string _title = "Add";
+        private MapStyle _mapThemeStyle;
+        public MapStyle MapThemeStyle
+        {
+            get => _mapThemeStyle;
+            set => SetProperty(ref _mapThemeStyle, value);
+        }
+
+        private string _title = Resources.Resource.AddPin;
         public string Title
         {
             get => _title;
@@ -81,8 +95,8 @@ namespace MapNotePad.ViewModels
             get => _date;
             set => SetProperty(ref _date, value);
         }
-        private AddEditType _choise = AddEditType.Add;
-        public AddEditType Choise
+        private EAddEditType _choise = EAddEditType.Add;
+        public EAddEditType Choise
         {
             get => _choise;
             set => SetProperty(ref _choise, value);
@@ -94,6 +108,8 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _region, value);
         }
 
+        private ICommand _GoBackCommand;
+        public ICommand GoBackCommand => _GoBackCommand ??= SingleExecutionCommand.FromFunc(OnGoBackCommandAsync);
         private ICommand _GeoLocCommand;
         public ICommand GeoLocCommand => _GeoLocCommand ??= SingleExecutionCommand.FromFunc(OnGeoLocCommandAsync);
         private ICommand _MapClickedCommand;
@@ -101,42 +117,41 @@ namespace MapNotePad.ViewModels
         private ICommand _SaveClickedCommand;
         public ICommand SaveClickedCommand => _SaveClickedCommand ??= SingleExecutionCommand.FromFunc(OnSaveClickedCommandAsync);
         #endregion
-        #region -- InterfaceName implementation --
 
-        public async void Initialize(INavigationParameters parameters)
+        #region -- Overrides --
+        public override async void Initialize(INavigationParameters parameters)
         {
             await Task.Delay(TimeSpan.FromSeconds(0.1));
         }
-        public void OnNavigatedFrom(INavigationParameters parameters)
+        public override void OnNavigatedFrom(INavigationParameters parameters)
         {
             parameters.Add(nameof(this.UserId), this.UserId);
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             string parameterName = "UserId";
             if (parameters.ContainsKey(parameterName))
             {
                 int id = parameters.GetValue<int>(parameterName);
-                //await _dialogs.DisplayAlertAsync("Alert", $"{id}", "Ok");
                 UserId = id;
-                await _mapService.SetPinsAsync(Pins, UserId);
-                if (Pins?.Count > 0) Pins?.Add(Pins[0]);
+                var result = await _mapService.SetPinsAsync(Pins, UserId);
+                if (result.IsSuccess && Pins?.Count > 0) Pins?.Add(Pins[0]);
                 else Pins?.Add(new Pin
                 {
                     Type = PinType.Place,
-                    Position = new Position(0,0),
+                    Position = new Position(0, 0),
                     Label = "Add Name",
                     Address = "Add Discription",
                     Icon = BitmapDescriptorFactory.FromBundle("ic_placeholder.png")
-            });
+                });
             }
 
             parameterName = "Pin";
             if (parameters.ContainsKey(parameterName))
             {
-                Title = "Edit";
-                Choise = AddEditType.Edit;
+                Title = Resources.Resource.EditPin;
+                Choise = EAddEditType.Edit;
                 var pin = parameters.GetValue<PinModel>(parameterName);
                 {
                     Id = pin.Id;
@@ -146,18 +161,38 @@ namespace MapNotePad.ViewModels
                     Latitude = pin.Latitude.ToString();
                     Longitude = pin.Longitude.ToString();
                     Date = pin.Date;
+                    Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(10));
+                    _pinModel = pin;
                 }
             }
         }
         #endregion
-        #region -- Overrides --
-        #endregion
-        #region -- Public helpers --
-        #endregion
+
         #region -- Private helpers --
+        private async Task OnGoBackCommandAsync()
+        {
+            if (Choise == EAddEditType.Edit)
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+                if (Name != _pinModel.Name || Description != _pinModel.Description ||
+                    Latitude != _pinModel.Latitude.ToString() || Longitude != _pinModel.Longitude.ToString())
+                {
+                    var confirmConfig = new ConfirmConfig()
+                    {
+                        Message = "Do not save change?",
+                        OkText = "Yes",
+                        CancelText = "Cancel"
+                    };
+                    var confirm = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
+                    if (!confirm) return;
+                }
+            }
+
+            await _navigationService.GoBackAsync();
+        }
+
         private Task OnMapClickedCommandAsync(MapClickedEventArgs args)
         {
-            //await _dialogs.DisplayAlertAsync("Alert", $"{args.Point.Latitude}", "Ok");
             Latitude = args.Point.Latitude.ToString();
             Longitude = args.Point.Longitude.ToString();
             Pins.RemoveAt(Pins.Count - 1);
@@ -169,50 +204,59 @@ namespace MapNotePad.ViewModels
                 Address = "Add Discription",
                 Icon = BitmapDescriptorFactory.FromBundle("ic_placeholder.png")
             });
-            //return await _navigationService.NavigateAsync($"{nameof(Register)}");
             return Task.CompletedTask;
         }
+
         private async Task OnSaveClickedCommandAsync()
         {
-            
-            PinModel pin = new PinModel
+            if (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Description) && 
+                !string.IsNullOrEmpty(Latitude) && !string.IsNullOrEmpty(Longitude))
             {
-                Id = Id,
-                Name = Name,
-                Description = Description,
-                Latitude = double.Parse(Latitude),
-                Longitude = double.Parse(Longitude),
-                User = UserId,
-                Favourite = true,
-                Date = DateTime.Now
-            };
-            await _mapService.AddEditExecute(Choise, pin);
-            if (Choise == AddEditType.Add) Pins?.Add(pin.ToPin());
-            else await _mapService.SetPinsAsync(Pins, UserId);
-            //await _dialogs.DisplayAlertAsync("Alert", $"{pin.Id}", "Ok");
-            //var p = new NavigationParameters { { "Pin", pin } };
-            //await _navigationService.GoBackAsync(p);
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+                Longitude = Longitude.Replace(",", ".");
+                Latitude = Latitude.Replace(",", ".");
+                double latitude;
+                double longitude;
+                var blon = double.TryParse(Longitude, out longitude);
+                var blat = double.TryParse(Latitude, out latitude);
+                if (blon)
+                    if (blat)
+                        if ((latitude > -85.05115 && latitude < 85) || (longitude > -180 && longitude < 180))
+                        {
+                            PinModel pin = new PinModel
+                            {
+                                Id = Id,
+                                Name = Name,
+                                Description = Description,
+                                Latitude = latitude,
+                                Longitude = longitude,
+                                User = UserId,
+                                Favourite = true,
+                                Date = DateTime.Now
+                            };
+                            await _mapService.AddEditExecute(Choise, pin);
+                            if (Choise == EAddEditType.Add) Pins?.Add(pin.ToPin());
+                            else await _mapService.SetPinsAsync(Pins, UserId);
+                            Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
+                            await _navigationService.GoBackAsync();
+                        }
+                        else
+                            await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, "Coordinates outside the map", Resources.Resource.Ok);
+                    else
+                        await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, Resources.Resource.IncorrectLatitude, Resources.Resource.Ok);
+                else
+                    await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, Resources.Resource.IncorrectLongitude, Resources.Resource.Ok);
+            }
+            else
+               await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, "Fill in all fields with values", Resources.Resource.Ok);
         }
 
         private async Task OnGeoLocCommandAsync()
         {
-            try
-            {
-                var locator = CrossGeolocator.Current;
-                locator.DesiredAccuracy = 10000;
-                var position = await locator.GetPositionAsync(new TimeSpan(0, 0, 5));
-                Region = MapSpan.FromCenterAndRadius(
-                             new Position(position.Latitude, position.Longitude),
-                             Distance.FromKilometers(500));
-            }
-            catch (Exception ex)
-            {
-                await _dialogs.DisplayAlertAsync("Alert", $"{ex}", "Ok");
-            }
+            var result = await _mapService.CurrentLocation(Region);
+            Region = result.Result;
+            if (!result.IsSuccess) await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, "The location denied", "Ok");
         }
-
-
-
         #endregion
     }
 }

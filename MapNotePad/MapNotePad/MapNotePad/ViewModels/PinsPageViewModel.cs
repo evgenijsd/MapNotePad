@@ -1,42 +1,52 @@
-﻿using Acr.UserDialogs;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Acr.UserDialogs;
+using MapNotePad.Enum;
 using MapNotePad.Helpers;
 using MapNotePad.Models;
 using MapNotePad.Services.Interface;
 using MapNotePad.Views;
 using Prism.Navigation;
 using Prism.Services;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace MapNotePad.ViewModels
 {
-    public class PinsPageViewModel : BaseContentPage, INavigationAware, IInitialize
+    public class PinsPageViewModel : BaseViewModel
     {
         private IMapService _mapService { get; set; }
-
+        private IAuthentication _authentication { get; }
+        private ISettings _settings;
+        private bool _isAlert;
         private IPageDialogService _dialogs { get; }
 
-        public PinsPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService) : base(navigationService)
+        public PinsPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService,
+            IAuthentication authentication, ISettings settings) : base(navigationService)
         {
             _dialogs = dialogs;
             _mapService = mapService;
-        }
-
-        public void Initialize(INavigationParameters parameters)
-        {
-            //await Task.Delay(TimeSpan.FromSeconds(0.1));
-            //await _dialogs.DisplayAlertAsync("Alert", $"{UserId}", "Ok");
-            
-            //var pins = await _mapService.GetPinsModelAsync();
-            //await _dialogs.DisplayAlertAsync("Alert", $"{pins.Count}", "Ok");
+            _authentication = authentication;
+            _settings = settings;
+            _settings.Language((ELangType)_settings.LangSet);
+            Theme = _settings.ThemeSet != (int)EThemeType.LightTheme;
         }
 
         #region -- Public properties --
+        private bool _theme;
+        public bool Theme
+        {
+            get => _theme;
+            set => SetProperty(ref _theme, value);
+        }
+        private bool _isNotFound;
+        public bool IsNotFound
+        {
+            get => _isNotFound;
+            set => SetProperty(ref _isNotFound, value);
+        }
         private ObservableCollection<PinView> _pinViews;
         public ObservableCollection<PinView> PinViews
         {
@@ -63,43 +73,64 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref this._userId, value);
         }
 
+        private ICommand _settingsCommand;
+        public ICommand SettingsCommand => _settingsCommand ??= SingleExecutionCommand.FromFunc(OnSettingsCommandAsync);
         private ICommand _AddPinCommand;
         public ICommand AddPinCommand => _AddPinCommand ??= SingleExecutionCommand.FromFunc(OnAddPinCommandAsync);
+        private ICommand _exitCommand;
+        public ICommand ExitCommand => _exitCommand ??= SingleExecutionCommand.FromFunc(OnExitCommandAsync);
         private ICommand _EditCommand;
         public ICommand EditCommand => _EditCommand ??= SingleExecutionCommand.FromFunc<object>(OnEditCommandAsync);
         private ICommand _DeleteCommand;
         public ICommand DeleteCommand => _DeleteCommand ??= SingleExecutionCommand.FromFunc<object>(OnDeleteCommandAsync);
-        private ICommand _SearchTextCommand;
-        public ICommand SearchTextCommand => _SearchTextCommand ??= SingleExecutionCommand.FromFunc(OnSearchTextCommandAsync);
+        public ICommand SearchTextCommand => new Command(OnSearchTextCommandAsync);
         private ICommand _FavouriteCommand;
         public ICommand FavouriteCommand => _FavouriteCommand ??= SingleExecutionCommand.FromFunc<object>(OnFavouriteCommandAsync);
+        private ICommand _TapShowCommand;
+        public ICommand TapShowCommand => _TapShowCommand ??= SingleExecutionCommand.FromFunc<object>(OnTapShowCommandAsync);
         #endregion
-        #region -- InterfaceName implementation --
-        public void OnNavigatedFrom(INavigationParameters parameters)
+
+        #region -- Overrides --
+        public override void OnNavigatedFrom(INavigationParameters parameters)
         {
             parameters.Add(nameof(this.UserId), this.UserId);
+            parameters.Add(nameof(this.Theme), this.Theme);
         }
 
-        public async void OnNavigatedTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.ContainsKey("UserId"))
             {
                 int id = parameters.GetValue<int>("UserId");
                 UserId = id;
-                PinViews = await _mapService.GetPinsViewAsync(UserId); 
+                PinViews = await _mapService.GetPinsViewAsync(UserId);
                 foreach (PinView pin in PinViews)
                 {
                     pin.EditCommand = EditCommand;
                     pin.DeleteCommand = DeleteCommand;
+                    pin.TapCommand = TapShowCommand;
                 }
                 PinSearch = PinViews;
+                IsNotFound = PinSearch == null || PinSearch.Count == 0;
+            }
+            if (parameters.ContainsKey("Theme"))
+            {
+                bool theme = parameters.GetValue<bool>("Theme");
+                Theme = theme;
+            }
+        }
+
+        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
+        {
+            base.OnPropertyChanged(args);
+
+            if (args.PropertyName == nameof(PinSearch))
+            {
+                IsNotFound = PinSearch == null || PinSearch.Count == 0;
             }
         }
         #endregion
-        #region -- Overrides --
-        #endregion
-        #region -- Public helpers --
-        #endregion
+
         #region -- Private helpers --
         private async Task OnAddPinCommandAsync()
         {
@@ -115,6 +146,7 @@ namespace MapNotePad.ViewModels
                 await _navigationService.NavigateAsync($"{nameof(AddPins)}", p);
             }
         }
+
         private async Task OnDeleteCommandAsync(object args)
         {
             if (args != null)
@@ -133,32 +165,29 @@ namespace MapNotePad.ViewModels
             }
             PinView pinv = args as PinView;
             PinModel pindel = pinv.ToPinModel();
-            //_dialogs.DisplayAlertAsync("Alert", $"{pinv.Id}", "Ok");
-            
-            //return await _navigationService.NavigateAsync($"{nameof(Register)}");
-            //return Task.CompletedTask;
         }
 
-        private Task OnSearchTextCommandAsync()
+        private async void OnSearchTextCommandAsync()
         {
             if (!string.IsNullOrEmpty(SearchText))
             {
-                PinSearch = new ObservableCollection<PinView>(PinViews.Where(x => x.Name.Contains(SearchText) || x.Description.Contains(SearchText) || x.Latitude.ToString().Contains(SearchText) || x.Longitude.ToString().Contains(SearchText)));
-                if (PinSearch.Count == 0 && SearchText.Length > 0) _dialogs.DisplayAlertAsync("Alert", $"Not Found \"{SearchText}\"", "Ok");
+                PinSearch = new ObservableCollection<PinView>(PinViews.Where(x => x.Name.ToLower().Contains(SearchText.ToLower())
+                          || x.Description.ToLower().Contains(SearchText.ToLower()) || x.Latitude.ToString().Contains(SearchText)
+                          || x.Longitude.ToString().Contains(SearchText)));
+                if (PinSearch.Count == 0 && SearchText.Length > 0 && _isAlert)
+                {
+                    _isAlert = false;
+                    await _dialogs.DisplayAlertAsync("Alert", $"Not Found \"{SearchText}\"", "Ok");
+                }
+                else
+                    if (!IsNotFound) _isAlert = true;
             }
             else
                 PinSearch = PinViews;
-            //ListViewGrid = new GridLength(SearchPins.Count, GridUnitType.Star);
-            return Task.CompletedTask;
         }
 
         private async Task OnFavouriteCommandAsync(object args)
         {
-            //Pin = args.Pin;
-            //IsViewPin = true;
-            //await _dialogs.DisplayAlertAsync("Alert", $"{pin.Name}", "Ok");
-            //Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
-            //return await _navigationService.NavigateAsync($"{nameof(Register)}");
             if (args != null)
             {
                 PinView pin = args as PinView;
@@ -166,22 +195,59 @@ namespace MapNotePad.ViewModels
                 {
                     pin.Favourite = !pin.Favourite;
                     pin.Image = "ic_like_gray.png";
+                    pin.ImageLeft = "ic_left_gray.png";
                 }
                 else
                 {
                     pin.Favourite = !pin.Favourite;
                     pin.Image = "ic_like_blue.png";
+                    pin.ImageLeft = "ic_left_gray.png";
                 }
-                await _mapService.SetPinsFavourite(pin.ToPinModel());
-                PinViews = await _mapService.GetPinsViewAsync(UserId);
-                foreach (PinView pinv in PinViews)
+                var result = await _mapService.SetPinsFavourite(pin.ToPinModel());
+                if (result.IsSuccess)
                 {
-                    pinv.EditCommand = EditCommand;
-                    pinv.DeleteCommand = DeleteCommand;
+                    PinViews = await _mapService.GetPinsViewAsync(UserId);
+                    foreach (PinView pinv in PinViews)
+                    {
+                        pinv.EditCommand = EditCommand;
+                        pinv.DeleteCommand = DeleteCommand;
+                    }
                 }
             }
         }
 
+        private async Task OnSettingsCommandAsync()
+        {
+            await _navigationService.NavigateAsync($"{nameof(SettingsPage)}");
+        }
+
+        private async Task OnExitCommandAsync()
+        {
+            var confirmConfig = new ConfirmConfig()
+            {
+                Message = Resources.Resource.ExitUser,
+                OkText = Resources.Resource.Exit,
+                CancelText = Resources.Resource.Cancel
+            };
+            var confirm = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
+            if (confirm)
+            {
+                _authentication.UserId = 0;
+                await _navigationService.NavigateAsync($"{nameof(StartPage)}");
+            }
+
+
+        }
+
+        private async Task OnTapShowCommandAsync(object args)
+        {
+            if (args != null)
+            {
+                PinView pin = args as PinView;
+                var p = new NavigationParameters { { "Pin", pin } };
+                await _navigationService.NavigateAsync($"{nameof(MainTabPage)}?selectedTab={nameof(MapPage)}", p);
+            }
+        }
         #endregion
     }
 }

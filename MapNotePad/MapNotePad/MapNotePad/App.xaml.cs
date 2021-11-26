@@ -18,7 +18,7 @@ namespace MapNotePad
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/StartPage");
+            await NavigationService.NavigateAsync(nameof(StartPage));
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -27,18 +27,17 @@ namespace MapNotePad
             containerRegistry.RegisterInstance<IAuthentication>(Container.Resolve<Authentication>());
             containerRegistry.RegisterInstance<IRegistration>(Container.Resolve<Registration>());
             containerRegistry.RegisterInstance<IMapService>(Container.Resolve<MapService>());
+            containerRegistry.RegisterInstance<ISettings>(Container.Resolve<Settings>());
 
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<MainTabPage>();
             containerRegistry.RegisterForNavigation<StartPage, StartPageViewModel>();
             containerRegistry.RegisterForNavigation<AddPins, AddPinsViewModel>();
             containerRegistry.RegisterForNavigation<LogIn, LogInViewModel>();
-            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
             containerRegistry.RegisterForNavigation<MapPage, MapPageViewModel>();
-            containerRegistry.RegisterForNavigation<MainTabPage, MainTabPageViewModel>();
-            containerRegistry.RegisterForNavigation<PinPage, PinPageViewModel>();
             containerRegistry.RegisterForNavigation<PinsPage, PinsPageViewModel>();
-            containerRegistry.RegisterForNavigation<Settings, SettingsViewModel>();
+            containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
             containerRegistry.RegisterForNavigation<Register, RegisterViewModel>();
             containerRegistry.RegisterForNavigation<Password, PasswordViewModel>();
         }

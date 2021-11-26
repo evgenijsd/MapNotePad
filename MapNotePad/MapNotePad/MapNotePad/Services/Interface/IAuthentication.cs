@@ -5,6 +5,8 @@ namespace MapNotePad.Services.Interface
 {
     public interface IAuthentication
     {
-        Task<int> CheckAsync(string Login, string Password);
+        int UserId { get; set; }
+
+        Task<AOResult<int>> CheckUserAsync(string Login, string Password);
     }
 }

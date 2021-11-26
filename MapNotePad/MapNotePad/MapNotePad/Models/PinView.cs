@@ -38,6 +38,13 @@ namespace MapNotePad.Models
             set => SetProperty(ref _image, value);
         }
 
+        private string _imageLeft;
+        public string ImageLeft
+        {
+            get => _imageLeft;
+            set => SetProperty(ref _imageLeft, value);
+        }
+
         private string _name;
         public string Name
         {
@@ -85,6 +92,13 @@ namespace MapNotePad.Models
         {
             get => _EditCommand;
             set => SetProperty(ref _EditCommand, value);
+        }
+
+        private ICommand _TapCommand;
+        public ICommand TapCommand
+        {
+            get => _TapCommand;
+            set => SetProperty(ref _TapCommand, value);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MapNotePad.Enum
 {
-    public enum AddEditType
+    public enum EAddEditType
     {
         Add,
         Edit
