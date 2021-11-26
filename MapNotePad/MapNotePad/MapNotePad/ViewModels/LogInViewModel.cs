@@ -9,6 +9,7 @@ using MapNotePad.Services.Interface;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
+using Xamarin.Forms.GoogleMaps;
 
 namespace MapNotePad.ViewModels
 {
@@ -18,14 +19,16 @@ namespace MapNotePad.ViewModels
         private IPageDialogService _dialogs { get; }
         private IAuthentication _authentication { get; }
         private IRegistration _registration { get; }
+        private IMapService _mapService;
 
         public LogInViewModel(INavigationService navigationService, IPageDialogService dialogs,
-                       IAuthentication authentication, IRegistration registration) : base(navigationService)
+                       IAuthentication authentication, IRegistration registration, IMapService mapService) : base(navigationService)
         {
             _dialogs = dialogs;
             _authentication = authentication;
             UserId = _authentication.UserId;
             _registration = registration;
+            _mapService = mapService;
         }
 
         #region -- Public properties --
@@ -102,10 +105,15 @@ namespace MapNotePad.ViewModels
             var result = await _authentication.CheckUserAsync(Email, Password);
             if (result.IsSuccess)
             {
-                UserId = result.Result;
-                _authentication.UserId = UserId;
-                var p = new NavigationParameters { { "UserId", UserId } };
-                await _navigationService.NavigateAsync("/MainTabPage", p);
+                MapSpan region = new MapSpan(new Position(0, 0), 0, 0);
+                var location = await _mapService.CurrentLocation(region);
+                if (location.IsSuccess)
+                {
+                    UserId = result.Result;
+                    _authentication.UserId = UserId;
+                    var p = new NavigationParameters { { "UserId", UserId } };
+                    await _navigationService.NavigateAsync("/MainTabPage", p);
+                }
             }
             else
             {
