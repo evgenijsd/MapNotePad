@@ -20,7 +20,7 @@ namespace MapNotePad.ViewModels
         private IMapService _mapService { get; set; }
         private IAuthentication _authentication { get; }
         private ISettings _settings;
-
+        private bool _isAlert;
         private IPageDialogService _dialogs { get; }
 
         public PinsPageViewModel(INavigationService navigationService, IPageDialogService dialogs, IMapService mapService,
@@ -167,15 +167,20 @@ namespace MapNotePad.ViewModels
             PinModel pindel = pinv.ToPinModel();
         }
 
-        private void OnSearchTextCommandAsync()
+        private async void OnSearchTextCommandAsync()
         {
             if (!string.IsNullOrEmpty(SearchText))
             {
                 PinSearch = new ObservableCollection<PinView>(PinViews.Where(x => x.Name.ToLower().Contains(SearchText.ToLower())
                           || x.Description.ToLower().Contains(SearchText.ToLower()) || x.Latitude.ToString().Contains(SearchText)
                           || x.Longitude.ToString().Contains(SearchText)));
-                if (PinSearch.Count == 0 && SearchText.Length > 0)
-                    _dialogs.DisplayAlertAsync("Alert", $"Not Found \"{SearchText}\"", "Ok");
+                if (PinSearch.Count == 0 && SearchText.Length > 0 && _isAlert)
+                {
+                    _isAlert = false;
+                    await _dialogs.DisplayAlertAsync("Alert", $"Not Found \"{SearchText}\"", "Ok");
+                }
+                else
+                    if (!IsNotFound) _isAlert = true;
             }
             else
                 PinSearch = PinViews;
