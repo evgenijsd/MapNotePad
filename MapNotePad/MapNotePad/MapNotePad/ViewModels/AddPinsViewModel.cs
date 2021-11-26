@@ -220,41 +220,35 @@ namespace MapNotePad.ViewModels
                 var blon = double.TryParse(Longitude, out longitude);
                 var blat = double.TryParse(Latitude, out latitude);
                 if (blon)
-                {
                     if (blat)
-                    {
-                        PinModel pin = new PinModel
+                        if ((latitude > -85.05115 && latitude < 85) || (longitude > -180 && longitude < 180))
                         {
-                            Id = Id,
-                            Name = Name,
-                            Description = Description,
-                            Latitude = Convert.ToDouble(Latitude),
-                            Longitude = Convert.ToDouble(Longitude),
-                            User = UserId,
-                            Favourite = true,
-                            Date = DateTime.Now
-                        };
-                        await _mapService.AddEditExecute(Choise, pin);
-                        if (Choise == EAddEditType.Add) Pins?.Add(pin.ToPin());
-                        else await _mapService.SetPinsAsync(Pins, UserId);
-                        Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
-                        await _navigationService.GoBackAsync();
-
-                    }
+                            PinModel pin = new PinModel
+                            {
+                                Id = Id,
+                                Name = Name,
+                                Description = Description,
+                                Latitude = latitude,
+                                Longitude = longitude,
+                                User = UserId,
+                                Favourite = true,
+                                Date = DateTime.Now
+                            };
+                            await _mapService.AddEditExecute(Choise, pin);
+                            if (Choise == EAddEditType.Add) Pins?.Add(pin.ToPin());
+                            else await _mapService.SetPinsAsync(Pins, UserId);
+                            Region = MapSpan.FromCenterAndRadius(new Position(pin.Latitude, pin.Longitude), Distance.FromKilometers(1));
+                            await _navigationService.GoBackAsync();
+                        }
+                        else
+                            await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, "Coordinates outside the map", Resources.Resource.Ok);
                     else
-                    {
                         await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, Resources.Resource.IncorrectLatitude, Resources.Resource.Ok);
-                    }
-                }
                 else
-                {
                     await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, Resources.Resource.IncorrectLongitude, Resources.Resource.Ok);
-                }
             }
             else
-            {
                await _dialogs.DisplayAlertAsync(Resources.Resource.Alert, "Fill in all fields with values", Resources.Resource.Ok);
-            }
         }
 
         private async Task OnGeoLocCommandAsync()
