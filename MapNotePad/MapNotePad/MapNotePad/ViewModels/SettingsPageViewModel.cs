@@ -12,6 +12,7 @@ namespace MapNotePad.ViewModels
     public class SettingsPageViewModel : BaseViewModel
     {
         private IPageDialogService _dialogs { get; }
+
         private ISettings _settings;
         private bool isEnable = false;
 
